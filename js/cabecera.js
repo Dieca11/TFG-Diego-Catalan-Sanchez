@@ -23,7 +23,7 @@ class Cabecera extends HTMLElement {
                                     <a class="nav-link" href="Clasificaciones.html">CLASIFICACIONES</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="Reseñas.html">RESENYAS</a>
+                                    <a class="nav-link" href="Reseñas.html">RESEÑAS</a>
                                 </li>
                             </ul>
                             <ul class="navbar-nav ms-auto mb-2 mb-lg-2">
