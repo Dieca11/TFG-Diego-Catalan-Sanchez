@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/cabecera-footer.css">
+        <link rel="stylesheet" type="text/css" href="css/Home.css">
 
         <title>HOME</title>
 
@@ -25,20 +26,36 @@
     </head>
     <body>
         <mi-cabecera></mi-cabecera>
-        <h1>PISTAS DE PADEL EN TU MINICIPIO</h1>
-        <div class="container">
+        <div class="container-fluid px-0">
+            <div class="row gx-0">
 
-            <div class="row mx-sm-3 mx-md-3 mx-lg-3 mx-xl-5">
+                <div class="col col-12 col-md-6 col-izquierda d-flex flex-column">
+                    <h1> !JUEGA AL PADEL CERCA DE TU MUNICIPIO!</h1>
 
-                <div class="col"> <!-- Lado izquierdo-->
-                        <p> Encuentra las pistas del padel que mejor te convengan</p>
-                        <p>Distintas comunidades, y acomodamientos necesarios</p>
-                        <button>Tarifas</button> <!-- Poner logo redondeado para el boton -->
-                        <button>Lugares</button>
-                        <button> Mapa</button>
+                    <div class="botones">
+                        <div class="boton-contenedor">
+                            <a href="Tarifas.html" aria-label="Tarifas">
+                                <img src="/Imagenes/ganancias.png" alt="Tarifas">
+                                <span class="boton-texto">TARIFAS</span>
+                            </a>
+                        </div>
+                        <div class="boton-contenedor">
+                            <a href="Tarifas.html" aria-label="clasificacion">
+                                <img src="/Imagenes/clasificacion.png" alt="Tarifas">
+                                <span class="boton-texto">RANKING</span>
+                            </a>
+                    </div>
+                        <div class="boton-contenedor">
+                            <a href="Tarifas.html" aria-label="Mapa">
+                                <img src="/Imagenes/mapas-y-banderas.png" alt="Tarifas">
+                                <span class="boton-texto">MAPA</span>
+                            </a>
+                        </div>
+
+                    </div>
                 </div>
                 <!-- Cambio de color lado derecho -->
-                <div class="col">
+                <div class="col col-12 col-md-6 col-derecha d-flex flex-column justify-content-center align-items-center">
                     <h2> CARACTERISTICAS</h2> <!--Poner check verde para decir las caracteristicas de la pagina web-->
                     <h3> HORARIO</h3>
                     <div>Lunes a Domingo</div>

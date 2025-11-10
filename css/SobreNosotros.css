@@ -1,9 +1,10 @@
-p,h1{
+p{
     font-family:'Roboto', sans-serif ;
     font-size: 20px;
 }
 
-p{
+p, .titulo-sobrenosotros{
+    font-family:'Roboto', sans-serif ;
     width: 60%;
     margin: 20px auto;
     text-align: center;

@@ -1,0 +1,51 @@
+.container-fluid{
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+}
+
+.col-izquierda{
+    padding-top: 150px !important;
+    padding-bottom: 179px !important;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position:relative;
+    background-color: rgb(38, 83, 167);
+    color: white;
+    font-size: 20px;
+    z-index: 1;
+}
+
+.col-derecha{
+    background-image: url('/Imagenes/padel-fondo.png')!important;
+    background-size: cover;
+    background-position: center;
+    margin-top: 20px;
+}
+.botones{
+    margin-top: 40px;
+    display: flex;
+    gap: 60px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+img{
+    height: 100px;
+    cursor: pointer;
+
+}
+
+.boton-texto {
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 20px;
+  user-select: none;
+}
+.boton-contenedor a{
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
