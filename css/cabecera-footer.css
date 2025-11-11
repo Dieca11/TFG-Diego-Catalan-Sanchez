@@ -1,9 +1,8 @@
 /*Estilo para la cabecera*/
+
 header{
     height: 130px;
     background-color: rgb(50, 83, 146);
-    background-size: cover;
-    background-position: center;
     position: relative;
     color: white;
     display: flex;
@@ -16,27 +15,13 @@ header{
 
 .navbar{
     display: flex;
-    z-index:1;
-    justify-content: space-between;
-
     margin-top: 20px;
-
-}
-.titulo{
-    margin-top: 80px !important;
-}
-.navbar, .titulo{
-    position: relative;
-    z-index: 1;
     width: 60%;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
 }
+
 a{
     font-size: 30px !important;
     color: white !important;
-
 }
 
 /*Estilo para el footer*/
@@ -58,6 +43,7 @@ footer{
 body{
     background-color: rgba(200, 224, 255, 0.575) !important;
     width: 100%;
+    overflow-x: hidden;
 }
 html{
     min-height: 100%;
