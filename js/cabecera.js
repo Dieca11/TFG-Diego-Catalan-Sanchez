@@ -35,7 +35,6 @@ class Cabecera extends HTMLElement {
                         </div>
                     </div>
                 </nav>
-                <h1 class="titulo">RESERVA AQUI TU PISTA DE PADEL!</h1>
             </header>
                     `;
     } 

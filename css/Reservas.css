@@ -1,0 +1,39 @@
+.texto{
+    color:rgb(50, 83, 146);
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: 600;
+}
+.col{
+    height: 210px;
+    margin-bottom: 150px;
+}
+
+.row{
+    padding-top: 40px;
+    padding-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.juego{
+    width: 415px;
+    height: 250px;
+    border-radius: 8px;
+    opacity: 1;
+    z-index: 1;
+}
+
+button{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-radius: 5px !important;
+    border-color: rgb(50, 83, 146);
+    background-color: rgb(105, 132, 182);
+    padding: 5px;
+}
