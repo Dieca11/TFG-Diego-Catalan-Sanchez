@@ -27,11 +27,15 @@
         <mi-cabecera></mi-cabecera>
         <div class="container gx-0 cuerpo">
                                 
-            <div class="custom-dropdown">
-                <button class="dropdown-btn">GENERAL <span class="dropdown-icon">&#9652;</span> </button>
+            <div class="btn-group dropend">
+                <button type="button" class=" dropdown-btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    GENERAL
+                </button>
                     <ul class="dropdown-menu">
                         <li data-value="General">GENERAL</li>
+                        <li><hr class="dropdown-divider"></li>
                         <li data-value="municipio1">MORA DE RUBIELOS</li>
+                        <li><hr class="dropdown-divider"></li>
                         <li data-value="municipio2">Municipio 3</li>
                     </ul>
             </div>
@@ -76,25 +80,29 @@
 
 
         <script>
-        const dropdownBtn = document.querySelector('.dropdown-btn');
-        const dropdownMenu = document.querySelector('.dropdown-menu');
+            const dropdownBtn = document.querySelector('.dropdown-btn');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
 
-        dropdownBtn.addEventListener('click', () => {
-        dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-        });
+            // Alternar visibilidad al pulsar el botón
+            dropdownBtn.addEventListener('click', (event) => {
+                event.stopPropagation(); // evita que se cierre al hacer clic en el botón
+                dropdownMenu.classList.toggle('show');
+            });
 
-        dropdownMenu.querySelectorAll('li').forEach(option => {
-        option.addEventListener('click', () => {
-            dropdownBtn.childNodes[0].textContent = option.textContent;
-            dropdownMenu.style.display = 'none';
-        });
-        });
+            // Cerrar al hacer clic fuera
+            document.addEventListener('click', (event) => {
+                if (!dropdownBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
 
-        document.addEventListener('click', (event) => {
-        if (!event.target.closest('.custom-dropdown')) {
-            dropdownMenu.style.display = 'none';
-        }
-        });
+            // Cambiar texto y cerrar al elegir opción
+            dropdownMenu.querySelectorAll('li[data-value]').forEach(option => {
+                option.addEventListener('click', () => {
+                    dropdownBtn.textContent = option.textContent;
+                    dropdownMenu.classList.remove('show');
+                });
+            });
         </script>
         
         

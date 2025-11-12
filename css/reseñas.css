@@ -1,65 +1,96 @@
-table{
-    
-    border-collapse: separate !important; 
-    border-spacing: 10px !important; 
-    text-align: center !important;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 20px;
-    font-weight: 600;
-    border: 2px solid  #54708d;
-    box-shadow: 6px 0 rgba(6, 61, 119, 0.5);
-    border-radius: 12px;
-    padding: 20px;
-    background-color: rgba(178, 204, 231, 0.5);
-    color: rgb(50, 83, 146);
+
+.container{
     margin-top: 40px;
-}
-thead {
-  border-bottom: 3px solid #007BFF !important;
+    margin-bottom: 50px;
 }
 
-tbody{
-    text-align: center;
+.review-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    max-width: 400px;
+    margin-top: 30px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(86, 135, 163, 0.3);
 }
 
-th {
-    cursor: pointer;
-    user-select: none;
-}
-
-
-.cuerpo {
+.user-info {
     display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    justify-content: center;
-    flex-direction: column;
-    margin-top: 40px;
+    margin-bottom: 10px;
+    align-items: center;
 }
 
-.btn-secondary {
-  position: relative;
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    margin-top: 0;
+}
+
+.user-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+}
+
+.usuario {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.lugar {
+    font-size: 0.9em;
+    color: #666;
+    margin: 2px 0;
+}
+
+.comment {
+    font-size: 1em;
+    color: #333;
+    padding: 20px;
+}
+
+
+.estrellas img {
+    width: 70px;
+    height: 70px;
+}
+
+.detalles-total{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.estrellas{
+    margin-right: 50px;
+}
+
+.container-cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 30px;
+}
+
+.dropdown-btn {
   width: 100%;
   padding:8px 8px;
-  margin-left: 18px;
   border-radius: 8px;
   border: 2px solid #7facdd;
   background-color: rgba(178, 204, 231, 0.5);
   font-size: 16px;
-  text-align: left;
+  text-align: center;
   cursor: pointer;
+  position: relative;
 }
 
-
 .dropdown-menu{
-
-  position: absolute;
-  top: 0;
-  left: 100%;
-  display: none;
-  z-index: 10;
-
   background-color: rgba(178, 204, 231) !important;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
