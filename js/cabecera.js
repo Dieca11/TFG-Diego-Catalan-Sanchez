@@ -5,11 +5,11 @@ class Cabecera extends HTMLElement {
             <header>
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <div class="container-fluid">
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" style="color: white" aria-label="Toggle navigation">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"  aria-label="Toggle navigation" style= "color : white">
                             <span class="navbar-toggler-icon" ></span>
                         </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto mb-sm-2 mb-lg-2">
+                        <div class="collapse navbar-collapse mb-auto mb-lg-0" id="navbarSupportedContent">
+                            <ul class="navbar-nav d-flex align-items-start">
                             <li class="nav-item">
                                     <a class="nav-link" aria-current="page" href="HOME.html">INICIO</a>
                                 </li>

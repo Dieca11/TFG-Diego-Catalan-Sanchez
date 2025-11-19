@@ -6,22 +6,52 @@ header{
     position: relative;
     color: white;
     display: flex;
-    flex-direction: column;
     align-items: center;
     font-family: 'Roboto', sans-serif;
     
 }
 
 
-.navbar{
-    display: flex;
-    margin-top: 20px;
-    width: 60%;
+@media (max-width: 768px) {
+    .navbar {
+        width: 100vw;
+        flex-direction: column;
+         
+    }
+    .navbar-collapse {
+        width: 100vw;
+        position: absolute;
+        flex-direction: column;
+        position: absolute;
+        left: 0;
+        top: 60px;
+        background: rgb(50, 83, 146);
+        z-index: 99;
+        display: none;
+       
+    }
+    .navbar-collapse.show {
+        display: block;
+    }
+    .navbar-toggler {
+        display: flex;
+    }
+    ul{
+        margin-top: 20px;
+
+    }
 }
 
-a{
+.navbar-nav a{
     font-size: 30px !important;
     color: white !important;
+    margin-top: 20px !important;
+}
+.collapse{
+    display:none;
+}
+.collapse.show{
+    display: block;
 }
 
 /*Estilo para el footer*/
