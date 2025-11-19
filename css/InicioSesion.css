@@ -5,7 +5,7 @@
     display: flex;
 }
 .container-Inicio .row{
-    width: 500px;
+    width: 400px;
     height: auto;
     border: 2px solid  #54708d;
     box-shadow: 6px 0 rgba(6, 61, 119, 0.5);
@@ -18,7 +18,9 @@
     color: rgb(50, 83, 146) !important;
     text-decoration: none;
     justify-content: space-between;
-    padding: 15px;
+    padding:20px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
 }
 .Inicio{
     margin-top: 10px !important;

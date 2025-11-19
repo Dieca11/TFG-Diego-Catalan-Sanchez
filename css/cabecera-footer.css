@@ -1,11 +1,12 @@
 /*Estilo para la cabecera*/
 
 header{
-    height: 130px;
+    height: auto;
     background-color: rgb(50, 83, 146);
     position: relative;
     color: white;
     display: flex;
+    flex-direction: column;
     align-items: center;
     font-family: 'Roboto', sans-serif;
     
@@ -15,13 +16,10 @@ header{
 @media (max-width: 768px) {
     .navbar {
         width: 100vw;
-        flex-direction: column;
          
     }
     .navbar-collapse {
         width: 100vw;
-        position: absolute;
-        flex-direction: column;
         position: absolute;
         left: 0;
         top: 60px;
@@ -34,24 +32,17 @@ header{
         display: block;
     }
     .navbar-toggler {
-        display: flex;
+        display: block;
     }
     ul{
         margin-top: 20px;
-
     }
 }
 
 .navbar-nav a{
     font-size: 30px !important;
     color: white !important;
-    margin-top: 20px !important;
-}
-.collapse{
-    display:none;
-}
-.collapse.show{
-    display: block;
+    margin-right: 60px;
 }
 
 /*Estilo para el footer*/
@@ -59,7 +50,7 @@ header{
 footer{
     background-color:rgb(50, 83, 146);
     width: 100%;
-    height: 60px;
+    height: auto;
     bottom: 0;
     position:absolute;
 }
@@ -67,6 +58,10 @@ footer{
 .iconos{
     display: flex;
     justify-content: center;
+}
+.iconos a{
+    font-size: 50px;
+    margin: 10px;
 }
 
 /*Estilo para margen del footer*/
