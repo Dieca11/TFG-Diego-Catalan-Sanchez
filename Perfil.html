@@ -44,7 +44,7 @@
 
 
                     <li>
-                        <a class="link-usuario activo" href="">
+                        <a class="link-usuario activo" href="#usuario-editar-perfil">
                             <div class="bi bi-person-fill fs-2"></div>
 
                             <div class="texto">
@@ -56,7 +56,7 @@
 
                     <li>
                         <a class="link-usuario activo" href="">
-                            <div class="cil-tennis-ball"></div>
+                            <div class="bi bi-list-ol fs-2"></div>
 
                             <div class="texto">
                                 <span class="titulo">Revisa tus partidas</span>
@@ -100,11 +100,12 @@
 
                 </ul>
 
-                <hr style=" width: 100px;">
+                <div class="vertical-hr"></div>
 
-                <div class="edicion">
+                <div class="usuario-editar-perfil">
 
-                    <h2>EDITAR PERDIL</h2>
+                    <h2>EDITAR PERFIL</h2>
+
                     <form action="Perfil.html" method="get">
 
                         <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
@@ -125,6 +126,39 @@
 
                     </form>
                 </div>
+
+                <div class="usuario-editar-privacidad">
+
+                    <form action="Perfil.html" method="get">
+
+                        <label class="privacidad-label">
+                            <span class="switch">
+                                <input type="checkbox" name="invitaciones"/>
+                                <span class="slider"></span>
+                            </span>
+                            Recibir invitaciones a partidas de otros usuarios
+                        </label>
+                        <label class="privacidad-label">
+                            <span class="switch">
+                                <input type="checkbox" name="invitaciones"/>
+                                <span class="slider"></span>
+                            </span>
+                            Mostrar mis partidas en la clasificación
+                        </label>
+                        <label class="privacidad-label">
+                            <span class="switch">
+                                <input type="checkbox" name="invitaciones"/>
+                                <span class="slider"></span>
+                            </span>
+                            Recibir invitacioones de partidas abiertas
+                        </label>
+                        <div class="">
+                            <input type="submit" value="Cambiar Configuracion" class="btn">
+                        </div>
+                    </form>
+
+                </div>
+
             </div>
 
         </div>
