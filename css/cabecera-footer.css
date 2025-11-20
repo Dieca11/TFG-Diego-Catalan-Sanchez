@@ -34,7 +34,7 @@ header{
     .navbar-toggler {
         display: block;
     }
-    ul{
+    .navbar-nav{
         margin-top: 20px;
     }
 }
@@ -69,6 +69,7 @@ body{
     background-color: rgba(200, 224, 255, 0.575) !important;
     width: 100%;
     overflow-x: hidden;
+    padding-bottom: 40px !important;
 }
 html{
     min-height: 100%;
