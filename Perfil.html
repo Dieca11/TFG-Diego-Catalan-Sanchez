@@ -36,15 +36,14 @@
                 <label class="email-usuario">diegocatalsanchez@gmail.com</label>
             </div>
 
-            <hr style=" border-top: 5px solid black; border-radius: 20px;">
+            <hr style=" border-top: 5px solid rgb(50, 83, 146); border-radius: 20px;">
 
             <div class="opciones-configuracion">
-
-                <ul class="opciones-configracion-tabs" style="list-style-type: none;">
+                <ul class="opciones-configuracion-tabs" style="list-style-type: none;">
 
 
                     <li>
-                        <a class="link-usuario activo" href="#usuario-editar-perfil">
+                        <a class="link-usuario activo" data-target="contenido1" href="#">
                             <div class="bi bi-person-fill fs-2"></div>
 
                             <div class="texto">
@@ -55,7 +54,7 @@
                     </li>
 
                     <li>
-                        <a class="link-usuario activo" href="">
+                        <a class="link-usuario" data-target="contenido2" href="#">
                             <div class="bi bi-list-ol fs-2"></div>
 
                             <div class="texto">
@@ -66,7 +65,7 @@
                     </li>
 
                      <li>
-                        <a class="link-usuario" href="">
+                        <a class="link-usuario" data-target="contenido3" href="#">
                             <div class="bi bi-shield-fill-check fs-2"></div>
 
                             <div class="texto">
@@ -77,7 +76,7 @@
                     </li>
 
                     <li>
-                        <a class="link-usuario" href="">
+                        <a class="link-usuario" data-target="contenido4" href="#">
                             <div class="bi bi-key-fill fs-2"></div>
 
                             <div class="texto">
@@ -88,7 +87,7 @@
                     </li>
 
                     <li>
-                        <a class="link-usuario" href="">
+                        <a class="link-usuario" data-target="contenido5" href="#">
                             <div class="bi bi-credit-card-fill fs-2"></div>
 
                             <div class="texto">
@@ -100,65 +99,91 @@
 
                 </ul>
 
-                <div class="vertical-hr"></div>
+                <div class="opciones-configuracion-editar">
+                    <div class="content-block active" id="contenido1">
 
-                <div class="usuario-editar-perfil">
+                        <h2>EDITAR PERFIL</h2>
 
-                    <h2>EDITAR PERFIL</h2>
+                        <form action="Perfil.html" method="get" id="usuario">
+                            <div class="form-usuario">
+                                    <input type="file" id="Imagen-usuario" name="Imagen-usuario" accept="image/*" style="display:none"/>
+                                    <label for="Imagen-usuario" class="label-imagen">Seleccionar imagen</label>
+                            </div>
 
-                    <form action="Perfil.html" method="get">
+                            <div class="form-usuario">
+                                <input type="text" placeholder="Nombre de usuario" required>
+                            </div>
 
-                        <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
-                            <input type="text" placeholder="NOMBRE DE USUARIO" required>
-                        </div>
+                            <div class="form-usuario">
+                                <input type="text" placeholder="Email " readonly>
+                            </div>
 
-                        <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
-                            <input type="text" placeholder="EMAIL " required>
-                        </div>
+                            <div class="form-usuario">
+                                <input type="password" placeholder="Contraseña" readonly>
+                            </div>
 
-                        <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
-                            <input type="password" placeholder="CONTRASEÑA" required>
-                        </div>
+                            <div class=" form-usuario">
+                                <input type="submit" value="Cambiar Datos" class="btn">
+                            </div>
 
-                        <div class="row-lg-1 wor-md-2 row-sm-2 row-xs-2">
-                            <input type="submit" value="Cambiar Datos" class="btn">
-                        </div>
+                        </form>
+                    </div>
 
-                    </form>
+                    <div class="content-block" id="contenido3">
+                        <h2>Gestionar la privacidad a tus datos</h2>
+                        <form action="Perfil.html" method="get">
+                            
+                            <label class="privacidad-label">
+                                <span class="switch">
+                                    <input type="checkbox" name="invitaciones"/>
+                                    <span class="slider"></span>
+                                </span>
+                                Recibir invitaciones a partidas de otros usuarios
+                            </label>
+                            <label class="privacidad-label">
+                                <span class="switch">
+                                    <input type="checkbox" name="invitaciones"/>
+                                    <span class="slider"></span>
+                                </span>
+                                Mostrar mis partidas en la clasificación
+                            </label>
+                            <label class="privacidad-label">
+                                <span class="switch">
+                                    <input type="checkbox" name="invitaciones"/>
+                                    <span class="slider"></span>
+                                </span>
+                                Recibir invitacioones de partidas abiertas
+                            </label>
+                            <div class="form-usuario">
+                                <input type="submit" value="Cambiar Configuracion" class="btn">
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="content-block" id="contenido4">
+
+                        <h2>EDITAR SEGURIDAD</h2>
+
+                        <form action="Perfil.html" method="get" id="usuario">
+
+                            <div class="form-usuario">
+                                <input type="text" placeholder="Email " required>
+                            </div>
+
+                            <div class="form-usuario">
+                                <input type="password" placeholder="Contraseña nueva" readonly>
+                            </div>
+                            <div class="form-usuario">
+                                <input type="password" placeholder=" Confirmar contraseña" readonly>
+                            </div>
+
+                            <div class=" form-usuario">
+                                <input type="submit" value="Cambiar Datos" class="btn">
+                            </div>
+
+                        </form>
+                    </div>
                 </div>
-
-                <div class="usuario-editar-privacidad">
-
-                    <form action="Perfil.html" method="get">
-
-                        <label class="privacidad-label">
-                            <span class="switch">
-                                <input type="checkbox" name="invitaciones"/>
-                                <span class="slider"></span>
-                            </span>
-                            Recibir invitaciones a partidas de otros usuarios
-                        </label>
-                        <label class="privacidad-label">
-                            <span class="switch">
-                                <input type="checkbox" name="invitaciones"/>
-                                <span class="slider"></span>
-                            </span>
-                            Mostrar mis partidas en la clasificación
-                        </label>
-                        <label class="privacidad-label">
-                            <span class="switch">
-                                <input type="checkbox" name="invitaciones"/>
-                                <span class="slider"></span>
-                            </span>
-                            Recibir invitacioones de partidas abiertas
-                        </label>
-                        <div class="">
-                            <input type="submit" value="Cambiar Configuracion" class="btn">
-                        </div>
-                    </form>
-
-                </div>
-
             </div>
 
         </div>
@@ -166,6 +191,19 @@
         
         
         
+        <script>
+            document.querySelectorAll('.link-usuario').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Quitar active de todos los links y bloques
+                document.querySelectorAll('.link-usuario').forEach(l => l.classList.remove('active'));
+                document.querySelectorAll('.content-block').forEach(b => b.classList.remove('active'));
+                // Activar el link actual y su bloque correspondiente
+                link.classList.add('active');
+                document.getElementById(link.dataset.target).classList.add('active');
+            });
+            });
+        </script>
         
         
         

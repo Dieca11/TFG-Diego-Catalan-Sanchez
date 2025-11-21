@@ -6,6 +6,7 @@
     margin-left: 100px;
     margin-right: 100px;
     margin-bottom: 50px;
+    font-size: 'Roboto', sans-serif;
 }
 
 /*Informacion de perfil principal */
@@ -27,16 +28,27 @@
 /*Estilo para menu lateral*/
 .opciones-configuracion{
     gap: 30px;
-    display: flex;
+    display: flex;   
 }
 
 .opciones-configuracion-tabs{
     display: flex;
-    gap: 30px !important;
+    gap: 10px !important;
+    padding: 30px;
     flex-direction: column;
-    margin-bottom: 10px !important;
-}
+    border-right: 6px solid rgb(141, 162, 203);
+    border-radius: 20px;
+    margin-left: 100px;
 
+}
+/*Estilo opciones de configuracion*/
+.opciones-configuracion-editar{
+  flex: 1;
+  display: flex;
+  align-items: center; 
+  flex-direction: column; 
+  padding: 20px;
+}
 
 /*Estilo para editar perfil de usuario*/
 .link-usuario{
@@ -56,6 +68,39 @@
     font-weight: 600;
     font-size: 20px;
     margin-bottom: 5px;
+}
+
+.content-block{
+  display: none;
+}
+
+.content-block.active{
+  display: block;
+}
+
+/*Estilos para editar usuario*/
+.form-usuario{
+  padding: 10px;
+}
+.label-imagen{
+  padding:10px;
+  width: 400px;
+  border-radius: 20px;
+  background-color: #b1c7f6;
+  font-weight:550;
+}
+
+.form-usuario input{
+  padding: 10px;
+  border-radius: 20px;
+  width: 400px;
+  background-color: #b1c7f6;
+  color: black;
+  border: none;
+}
+
+input::placeholder{
+  color: black;
 }
 
 /*Estilo para editar preferencias de privacidad*/
@@ -119,14 +164,5 @@ input:checked + .slider {
 
 input:checked + .slider:before {
   transform: translateX(26px);
-}
-
-.vertical-hr {
-  width: 2px;  
-  height: 40px;    
-  background-color: #ccc; 
-  margin: 0 15px;     
-  display: inline-block;
-  vertical-align: middle; 
 }
 
