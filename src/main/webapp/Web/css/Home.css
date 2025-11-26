@@ -5,7 +5,7 @@
 .row-arriba{
     height: 400px;
     background-size: cover;
-    background-image: url('/Imagenes/pelota-de-tenis-de-alto-angulo-en-el-piso.jpg')!important;
+    background-image: url('../Imagenes/pelota-de-tenis-de-alto-angulo-en-el-piso.jpg');
     background-color: rgb(0, 0, 0) !important; 
     color: white;
     font-size: 20px;
