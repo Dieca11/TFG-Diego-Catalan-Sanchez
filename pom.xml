@@ -11,15 +11,17 @@
 
   <name>TFG Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
-  <url>http://localhost:8080/TFG-DIEGO-CATALAN-SANCHEZ/WEB/HOME.html</url>
+  <url>http://localhost:8080/TFG-DIEGO-CATALAN-SANCHEZ/web/home.jsp</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
   </properties>
 
   <dependencies>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -28,9 +30,9 @@
     </dependency>
 
     <dependency>
-        <groupId>jakarta.servlet</groupId>
-        <artifactId>jakarta.servlet-api</artifactId>
-        <version>6.0.0</version>
+        <groupId>javax.servlet</groupId>
+        <artifactId>javax.servlet-api</artifactId>
+        <version>4.0.1</version>
         <scope>provided</scope>
     </dependency>
 
@@ -39,6 +41,7 @@
       <artifactId>jakarta.json-api</artifactId>
       <version>2.1.2</version>
     </dependency>
+    
     <dependency>
         <groupId>org.eclipse.parsson</groupId>
         <artifactId>jakarta.json</artifactId>
@@ -48,17 +51,29 @@
 
   <build>
     <finalName>TFG-DIEGO-CATALAN-SANCHEZ</finalName>
-    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+    <pluginManagement>
       <plugins>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
           <version>3.1.0</version>
         </plugin>
-        <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
+
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.0.2</version>
         </plugin>
+
+        <plugin>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.2</version>
+            <configuration>
+                <port>8080</port>
+                <path>/TFG-DIEGO-CATALAN-SANCHEZ</path>
+                  <encoding>UTF-8</encoding>
+            </configuration>
+        </plugin>
+
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
