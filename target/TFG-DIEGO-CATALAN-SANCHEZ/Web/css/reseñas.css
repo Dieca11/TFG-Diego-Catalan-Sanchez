@@ -1,0 +1,135 @@
+
+.container{
+    margin-top: 40px;
+    margin-bottom: 50px;
+}
+
+.review-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    max-width: 400px;
+    margin-top: 30px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(86, 135, 163, 0.3);
+}
+
+.user-info {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+    margin-top: 0;
+}
+
+.user-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+}
+
+.usuario {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.lugar {
+    font-size: 0.9em;
+    color: #666;
+    margin: 2px 0;
+}
+
+.comment {
+    font-size: 1em;
+    color: #333;
+    padding: 20px;
+}
+
+
+.estrellas img {
+    width: 70px;
+    height: 70px;
+}
+
+.detalles-total{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.estrellas{
+    margin-right: 50px;
+}
+
+.container-cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 30px;
+}
+
+.dropdown-btn {
+  width: 100%;
+  padding:8px 8px;
+  border-radius: 8px;
+  border: 2px solid #7facdd;
+  background-color: rgba(178, 204, 231, 0.5);
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.dropdown-menu{
+  background-color: rgba(178, 204, 231) !important;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  max-height: 6em;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  width: 250px;
+}
+
+.dropdown-menu li{
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+
+}
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 8px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.dropdown-menu::-webkit-scrollbar-track {
+  background: rgba(178, 204, 231);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb {
+  background: rgb(150, 189, 230);
+  border-radius: 8px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

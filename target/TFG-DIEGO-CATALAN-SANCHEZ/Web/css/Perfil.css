@@ -1,0 +1,175 @@
+.container-perfil{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-bottom: 50px;
+    font-size: 'Roboto', sans-serif;
+}
+
+/*Informacion de perfil principal */
+.perfil-principal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.perfil-principal img{
+    width: 200px;
+    border-radius: 100px;
+}
+.perfil-principal .nombre-usuario{
+    font-size: 30px;
+    font-weight: 600;
+}
+
+/*Estilo para menu lateral*/
+.opciones-configuracion{
+    gap: 30px;
+    display: flex;   
+}
+
+.opciones-configuracion-tabs{
+    display: flex;
+    gap: 10px !important;
+    padding: 30px;
+    flex-direction: column;
+    border-right: 6px solid rgb(141, 162, 203);
+    border-radius: 20px;
+    margin-left: 100px;
+
+}
+/*Estilo opciones de configuracion*/
+.opciones-configuracion-editar{
+  flex: 1;
+  display: flex;
+  align-items: center; 
+  flex-direction: column; 
+  padding: 20px;
+}
+
+/*Estilo para editar perfil de usuario*/
+.link-usuario{
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+.texto{
+    display: flex;
+    flex-direction: column;
+}
+
+.texto .titulo{
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.content-block{
+  display: none;
+}
+
+.content-block.active{
+  display: block;
+}
+
+/*Estilos para editar usuario*/
+.form-usuario{
+  padding: 10px;
+}
+.label-imagen{
+  padding:10px;
+  width: 400px;
+  border-radius: 20px;
+  background-color: #b1c7f6;
+  font-weight:550;
+}
+
+.form-usuario input{
+  padding: 10px;
+  border-radius: 20px;
+  width: 400px;
+  background-color: #b1c7f6;
+  color: black;
+  border: none;
+}
+
+input::placeholder{
+  color: black;
+}
+
+/*Estilo para editar preferencias de privacidad*/
+.usuario-editar-privacidad{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  vertical-align: middle; /* Para alinear con el texto */
+  margin-right: 10px;     /* Espacio entre el switch y el texto */
+}
+
+.privacidad-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+  margin: 20px;
+  padding: 5px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #b1c7f6;
+  transition: .4s;
+  border-radius: 24px;
+  border: 1px solid rgb(41, 8, 255);
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 18px;
+  left: 3px;
+  background-color: rgb(0, 0, 0);
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: rgb(24, 105, 255);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.form-pago{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+

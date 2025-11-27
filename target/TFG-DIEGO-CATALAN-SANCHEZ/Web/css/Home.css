@@ -1,0 +1,74 @@
+.container-fluid{
+    font-family: 'Roboto', sans-serif;
+}
+
+.row-arriba{
+    height: 400px;
+    background-size: cover;
+    background-image: url('../Imagenes/pelota-de-tenis-de-alto-angulo-en-el-piso.jpg');
+    background-color: rgb(0, 0, 0) !important; 
+    color: white;
+    font-size: 20px;
+    z-index: 1;
+    position:relative !important;
+}
+
+h1{    
+    display: flex !important;
+    justify-content: center !important;
+    padding-top: 100px;
+}
+.row-arriba::before{
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    /*background-color: rgba(0, 0, 0, 0.295) !important; */
+    z-index: -1; 
+}
+
+h1, .row-abajo{
+    z-index: 0;
+    position: relative;
+
+}
+
+.boton-titulo{
+    margin-bottom: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.botones{
+    padding-top: 60px;
+    margin-bottom: 80px;
+    display: flex;
+    gap: 80px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+img{
+    height: 100px;
+    cursor: pointer;
+
+}
+
+.boton-texto {
+  font-weight: 600;
+  font-size: 20px;
+  user-select: none;
+  color:rgb(50, 83, 146);
+}
+
+.boton-contenedor a{
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 20px;
+  border: 6px solid rgb(50, 83, 146);
+  padding: 30px;
+  background-color:rgba(200, 224, 255, 0.575);
+}
