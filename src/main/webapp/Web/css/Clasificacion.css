@@ -1,41 +1,53 @@
-table{
-    
-    border-collapse: separate !important; 
-    border-spacing: 10px !important; 
-    text-align: center !important;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 20px;
-    font-weight: 600;
-    border: 2px solid  #54708d;
-    box-shadow: 6px 0 rgba(6, 61, 119, 0.5);
-    border-radius: 12px;
-    padding: 20px;
-    background-color: rgba(178, 204, 231, 0.5);
-    color: rgb(50, 83, 146);
-    margin-top: 40px;
+table{ 
+  border-collapse: separate !important;
+  border-spacing: 5px !important; 
+  text-align: center !important;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+  font-weight: 600;
+  border: 2px solid  #54708d;
+  border-radius: 12px;
+  background-color: rgba(178, 204, 231, 0.5);
+  color: rgb(50, 83, 146);
+  min-width: 500px;
+  table-layout: fixed;
 }
+
+
+table th,
+table td {
+  padding: 5px;
+}
+
+.tabla-scroll{
+  margin-top: 40px;
+  overflow: auto;
+  display: block;
+  width: 100%;
+}
+
 thead {
   border-bottom: 3px solid #007BFF !important;
 }
 
 tbody{
-    text-align: center;
+  text-align: center;
 }
 
 th {
-    cursor: pointer;
-    user-select: none;
+  cursor: pointer;
+  user-select: none;
 }
 
 
 .cuerpo {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    justify-content: center;
-    flex-direction: column;
-    margin-top: 40px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 40px;
 }
 
 .btn-secondary {

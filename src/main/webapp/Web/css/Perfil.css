@@ -28,7 +28,9 @@
 /*Estilo para menu lateral*/
 .opciones-configuracion{
     gap: 30px;
-    display: flex;   
+    display: flex; 
+    align-items: center;
+    justify-content: center;
 }
 
 .opciones-configuracion-tabs{
@@ -38,8 +40,6 @@
     flex-direction: column;
     border-right: 6px solid rgb(141, 162, 203);
     border-radius: 20px;
-    margin-left: 100px;
-
 }
 /*Estilo opciones de configuracion*/
 .opciones-configuracion-editar{

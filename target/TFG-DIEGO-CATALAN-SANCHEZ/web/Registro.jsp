@@ -31,14 +31,14 @@
 
                 <div class="row-lg-12 row-md-2 row-sm-2 row-xs-2 Inicio">
 
-                    <a href="InicioSesion.html">INICIAR SESION</a>
+                    <a href="InicioSesion.jsp">INICIAR SESION</a>
                     <a href="#">REGISTRARSE</a>
 
                 </div>
 
                 <hr style="background-color: black; height: 1px;">
 
-                <form action="InicioSesion.html" method="get">
+                <form action="InicioSesion.jsp" method="get">
 
                     <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
                         <input type="text" placeholder="NOMBRE DE USUARIO" required>

@@ -22,7 +22,8 @@ header{
         width: 100vw;
         position: absolute;
         left: 0;
-        top: 60px;
+        top: 50px;
+        padding-left: 20px;
         background: rgb(50, 83, 146);
         z-index: 99;
         display: none;

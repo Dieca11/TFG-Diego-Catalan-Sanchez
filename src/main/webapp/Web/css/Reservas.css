@@ -24,7 +24,7 @@
     z-index: 1;
 }
 
-button{
+.boton{
     width: 100%;
     align-items: center;
     border-radius: 5px !important;

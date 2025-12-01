@@ -27,7 +27,7 @@
     <body>
         <mi-cabecera></mi-cabecera>
         <div class="container gx-0 cuerpo">
-                                
+
             <div class="btn-group dropend">
                 <button type="button" class=" dropdown-btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     GENERAL
@@ -40,42 +40,89 @@
                         <li data-value="municipio2">Municipio 3</li>
                     </ul>
             </div>
+            <div class="tabla-scroll">
+                <table >
+                    <thead>
+                        <tr>
+                            <th>POSICION</th>
+                            <th>NOMBRE DE USUARIO</th>
+                            <th>LUGAR</th>
+                            <th>PARTIDOS JUGADOS </th>
+                            <th>PARTIDOS GANADOS</th>
+                            <th>ULTIMO RESULTADO </th>
+                            <th>%VICTORIAS</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Dieca11</td>
+                            <td>MORA DE RUBIELOS</td>
+                            <td>10</td>
+                            <td>9</td>
+                            <td>6-0/3-6/6-2</td>
+                            <td>90%</td>
+                        </tr>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>POSICION</th>
-                        <th>NOMBRE DE USUARIO</th>
-                        <th>LUGAR</th>
-                        <th>PARTIDOS JUGADOS </th>
-                        <th>PARTIDOS GANADOS</th>
-                        <th>ULTIMO RESULTADO </th>
-                        <th>%VICTORIAS</th>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Dieca11</td>
-                        <td>MORA DE RUBIELOS</td>
-                        <td>10</td>
-                        <td>9</td>
-                        <td>6-0/3-6/6-2</td>
-                        <td>90%</td>
-                    </tr>
-
-                    <tr>
-                        <td>2</td>
-                        <td>Dieca11</td>
-                        <td>VALBONA</td>
-                        <td>10</td>
-                        <td>9</td>
-                        <td>6-0/3-6/6-2</td>
-                        <td>90%</td>
-                    </tr>
-                </tbody>
-            </table>
+                        <tr>
+                            <td>2</td>
+                            <td>Dieca11</td>
+                            <td>VALBONA</td>
+                            <td>10</td>
+                            <td>9</td>
+                            <td>6-0/3-6/6-2</td>
+                            <td>90%</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Dieca11</td>
+                            <td>VALBONA</td>
+                            <td>10</td>
+                            <td>9</td>
+                            <td>6-0/3-6/6-2</td>
+                            <td>90%</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Dieca11</td>
+                            <td>VALBONA</td>
+                            <td>10</td>
+                            <td>9</td>
+                            <td>6-0/3-6/6-2</td>
+                            <td>90%</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Dieca11</td>
+                            <td>VALBONA</td>
+                            <td>10</td>
+                            <td>9</td>
+                            <td>6-0/3-6/6-2</td>
+                            <td>90%</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Dieca11</td>
+                            <td>VALBONA</td>
+                            <td>10</td>
+                            <td>9</td>
+                            <td>6-0/3-6/6-2</td>
+                            <td>90%</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Dieca11</td>
+                            <td>VALBONA</td>
+                            <td>10</td>
+                            <td>9</td>
+                            <td>6-0/3-6/6-2</td>
+                            <td>90%</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
         </div>
         
 
