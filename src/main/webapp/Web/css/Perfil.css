@@ -141,7 +141,7 @@ tbody{
 
 th {
   cursor: pointer;
-  user-select: none;
+  /*user-select: none;*/
 }
 
 /*Estilo para editar preferencias de privacidad*/
@@ -166,7 +166,7 @@ th {
   align-items: center;
   cursor: pointer;
   font-size: 20px;
-  user-select: none;
+  /*user-select: none;*/
   margin: 20px;
   padding: 5px;
 }

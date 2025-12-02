@@ -37,7 +37,7 @@ tbody{
 
 th {
   cursor: pointer;
-  user-select: none;
+  /*user-select: none;*/
 }
 
 
@@ -84,7 +84,7 @@ th {
 
 .dropdown-menu li{
     cursor: pointer;
-    user-select: none;
+    /*user-select: none;*/
     text-align: center;
 
 }

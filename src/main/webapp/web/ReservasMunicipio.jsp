@@ -29,8 +29,30 @@
 
             <div class="row mx-sm-3 mx-md-3 mx-lg-3 mx-xl-5">
 
-                <div class="col">
+                <div class="col contenedor-pista">
                     <img src="./Imagenes/padel.png" alt="Pista de Padel" width="600px">
+                      <div class="usuario-cuadrante" data-posicion="1">
+                        <img class="usuario-foto" src="usuarios/juan.jpg" alt="Juan">
+                        <div class="usuario-nombre">Juan Pérez</div>
+                    </div>
+
+                    <!-- Cuadrante 2 - Jugador 2 -->
+                    <div class="usuario-cuadrante" data-posicion="2">
+                        <img class="usuario-foto" src="usuarios/maria.jpg" alt="María">
+                        <div class="usuario-nombre">María López</div>
+                    </div>
+
+                    <!-- Cuadrante 3 - Jugador 3 -->
+                    <div class="usuario-cuadrante" data-posicion="3">
+                        
+                        <img class="usuario-foto" src="usuarios/pedro.jpg" alt="Pedro">
+                        <div class="usuario-nombre">Pedro García</div>
+                    </div>
+
+                    <!-- Cuadrante 4 - Jugador 4 -->
+                    <div class="usuario-cuadrante" data-posicion="4">
+                        <!-- Vacío si no hay usuario -->
+                    </div>
                 </div>
 
                 <div class="col">
