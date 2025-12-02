@@ -40,6 +40,7 @@
     flex-direction: column;
     border-right: 6px solid rgb(141, 162, 203);
     border-radius: 20px;
+    margin-bottom: 20px;
 }
 /*Estilo opciones de configuracion*/
 .opciones-configuracion-editar{
@@ -56,7 +57,7 @@
     text-decoration: none;
     color: black;
     display: flex;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     gap: 20px;
 }
 .texto{
@@ -99,8 +100,48 @@
   border: none;
 }
 
+.btn{
+  background-color: #88acfa !important;
+}
+
 input::placeholder{
   color: black;
+}
+/*Estilo para editar historial de partidas*/
+table{ 
+  border-collapse: separate !important;
+  border-spacing: 10px !important; 
+  text-align: center !important;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+  font-weight: 600;
+  border: 2px solid  #54708d;
+  border-radius: 12px;
+  background-color: rgba(178, 204, 231, 0.5);
+  color: rgb(50, 83, 146);
+  min-width: 500px;
+  table-layout: fixed;
+  padding: 20px;
+}
+
+
+table th,
+table td {
+  padding: 5px;
+}
+
+thead {
+  border-bottom: 3px solid #007BFF !important;
+}
+
+tbody{
+  text-align: center;
+}
+
+th {
+  cursor: pointer;
+  user-select: none;
 }
 
 /*Estilo para editar preferencias de privacidad*/
@@ -116,8 +157,8 @@ input::placeholder{
   display: inline-block;
   width: 50px;
   height: 24px;
-  vertical-align: middle; /* Para alinear con el texto */
-  margin-right: 10px;     /* Espacio entre el switch y el texto */
+  vertical-align: middle;
+  margin-right: 10px;     
 }
 
 .privacidad-label {
@@ -173,3 +214,8 @@ input:checked + .slider:before {
   padding: 20px;
 }
 
+.titulo-editar{
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}

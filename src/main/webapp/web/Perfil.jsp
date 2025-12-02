@@ -103,7 +103,7 @@
                 <div class="opciones-configuracion-editar">
                     <div class="content-block active" id="contenido1">
 
-                        <h2>EDITAR PERFIL</h2>
+                        <h2 class="titulo-editar">EDITAR PERFIL</h2>
 
                         <form action="Perfil.html" method="get" id="usuario">
                             <div class="form-usuario">
@@ -130,8 +130,68 @@
                         </form>
                     </div>
 
+                    <div class="content-block" id="contenido2">
+                        <h2 class="titulo-editar">HISTORIAL DE PARTIDAS</h2>
+                        <table >
+                            <thead>
+                                <tr>
+                                    <th>FECHA</th>
+                                    <th>LUGAR</th>
+                                    <th>RESULTADO </th>
+                                    <th>PARTICIPANTES </th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <tr>
+                                    <td>10/12/2025</td>
+                                    <td>MORA DE RUBIELOS</td>
+                                    <td>6-0/3-6/6-2</td>
+                                    <td><button>Participantes</button></td>
+                                </tr>
+                                <tr>
+                                    <td>10/12/2025</td>
+                                    <td>MORA DE RUBIELOS</td>
+                                    <td>6-0/3-6/6-2</td>
+                                    <td><button>Participantes</button></td>
+                                </tr>
+                                <tr>
+                                    <td>10/12/2025</td>
+                                    <td>MORA DE RUBIELOS</td>
+                                    <td>6-0/3-6/6-2</td>
+                                    <td><button>Participantes</button></td>
+                                </tr>
+                                <tr>
+                                    <td>10/12/2025</td>
+                                    <td>MORA DE RUBIELOS</td>
+                                    <td>6-0/3-6/6-2</td>
+                                    <td><button>Participantes</button></td>
+                                </tr>
+                                <tr>
+                                    <td>10/12/2025</td>
+                                    <td>MORA DE RUBIELOS</td>
+                                    <td>6-0/3-6/6-2</td>
+                                    <td><button>Participantes</button></td>
+                                </tr>
+                                <tr>
+                                    <td>10/12/2025</td>
+                                    <td>MORA DE RUBIELOS</td>
+                                    <td>6-0/3-6/6-2</td>
+                                    <td><button>Participantes</button></td>
+                                </tr>
+                                <tr>
+                                    <td>10/12/2025</td>
+                                    <td>MORA DE RUBIELOS</td>
+                                    <td>6-0/3-6/6-2</td>
+                                    <td><button>Participantes</button></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
                     <div class="content-block" id="contenido3">
-                        <h2>Gestionar la privacidad a tus datos</h2>
+                        <h2 class="titulo-editar">GESTIONAR LA PRIVACIDAD DE DATOS</h2>
                         <form action="Perfil.html" method="get">
                             
                             <label class="privacidad-label">
@@ -162,9 +222,11 @@
 
                     </div>
 
+                    
+
                     <div class="content-block" id="contenido4">
 
-                        <h2>EDITAR SEGURIDAD</h2>
+                        <h2 class="titulo-editar">EDITAR SEGURIDAD</h2>
 
                         <form action="Perfil.html" method="get" id="usuario">
 
@@ -189,7 +251,7 @@
 
                     <div class="content-block" id="contenido5">
 
-                        <h2>CAMBIAR METODO DE PAGO</h2>
+                        <h2 class="titulo-editar">CAMBIAR METODO DE PAGO</h2>
 
                         <form action="Perfil.html" method="get" id="usuario">
 
