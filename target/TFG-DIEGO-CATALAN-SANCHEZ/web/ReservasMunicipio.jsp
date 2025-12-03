@@ -1,4 +1,5 @@
-<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" import=" java.util.List,servlets.*" pageEncoding="UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -55,6 +56,12 @@
                     </div>
                 </div>
 
+                <%
+                    int idMunicipio = Integer.parseInt(request.getParameter("id"));
+                    int numPistas = Integer.parseInt(request.getParameter("pistas"));
+                    String mapIframe = request.getParameter("map");
+                %>
+
                 <div class="col">
 
                     <div class="contenedor-derecha">
@@ -92,8 +99,7 @@
                             <button class="btn-secondary">Invitaciones</button>
                             <button class="btn-secondary">Reservar</button>
                         </div>
-
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6090.7328952435955!2d-0.7702400064209397!3d40.2453867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd5e39dd7c01b629%3A0x2b9b10500528036e!2sFront%C3%B3n%20P%C3%BAblico%20Municipal%20de%20malienses!5e0!3m2!1ses!2ses!4v1764065390158!5m2!1ses!2ses" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="<%= mapIframe %>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>

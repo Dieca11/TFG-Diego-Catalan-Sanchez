@@ -1,6 +1,8 @@
 package servlets;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class AccesoBD {
 	private static AccesoBD instanciaUnica = null;
@@ -41,5 +43,34 @@ public final class AccesoBD {
 	public boolean comprobarAcceso() {
 		abrirConexionBD();
 		return (conexionBD != null);
+	}
+
+	public List<MunicipioBD> obtenerMunicipiosBD(){
+		abrirConexionBD();
+
+		ArrayList<MunicipioBD> municipios = new ArrayList();
+
+		try{
+			String con = "SELECT id, municipio, imagen, map_iframe, num_pistas, activo FROM municipios";
+			Statement s = conexionBD.createStatement();
+			ResultSet resultado = s.executeQuery(con);
+
+			while(resultado.next()){
+				MunicipioBD municipio = new MunicipioBD();
+				municipio.setId(resultado.getInt("id"));
+				municipio.setMunicipio(resultado.getString("municipio"));
+				municipio.setImagen(resultado.getString("imagen"));
+				municipio.setMap_iframe(resultado.getString("map_iframe"));
+				municipio.setNum_pistas(resultado.getInt("num_pistas"));
+				municipio.setActivo(resultado.getBoolean("activo"));
+				municipios.add(municipio);
+			}
+		}
+		catch(Exception e) {
+			System.err.println("Error ejecutando la consulta a la base de datos");
+			System.err.println(e.getMessage());
+		}
+
+	return municipios;
 	}
 };
