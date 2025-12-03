@@ -44,9 +44,9 @@
 
                     <!-- Cuadrante 3 - Jugador 3 -->
                     <div class="usuario-cuadrante" data-posicion="3">
-                        <div class="usuario-nombre">Pedro García</div>
-                        <img class="usuario-foto" src="usuarios/pedro.jpg" alt="Pedro">
                         
+                        <img class="usuario-foto" src="usuarios/pedro.jpg" alt="Pedro">
+                        <div class="usuario-nombre">Pedro García</div>
                     </div>
 
                     <!-- Cuadrante 4 - Jugador 4 -->

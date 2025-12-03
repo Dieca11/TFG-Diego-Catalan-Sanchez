@@ -1,4 +1,4 @@
-package Servlets;  // ← Paquete OBLIGATORIO
+package servlets;  // ← Paquete OBLIGATORIO
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
