@@ -26,6 +26,38 @@
     <body>
         <mi-cabecera></mi-cabecera>
 
+        <%
+            HttpSession s = request.getSession(false); // no crea sesión nueva
+            Integer u = (s != null) ? (Integer) s.getAttribute("usuario") : null;
+
+            if (u != null && u > 0) {
+                response.sendRedirect("./Perfil.jsp");
+                return;
+            }
+        %>
+
+
+        <%
+
+        String mensaje = (String) session.getAttribute("mensaje");
+        if (mensaje != null) {
+            session.removeAttribute("mensaje");
+
+            // Escapado mínimo para meterlo dentro de una cadena JS entre comillas
+            String msgJS = mensaje
+                .replace("\\", "\\\\")
+                .replace("'", "\\'")
+                .replace("\r", "")
+                .replace("\n", "\\n");
+        %>
+        <script>
+        alert('<%= msgJS %>');
+        </script>
+        <%
+        }
+        %>
+
+
         <div class="container-Inicio">
             <div class="row">
 
@@ -38,14 +70,14 @@
 
                 <hr style="background-color: black; height: 1px;">
 
-                <form action="Perfil.jsp" method="get">
+                <form method="post" action="${pageContext.request.contextPath}/LoginBD" id="form">
 
                     <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
-                        <input type="text" placeholder="NOMBRE DE USUARIO" required>
+                        <input name="usuario" type="text" placeholder="NOMBRE DE USUARIO" required>
                     </div>
 
                     <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
-                        <input type="password" placeholder="CONTRASEÑA" required>
+                        <input name="clave" type="password" placeholder="CONTRASEÑA" required>
                     </div>
 
                     <div class="row-lg-1 wor-md-2 row-sm-2 row-xs-2">

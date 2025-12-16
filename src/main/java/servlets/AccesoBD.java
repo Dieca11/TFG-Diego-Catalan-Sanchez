@@ -45,6 +45,7 @@ public final class AccesoBD {
 		return (conexionBD != null);
 	}
 
+	/*Espacio Reservado para la muestra y obtencion de datos de los Municipios */
 	public List<MunicipioBD> obtenerMunicipiosBD(){
 		abrirConexionBD();
 
@@ -72,5 +73,64 @@ public final class AccesoBD {
 		}
 
 	return municipios;
+	}
+
+	public MunicipioBD obtenerMunicipioBD( int idMunicipio){
+		abrirConexionBD();
+		MunicipioBD municipio = null;
+
+		try{
+			String con = "SELECT id, municipio, imagen, map_iframe, num_pistas, activo FROM municipios where id = ?";
+			  PreparedStatement ps = conexionBD.prepareStatement(con);
+       			ps.setInt(1, idMunicipio);
+
+        	ResultSet resultado = ps.executeQuery();
+
+			if(resultado.next()){
+				municipio = new MunicipioBD();
+				municipio.setId(resultado.getInt("id"));
+				municipio.setMunicipio(resultado.getString("municipio"));
+				municipio.setImagen(resultado.getString("imagen"));
+				municipio.setMap_iframe(resultado.getString("map_iframe"));
+				municipio.setNum_pistas(resultado.getInt("num_pistas"));
+				municipio.setActivo(resultado.getBoolean("activo"));
+			}
+		}
+		catch(Exception e) {
+			System.err.println("Error ejecutando la consulta a la base de datos");
+			System.err.println(e.getMessage());
+		}
+
+	return municipio;
+	}
+	/*Espacio reservado para la comprobacion, modificacion y obtencion de los usuarios */
+	public int comprobarUsuarioBD(String usuario, String clave) {
+		abrirConexionBD();
+
+		int id = -1;
+
+		try{
+			String con = "SELECT id FROM usuarios WHERE nombre_usuario=? AND contrasena=?";
+			PreparedStatement s = conexionBD.prepareStatement(con);
+			s.setString(1,usuario);
+			s.setString(2,clave);
+
+			ResultSet resultado = s.executeQuery();
+
+			// El usuario/clave se encuentra en la BD
+
+			if ( resultado.next() ) {
+				id =  resultado.getInt("id");
+			}
+		}
+		catch(Exception e) {
+
+			// Error en la conexión con la BD
+			System.err.println("Error verificando usuario/contraseña");
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+		return id;
 	}
 };

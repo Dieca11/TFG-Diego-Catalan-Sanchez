@@ -1,2 +1,6 @@
-servlets\AccesoBD.class
+servlets\LogOut.class
+servlets\MunicipioBD.class
 servlets\Home.class
+servlets\LoginBD.class
+servlets\AccesoBD.class
+servlets\UsuarioBD.class

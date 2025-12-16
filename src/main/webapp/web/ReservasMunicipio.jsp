@@ -26,6 +26,18 @@
     </head>
     <body>
         <mi-cabecera></mi-cabecera>
+
+        <%
+            int idMunicipio = Integer.parseInt(request.getParameter("id"));
+
+            AccesoBD con=AccesoBD.getInstance();
+            MunicipioBD municipio  = con.obtenerMunicipioBD(idMunicipio);
+
+            String nombre = municipio.getMunicipio();
+            int pistas = municipio.getNum_pistas();
+            String mapIframe = municipio.getMap_iframe();
+
+        %>
         <div class="container">
 
             <div class="row mx-sm-3 mx-md-3 mx-lg-3 mx-xl-5">
@@ -56,16 +68,12 @@
                     </div>
                 </div>
 
-                <%
-                    int idMunicipio = Integer.parseInt(request.getParameter("id"));
-                    int numPistas = Integer.parseInt(request.getParameter("pistas"));
-                    String mapIframe = request.getParameter("map");
-                %>
+
 
                 <div class="col">
 
                     <div class="contenedor-derecha">
-                        
+                        <h1><%=nombre%></h1>
                         <label for="pista">SELECCIONA UNA PISTA:</label>
 
                         <div class="btn-group2">
@@ -73,11 +81,16 @@
                                 PISTA 1
                             </button>
                             <ul class="dropdown-menu">
-                                <li>PISTA 1</li>
-                                <li>PISTA 2</li>
-                                <li>PISTA 3</li>
-                                <li>PISTA 4</li>
-                                <li>PISTA 5</li>
+                                <% 
+                                for (int i= 1; i<=pistas; i++){
+                                %>
+                                    <li>
+                                        Pista <%= i %>
+                                    </li>
+                                <% 
+                                } 
+                                %>
+
                             </ul>
                             </div>
 

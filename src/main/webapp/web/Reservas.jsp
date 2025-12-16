@@ -44,7 +44,7 @@
 			    %>
                 <div class="col-lg-4 col-md-6 col-sm-12 mb-4"><img class="municipio" src=" <%=imagen%> " alt="<%=municipio%>">
                     <label class="texto"><%=municipio%></label>
-                    <a href="ReservasMunicipio.jsp?id=<%= Municipio.getId() %>&pistas=<%= Municipio.getNum_pistas() %>&map=<%= Municipio.getMap_iframe() %>">
+                    <a href="ReservasMunicipio.jsp?id=<%= Municipio.getId()%>">
                         Reservar
                     </a>
                 </div>

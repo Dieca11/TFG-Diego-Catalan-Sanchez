@@ -29,12 +29,23 @@
     <body>
         <mi-cabecera></mi-cabecera>
 
+        <%
+            HttpSession s = request.getSession(false);  // no crea sesión nueva
+            Integer u = (s != null) ? (Integer) s.getAttribute("usuario") : null;
+
+            if (u == null || u <= 0) {
+                response.sendRedirect("./InicioSesion.jsp");
+                return;
+            }
+        %>
+
         <div class="container-perfil">
 
             <div class="perfil-principal">
                 <img src="Imagenes/raqueta-de-padel.png">
                 <label class="nombre-usuario">Dieca11</label>
                 <label class="email-usuario">diegocatalsanchez@gmail.com</label>
+                <a class="btn" href="${pageContext.request.contextPath}/LogOut">Cerrar Sesion</a>
             </div>
 
             <hr style=" border-top: 5px solid rgb(50, 83, 146); border-radius: 20px;">

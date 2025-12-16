@@ -12,6 +12,7 @@
         <welcome-file-list>
             <welcome-file>home.jsp</welcome-file>
         </welcome-file-list>
+
         <servlet>
             <servlet-name>AccesoBD</servlet-name>
             <servlet-class>servlets.AccesoBD</servlet-class>
@@ -20,4 +21,24 @@
             <servlet-name>AccesoBD</servlet-name>
             <url-pattern>/AccesoBD</url-pattern>
         </servlet-mapping>
+
+        <servlet>
+            <servlet-name>LoginBD</servlet-name>
+            <servlet-class>servlets.LoginBD</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>LoginBD</servlet-name>
+            <url-pattern>/LoginBD</url-pattern>
+        </servlet-mapping>
+
+        <servlet>
+            <servlet-name>LogOut</servlet-name>
+            <servlet-class>servlets.LogOut</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>LogOut</servlet-name>
+            <url-pattern>/LogOut</url-pattern>
+        </servlet-mapping>
+
+
 </web-app>
