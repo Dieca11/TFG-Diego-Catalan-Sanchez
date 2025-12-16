@@ -13,7 +13,6 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 	// Clave
 	String clave = request.getParameter("clave");
 
-	// URL a la que debemos volver
 
 	// Accedemos al entorno de sesión y si no está creado lo creamos
 
@@ -25,7 +24,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 		int codigo = con.comprobarUsuarioBD(usuario,clave);
 		if (codigo>0) {
 			session.setAttribute("usuario",codigo);
-			response.sendRedirect("./web/Perfil.jsp");
+			response.sendRedirect(request.getContextPath() + "/Perfil");
 		}
 		else {
 			session.setAttribute("mensaje","Usuario y/o clave incorrectos");

@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" import=" java.util.List,servlets.*" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -31,7 +31,7 @@
             Integer u = (s != null) ? (Integer) s.getAttribute("usuario") : null;
 
             if (u != null && u > 0) {
-                response.sendRedirect("./Perfil.jsp");
+                response.sendRedirect("./Perfil");
                 return;
             }
         %>

@@ -1,4 +1,4 @@
-<%@ page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" import=" java.util.List,servlets.*" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -29,22 +29,27 @@
     <body>
         <mi-cabecera></mi-cabecera>
 
-        <%
-            HttpSession s = request.getSession(false);  // no crea sesión nueva
-            Integer u = (s != null) ? (Integer) s.getAttribute("usuario") : null;
+        
+<%
+        UsuarioBD usuario = (UsuarioBD) request.getSession().getAttribute("usuarioPerfil");
 
-            if (u == null || u <= 0) {
-                response.sendRedirect("./InicioSesion.jsp");
-                return;
-            }
+
+        if (usuario == null) {
+        response.sendRedirect("InicioSesion.jsp");
+        return;
+        }
         %>
+
+        <h1>Bienvenido <%= usuario.getUsuario() %></h1>
+        <p>Email: <%= usuario.getEmail() %></p>
+
 
         <div class="container-perfil">
 
             <div class="perfil-principal">
-                <img src="Imagenes/raqueta-de-padel.png">
-                <label class="nombre-usuario">Dieca11</label>
-                <label class="email-usuario">diegocatalsanchez@gmail.com</label>
+                <img src="<%= usuario.getFoto_perfil() %>">
+                <label class="nombre-usuario"><%= usuario.getUsuario() %></label>
+                <label class="email-usuario"><%= usuario.getEmail() %></label>
                 <a class="btn" href="${pageContext.request.contextPath}/LogOut">Cerrar Sesion</a>
             </div>
 
@@ -123,7 +128,7 @@
                             </div>
 
                             <div class="form-usuario">
-                                <input type="text" placeholder="Nombre de usuario" required>
+                                <input type="text" placeholder="<%=usuario.getUsuario()%>" required>
                             </div>
 
                             <div class="form-usuario">

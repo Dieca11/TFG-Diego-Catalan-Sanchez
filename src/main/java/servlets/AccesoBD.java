@@ -103,6 +103,7 @@ public final class AccesoBD {
 
 	return municipio;
 	}
+
 	/*Espacio reservado para la comprobacion, modificacion y obtencion de los usuarios */
 	public int comprobarUsuarioBD(String usuario, String clave) {
 		abrirConexionBD();
@@ -133,4 +134,37 @@ public final class AccesoBD {
 
 		return id;
 	}
+
+	public UsuarioBD obtenerUsuarioPorCodigo(int codigo) {
+		abrirConexionBD();
+		UsuarioBD u = null;
+
+		String con = "SELECT * FROM usuarios WHERE id = ?";
+		try  
+		{
+			PreparedStatement s = conexionBD.prepareStatement(con);
+			s.setInt(1, codigo);
+			ResultSet resultado = s.executeQuery();
+
+			if (resultado.next()) {
+				u = new UsuarioBD();
+				u.setId(resultado.getInt("id"));
+				u.setUsuario(resultado.getString("nombre_usuario"));
+				u.setEmail(resultado.getString("email"));
+				u.setContraseña(resultado.getString("contrasena"));
+				u.setFoto_perfil(resultado.getString("imagen_perfil"));
+				u.setMostrar_partidas(resultado.getBoolean("mostrar_partidas"));
+				u.setRecibir_invitacion(resultado.getBoolean("recibir_invitaciones"));
+				u.setTarjeta(resultado.getString("tarjeta_credito"));
+			}
+		}	catch(Exception e) {
+
+			// Error en la conexión con la BD
+			System.err.println("Error verificando usuario/contraseña");
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return u;
+	}
+
 };
