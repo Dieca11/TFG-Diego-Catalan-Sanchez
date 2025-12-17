@@ -31,7 +31,7 @@
             Integer u = (s != null) ? (Integer) s.getAttribute("usuario") : null;
 
             if (u != null && u > 0) {
-                response.sendRedirect("./Perfil");
+                response.sendRedirect(request.getContextPath() + "/Perfil");
                 return;
             }
         %>
@@ -39,19 +39,19 @@
 
         <%
 
-        String mensaje = (String) session.getAttribute("mensaje");
-        if (mensaje != null) {
+        String mensajeLogin = (String) session.getAttribute("mensaje");
+        if (mensajeLogin != null) {
             session.removeAttribute("mensaje");
 
             // Escapado mínimo para meterlo dentro de una cadena JS entre comillas
-            String msgJS = mensaje
+            String msgLogin = mensajeLogin
                 .replace("\\", "\\\\")
                 .replace("'", "\\'")
                 .replace("\r", "")
                 .replace("\n", "\\n");
         %>
         <script>
-        alert('<%= msgJS %>');
+        alert('<%= msgLogin %>');
         </script>
         <%
         }

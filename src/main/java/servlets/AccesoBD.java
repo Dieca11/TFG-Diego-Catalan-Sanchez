@@ -167,4 +167,100 @@ public final class AccesoBD {
 		return u;
 	}
 
+	public boolean existeUsuOEmail(int id, String usu, String email){
+
+		abrirConexionBD();
+		    
+		String con = "SELECT COUNT(*) AS total " +
+                 "FROM usuarios " +
+                 "WHERE (nombre_usuario = ? OR email = ?) " +
+                 "AND id <> ?";
+		try{
+			PreparedStatement s = conexionBD.prepareStatement(con);
+			
+			s.setString(1, usu);
+			s.setString(2, email);
+			s.setInt(3, id);
+			ResultSet result = s.executeQuery();
+
+			if(result.next()){
+				int total = result.getInt("total");
+				return total > 0;
+			}
+		}catch(Exception e) {
+			// Error en la conexión con la BD
+			System.err.println("Existe ese usuario/email");
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return false;
+	}
+	public void ActualizarUsuario(Integer id,String nombre_usu,String email,
+		String imagen,boolean invitacion,boolean partidas, String clave1,String tarjeta){
+			abrirConexionBD();
+
+			StringBuilder con = new StringBuilder( 
+					"UPDATE usuarios SET " +
+                 	"nombre_usuario = ?, " +
+                 	"email = ?, " +
+                 	"mostrar_partidas = ?, " +
+                 	"recibir_invitaciones = ?, " +
+                 	"tarjeta_credito = ? ");
+
+			if (clave1 != null && !clave1.trim().isEmpty()) {
+        		con.append(", contrasena = ? ");
+    		}
+
+			if(imagen != null && !imagen.trim().isEmpty()){
+				con.append(", imagen_perfil = ? ");
+			}
+
+			con.append(" WHERE id = ?");
+
+			try (PreparedStatement s = conexionBD.prepareStatement(con.toString())) {
+
+				int i = 1;
+				s.setString(i++, nombre_usu);
+				s.setString(i++, email);
+				s.setBoolean(i++, partidas);
+				s.setBoolean(i++, invitacion);
+				s.setString(i++, tarjeta);
+
+				if(clave1 !=null && !clave1.trim().isEmpty()){
+					s.setString(i++, clave1);
+				}
+
+				if(imagen!=null && !imagen.trim().isEmpty()){
+					s.setString(i++, imagen);
+				}
+
+				s.setInt(i, id);
+
+				s.executeUpdate();
+
+
+			} catch (Exception e) {
+			System.err.println("No ha sido posible modificar tus datos");
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			}
+		}
+
+    public void RegistarUsuario(String nombreUsuario, String email, String clave1) {
+		abrirConexionBD();
+       String con = "INSERT INTO usuarios (nombre_usuario, email, contrasena) VALUES ( ?,?,?)";
+
+	   try{
+		PreparedStatement s = conexionBD.prepareStatement(con);
+		s.setString(1, nombreUsuario);
+		s.setString(2, email);
+		s.setString(3, clave1);
+
+		s.executeQuery();
+	   }catch (Exception e) {
+			System.err.println("No ha sido posible anaydir al usuario");
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			}
+    }
 };

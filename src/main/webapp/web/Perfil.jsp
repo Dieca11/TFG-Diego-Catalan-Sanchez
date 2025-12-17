@@ -30,7 +30,8 @@
         <mi-cabecera></mi-cabecera>
 
         
-<%
+        <%
+        HttpSession s = request.getSession(false); // no crea sesión nueva
         UsuarioBD usuario = (UsuarioBD) request.getSession().getAttribute("usuarioPerfil");
 
 
@@ -39,13 +40,27 @@
         return;
         }
         %>
+        <%
+        String mensajePerfil = (String) session.getAttribute("mensajePerfil");
+        if (mensajePerfil != null) {
+            session.removeAttribute("mensajePerfil");
 
-        <h1>Bienvenido <%= usuario.getUsuario() %></h1>
-        <p>Email: <%= usuario.getEmail() %></p>
-
+            // Escapado mínimo para meterlo dentro de una cadena JS entre comillas
+            String msgPerfil = mensajePerfil
+                .replace("\\", "\\\\")
+                .replace("'", "\\'")
+                .replace("\r", "")
+                .replace("\n", "\\n");
+        %>
+        <script>
+        alert('<%= msgPerfil %>');
+        </script>
+        <%
+        }
+        %>
 
         <div class="container-perfil">
-
+            
             <div class="perfil-principal">
                 <img src="<%= usuario.getFoto_perfil() %>">
                 <label class="nombre-usuario"><%= usuario.getUsuario() %></label>
@@ -117,163 +132,153 @@
                 </ul>
 
                 <div class="opciones-configuracion-editar">
-                    <div class="content-block active" id="contenido1">
+                    <form action="<%=request.getContextPath()%>/Perfil" method="post">
 
-                        <h2 class="titulo-editar">EDITAR PERFIL</h2>
+                        <input type="hidden" name="id_usu" value="<%=usuario.getId()%>">
 
-                        <form action="Perfil.html" method="get" id="usuario">
+                        <div class="content-block active" id="contenido1">
+
+                            <h2 class="titulo-editar">EDITAR PERFIL</h2>
+
                             <div class="form-usuario">
-                                    <input type="file" id="Imagen-usuario" name="Imagen-usuario" accept="image/*" style="display:none"/>
-                                    <label for="Imagen-usuario" class="label-imagen">Seleccionar imagen</label>
+                                    <input type="file" id="imagen_usuario" name="Imagen-usuario" accept="image/*" style="display:none"/>
+                                    <label for="imagen_usuario" class="label-imagen">Seleccionar imagen</label>
                             </div>
 
                             <div class="form-usuario">
-                                <input type="text" placeholder="<%=usuario.getUsuario()%>" required>
+                                <input type="text" name="nombre_usuario" value="<%=usuario.getUsuario()%>" required>
                             </div>
 
                             <div class="form-usuario">
-                                <input type="text" placeholder="Email " readonly>
+                                <input type="text" placeholder="<%=usuario.getEmail()%> " readonly>
                             </div>
 
                             <div class="form-usuario">
-                                <input type="password" placeholder="Contraseña" readonly>
+                                <input type="password" placeholder="<%=usuario.getContraseña()%>" readonly>
                             </div>
 
                             <div class=" form-usuario">
                                 <input type="submit" value="Cambiar Datos" class="btn">
                             </div>
+                        </div>
 
-                        </form>
-                    </div>
+                        <div class="content-block" id="contenido2">
+                            <h2 class="titulo-editar">HISTORIAL DE PARTIDAS</h2>
+                            <table >
+                                <thead>
+                                    <tr>
+                                        <th>FECHA</th>
+                                        <th>LUGAR</th>
+                                        <th>RESULTADO </th>
+                                        <th>PARTICIPANTES </th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    <tr>
+                                        <td>10/12/2025</td>
+                                        <td>MORA DE RUBIELOS</td>
+                                        <td>6-0/3-6/6-2</td>
+                                        <td><button>Participantes</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10/12/2025</td>
+                                        <td>MORA DE RUBIELOS</td>
+                                        <td>6-0/3-6/6-2</td>
+                                        <td><button>Participantes</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10/12/2025</td>
+                                        <td>MORA DE RUBIELOS</td>
+                                        <td>6-0/3-6/6-2</td>
+                                        <td><button>Participantes</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10/12/2025</td>
+                                        <td>MORA DE RUBIELOS</td>
+                                        <td>6-0/3-6/6-2</td>
+                                        <td><button>Participantes</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10/12/2025</td>
+                                        <td>MORA DE RUBIELOS</td>
+                                        <td>6-0/3-6/6-2</td>
+                                        <td><button>Participantes</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10/12/2025</td>
+                                        <td>MORA DE RUBIELOS</td>
+                                        <td>6-0/3-6/6-2</td>
+                                        <td><button>Participantes</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10/12/2025</td>
+                                        <td>MORA DE RUBIELOS</td>
+                                        <td>6-0/3-6/6-2</td>
+                                        <td><button>Participantes</button></td>
+                                    </tr>
 
-                    <div class="content-block" id="contenido2">
-                        <h2 class="titulo-editar">HISTORIAL DE PARTIDAS</h2>
-                        <table >
-                            <thead>
-                                <tr>
-                                    <th>FECHA</th>
-                                    <th>LUGAR</th>
-                                    <th>RESULTADO </th>
-                                    <th>PARTICIPANTES </th>
-                                </tr>
-                            </thead>
-                            
-                            <tbody>
-                                <tr>
-                                    <td>10/12/2025</td>
-                                    <td>MORA DE RUBIELOS</td>
-                                    <td>6-0/3-6/6-2</td>
-                                    <td><button>Participantes</button></td>
-                                </tr>
-                                <tr>
-                                    <td>10/12/2025</td>
-                                    <td>MORA DE RUBIELOS</td>
-                                    <td>6-0/3-6/6-2</td>
-                                    <td><button>Participantes</button></td>
-                                </tr>
-                                <tr>
-                                    <td>10/12/2025</td>
-                                    <td>MORA DE RUBIELOS</td>
-                                    <td>6-0/3-6/6-2</td>
-                                    <td><button>Participantes</button></td>
-                                </tr>
-                                <tr>
-                                    <td>10/12/2025</td>
-                                    <td>MORA DE RUBIELOS</td>
-                                    <td>6-0/3-6/6-2</td>
-                                    <td><button>Participantes</button></td>
-                                </tr>
-                                <tr>
-                                    <td>10/12/2025</td>
-                                    <td>MORA DE RUBIELOS</td>
-                                    <td>6-0/3-6/6-2</td>
-                                    <td><button>Participantes</button></td>
-                                </tr>
-                                <tr>
-                                    <td>10/12/2025</td>
-                                    <td>MORA DE RUBIELOS</td>
-                                    <td>6-0/3-6/6-2</td>
-                                    <td><button>Participantes</button></td>
-                                </tr>
-                                <tr>
-                                    <td>10/12/2025</td>
-                                    <td>MORA DE RUBIELOS</td>
-                                    <td>6-0/3-6/6-2</td>
-                                    <td><button>Participantes</button></td>
-                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                            </tbody>
-                        </table>
-                    </div>
+                        <div class="content-block" id="contenido3">
+                            <h2 class="titulo-editar">GESTIONAR LA PRIVACIDAD DE DATOS</h2>
 
-                    <div class="content-block" id="contenido3">
-                        <h2 class="titulo-editar">GESTIONAR LA PRIVACIDAD DE DATOS</h2>
-                        <form action="Perfil.html" method="get">
-                            
                             <label class="privacidad-label">
                                 <span class="switch">
-                                    <input type="checkbox" name="invitaciones"/>
+                                    <input type="checkbox" name="recibir_invitaciones"
+                                        <%= usuario.isRecibir_invitacion() ? "checked=\"checked\"" : "" %>/>
                                     <span class="slider"></span>
                                 </span>
                                 Recibir invitaciones a partidas de otros usuarios
                             </label>
+
                             <label class="privacidad-label">
                                 <span class="switch">
-                                    <input type="checkbox" name="invitaciones"/>
+                                    <input type="checkbox" name="mostrar_partidas"
+                                        <%= usuario.isMostrar_partidas() ? "checked=\"checked\"" : "" %>/>
                                     <span class="slider"></span>
                                 </span>
                                 Mostrar mis partidas en la clasificación
                             </label>
-                            <label class="privacidad-label">
-                                <span class="switch">
-                                    <input type="checkbox" name="invitaciones"/>
-                                    <span class="slider"></span>
-                                </span>
-                                Recibir invitacioones de partidas abiertas
-                            </label>
+
                             <div class="form-usuario">
                                 <input type="submit" value="Cambiar Configuracion" class="btn">
                             </div>
-                        </form>
 
-                    </div>
+                        </div>
 
-                    
+                        
 
-                    <div class="content-block" id="contenido4">
+                        <div class="content-block" id="contenido4">
 
-                        <h2 class="titulo-editar">EDITAR SEGURIDAD</h2>
-
-                        <form action="Perfil.html" method="get" id="usuario">
+                            <h2 class="titulo-editar">EDITAR SEGURIDAD</h2>
 
                             <div class="form-usuario">
-                                <input type="text" placeholder="Email " required>
+                                <input type="text" name="email" value="<%=usuario.getEmail()%>" required>
                             </div>
 
                             <div class="form-usuario">
-                                <input type="password" placeholder="Contraseña nueva" readonly>
+                                <input type="password" name="clave1" value="" placeholder="Contraseña nueva" >
                             </div>
                             <div class="form-usuario">
-                                <input type="password" placeholder=" Confirmar contraseña" readonly>
+                                <input type="password" name="clave2" value="" placeholder="Confirmar contraseña">
                             </div>
 
                             <div class=" form-usuario">
                                 <input type="submit" value="Cambiar Datos" class="btn">
                             </div>
-
-                        </form>
-                    </div>
+                        </div>
 
 
-                    <div class="content-block" id="contenido5">
+                        <div class="content-block" id="contenido5">
 
-                        <h2 class="titulo-editar">CAMBIAR METODO DE PAGO</h2>
-
-                        <form action="Perfil.html" method="get" id="usuario">
+                            <h2 class="titulo-editar">CAMBIAR METODO DE PAGO</h2>
 
                             <div class="form-pago form-usuario">
                                 <span> NUMERO DE TARJETA</span>
-                                <input type="number" placeholder="123456XXXXXXXX" readonly>
+                                <input type="number" name="tarjeta" value="<%=usuario.getTarjeta()%>">
                             </div>
 
                             <div class="form-pago form-usuario">
@@ -287,10 +292,9 @@
                             <div class=" form-pago form-usuario">
                                 <input type="submit" value="Cambiar Datos" class="btn">
                             </div>
-
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
 
         </div>

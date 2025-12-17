@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/cabecera-footer.css">
-        <link rel="stylesheet" type="text/css" href="css/Iniciosesion.css">
+        <link rel="stylesheet" type="text/css" href="css/InicioSesion.css">
 
         <title>INICIO SESION</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
@@ -26,6 +26,26 @@
     <body>
         <mi-cabecera></mi-cabecera>
 
+                <%
+
+        String mensajeReg = (String) session.getAttribute("mensajeRegistro");
+        if (mensajeReg != null) {
+            session.removeAttribute("mensajeRegistro");
+
+            // Escapado mínimo para meterlo dentro de una cadena JS entre comillas
+            String msgReg = mensajeReg
+                .replace("\\", "\\\\")
+                .replace("'", "\\'")
+                .replace("\r", "")
+                .replace("\n", "\\n");
+        %>
+        <script>
+        alert('<%= msgReg %>');
+        </script>
+        <%
+        }
+        %>
+
         <div class="container-Inicio">
             <div class="row">
 
@@ -38,27 +58,27 @@
 
                 <hr style="background-color: black; height: 1px;">
 
-                <form action="InicioSesion.jsp" method="get">
+                <form action="${pageContext.request.contextPath}/Registro" method="get">
 
                     <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
-                        <input type="text" placeholder="NOMBRE DE USUARIO" required>
+                        <input type="text" name="nombre_usuario" placeholder="NOMBRE DE USUARIO" required>
                     </div>
 
                     <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
-                        <input type="text" placeholder="EMAIL" required>
+                        <input type="text" name="email" placeholder="EMAIL" required>
                     </div>
 
                     <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
-                        <input type="password" placeholder="CONTRASEÑA" required>
+                        <input type="password" name="clave1" placeholder="CONTRASEÑA" required>
                     </div>
+
                     <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
-                        <input type="password" placeholder=" CONFIRMAR CONTRASEÑA" required>
+                        <input type="password" name="clave2" placeholder=" CONFIRMAR CONTRASEÑA" required>
                     </div>
 
                     <div class="row-lg-1 wor-md-2 row-sm-2 row-xs-2">
                         <input type="submit" value="Registrarse" class="btn">
                     </div>
-
                 </form>
             </div>
         </div>
