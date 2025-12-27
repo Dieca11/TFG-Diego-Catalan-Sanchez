@@ -1,4 +1,5 @@
 servlets\MunicipioBD.class
+servlets\Registro.class
 servlets\Home.class
 servlets\LoginBD.class
 servlets\LogOut.class
