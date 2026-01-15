@@ -96,6 +96,9 @@
 
                         <label for="horarios">SELECCIONA UNA FRANJA HORARIA:</label>
 
+                        <label for="fecha">Día</label>
+                        <input type="date" id="fecha" name="fecha" required>
+                        
                         <div class="btn-group2 btn2">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 08:00-09:30
