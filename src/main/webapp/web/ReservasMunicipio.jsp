@@ -43,7 +43,7 @@
             <div class="row mx-sm-3 mx-md-3 mx-lg-3 mx-xl-5">
 
                 <div class="col contenedor-pista">
-                    <img src="./Imagenes/padel.png" alt="Pista de Padel" width="600px">
+                    <img class="pista-img" src="./Imagenes/padel.png" alt="Pista de Padel" width="600px">
                       <div class="usuario-cuadrante" data-posicion="1">
                         <img class="usuario-foto" src="usuarios/juan.jpg" alt="Juan">
                         <div class="usuario-nombre">Juan Pérez</div>
@@ -95,9 +95,6 @@
                             </div>
 
                         <label for="horarios">SELECCIONA UNA FRANJA HORARIA:</label>
-
-                        <label for="fecha">Día</label>
-                        <input type="date" id="fecha" name="fecha" required>
                         
                         <div class="btn-group2 btn2">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -120,11 +117,7 @@
                 </div>
             </div>
         </div>
-        
-        
-        
-        
-        
+
         <script>
             const dropdownBtn = document.querySelector('.btn-group2');
             const dropdownMenu = document.querySelector('.dropdown-menu');
@@ -150,33 +143,6 @@
                 });
             });
         </script>
-                <script>
-            const dropdownBtn2 = document.querySelector('.btn2');
-            const dropdownMenu2 = document.querySelector('.dropmenu2');
-
-            // Alternar visibilidad al pulsar el botón
-            dropdownBtn2.addEventListener('click', (event) => {
-                event.stopPropagation(); // evita que se cierre al hacer clic en el botón
-                dropdownMenu2.classList.toggle('show');
-            });
-
-            // Cerrar al hacer clic fuera
-            document.addEventListener('click', (event) => {
-                if (!dropdownBtn2.contains(event.target) && !dropdownMenu2.contains(event.target)) {
-                    dropdownMenu2.classList.remove('show');
-                }
-            });
-
-            // Cambiar texto y cerrar al elegir opción
-            dropdownMenu2.querySelectorAll('li[data-value]').forEach(option => {
-                option.addEventListener('click', () => {
-                    dropdownBtn2.textContent = option.textContent;
-                    dropdownMenu2.classList.remove('show');
-                });
-            });
-        </script>
-        
-        
         
         <script src = js/cabecera.js></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
