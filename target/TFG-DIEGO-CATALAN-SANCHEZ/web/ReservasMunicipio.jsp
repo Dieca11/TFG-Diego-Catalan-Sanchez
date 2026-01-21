@@ -76,38 +76,45 @@
                         <h1><%=nombre%></h1>
                         <label for="pista">SELECCIONA UNA PISTA:</label>
 
-                        <div class="btn-group2">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                PISTA 1
-                            </button>
-                            <ul class="dropdown-menu">
-                                <% 
-                                for (int i= 1; i<=pistas; i++){
-                                %>
-                                    <li>
-                                        Pista <%= i %>
-                                    </li>
-                                <% 
-                                } 
-                                %>
+                        <input type="hidden" id="numeroPista" value="1">
 
+                        <div class="btn-group2" id="pistaGroup">
+                            <button class="btn btn-secondary" id="pistaBtn" type="button">PISTA 1</button>
+
+                            <ul class="dropdown-menu" id="pistaMenu">
+                            <% for (int i = 1; i <= pistas; i++) { %>
+                                <li>
+                                <a class="dropdown-item pista-item" href="#" data-pista="<%= i %>">PISTA <%= i %></a>
+                                </li>
+                            <% } %>
                             </ul>
-                            </div>
+                        </div>
+
 
                         <label for="horarios">SELECCIONA UNA FRANJA HORARIA:</label>
                         
-                        <div class="btn-group2 btn2">
-                            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                08:00-09:30
-                            </button>
-                            <ul class="dropdown-menu dropmenu2">
-                                <li>08:00-09:30</li>
-                                <li>09:30-11:00</li>
-                                <li>11:00-12:30</li>
-                                <li>12:30-14:00</li>
-                                <li>14:00-15:30</li>
-                            </ul>
+                        <!-- Valores reales para enviar / usar en AJAX -->
+                        <input type="hidden" id="fecha" name="fecha" value="">
+                        <input type="hidden" id="franjaInicio" name="franjaInicio" value="">
+
+                        <div class="selector-reserva">
+                            <!-- Dropdown de día -->
+                            <div class="btn-group2 btn2" id="ddDia">
+                                <button class="btn btn-secondary" id="ddDiaBtn" type="button">
+                                Selecciona día
+                                </button>
+                                <ul class="dropdown-menu dropmenu2" id="ddDiaMenu"></ul>
+                            </div>
+
+                            <!-- Dropdown de franja -->
+                            <div class="btn-group2 btn2" id="ddHora">
+                                <button class="btn btn-secondary" id="ddHoraBtn" type="button">
+                                Selecciona franja
+                                </button>
+                                <ul class="dropdown-menu dropmenu2" id="ddHoraMenu"></ul>
+                            </div>
                         </div>
+
                         <div class="botones">
                             <button class="btn-secondary">Invitaciones</button>
                             <button class="btn-secondary">Reservar</button>
@@ -118,31 +125,221 @@
             </div>
         </div>
 
-        <script>
-            const dropdownBtn = document.querySelector('.btn-group2');
-            const dropdownMenu = document.querySelector('.dropdown-menu');
 
-            // Alternar visibilidad al pulsar el botón
-            dropdownBtn.addEventListener('click', (event) => {
-                event.stopPropagation(); // evita que se cierre al hacer clic en el botón
-                dropdownMenu.classList.toggle('show');
-            });
+            <script>
+                document.addEventListener("DOMContentLoaded", function(){
+                    var pistaBtn = document.getElementById("pistaBtn");
+                    var pistaMenu = document.getElementById("pistaMenu");
+                    var pistaGroup = document.getElementById("pistaGroup");
+                    var numeroPista = document.getElementById("numeroPista");
 
-            // Cerrar al hacer clic fuera
-            document.addEventListener('click', (event) => {
-                if (!dropdownBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                    dropdownMenu.classList.remove('show');
-                }
-            });
+                    if (!pistaBtn || !pistaMenu || !pistaGroup || !numeroPista) return;
 
-            // Cambiar texto y cerrar al elegir opción
-            dropdownMenu.querySelectorAll('li[data-value]').forEach(option => {
-                option.addEventListener('click', () => {
-                    dropdownBtn.textContent = option.textContent;
-                    dropdownMenu.classList.remove('show');
+                    // Toggle del menú (si no usas Bootstrap JS)
+                    pistaBtn.addEventListener("click", function(e){
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    // Cierra otros menús si quieres (ajusta IDs si existen)
+                    var otros = document.querySelectorAll("#ddDiaMenu, #ddHoraMenu");
+                    otros.forEach(function(m){ m.classList.remove("show"); });
+
+                    pistaMenu.classList.toggle("show");
+                    });
+
+                    // Click en una opción
+                    pistaMenu.addEventListener("click", function(e){
+                    var a = e.target.closest("a.pista-item");
+                    if (!a) return;
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    var pista = a.getAttribute("data-pista");
+                    if (!pista) return;
+
+                    numeroPista.value = pista;
+                    pistaBtn.textContent = "PISTA " + pista;
+
+                    // Cierra menú
+                    pistaMenu.classList.remove("show");
+
+                    // Recarga si ya hay fecha y franja
+                    var fecha = document.getElementById("fecha");
+                    var franja = document.getElementById("franjaInicio");
+                    if (fecha && franja && fecha.value && franja.value) {
+                        if (typeof recargarReserva === "function") recargarReserva();
+                    }
+                    });
+
+                    // Click fuera cierra
+                    document.addEventListener("click", function(){
+                    pistaMenu.classList.remove("show");
+                    });
+
+                    // Evita que click dentro del menú cierre por el listener global
+                    pistaMenu.addEventListener("click", function(e){ e.stopPropagation(); });
                 });
+        </script>
+
+
+        <script>
+
+            /* Formato en la que van a salir dias y horas */
+            function pad2(n){ 
+                return String(n).padStart(2, "0"); }
+
+            function formatISODateLocal(d){
+                return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+            }
+
+            function formatEtiquetaDia(d){
+                var dias = ["dom","lun","mar","mie","jue","vie","sab"];
+                return dias[d.getDay()] + " " + pad2(d.getDate()) + "/" + pad2(d.getMonth() + 1);
+            }
+
+            function formatHHMM(h, m){
+                return pad2(h) + ":" + pad2(m);
+            }
+
+            function addMinutes(h, m, minutes){
+                var total = h * 60 + m + minutes;
+                return { h: Math.floor(total / 60), m: total % 60 };
+            }
+
+            function closeAll(){
+                var menus = document.querySelectorAll("#ddDiaMenu, #ddHoraMenu");
+                menus.forEach(function(m){ m.classList.remove("show"); });
+            }
+
+            function setupToggle(btnId, menuId){
+                var btn = document.getElementById(btnId);
+                var menu = document.getElementById(menuId);
+
+                btn.addEventListener("click", function(e){
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Cierra el otro menú
+                document.querySelectorAll("#ddDiaMenu, #ddHoraMenu").forEach(function(m){
+                    if (m !== menu) m.classList.remove("show");
+                });
+
+                // Toggle del actual
+                menu.classList.toggle("show");
+                });
+
+                menu.addEventListener("click", function(e){
+                e.stopPropagation();
+                });
+            }
+
+            /* Funcion que restringe las fechas que se pueden elegir para reservas*/
+            function buildDias(){
+                var menu = document.getElementById("ddDiaMenu");
+                var btn = document.getElementById("ddDiaBtn");
+                menu.innerHTML = "";
+
+                var hoy = new Date();
+                hoy.setHours(0,0,0,0);
+
+                var max = new Date(hoy);
+                max.setDate(max.getDate() + 7); // 
+
+                for (var d = new Date(hoy); d <= max; d.setDate(d.getDate() + 1)) {
+                var iso = formatISODateLocal(d);
+                var etiqueta = formatEtiquetaDia(d);
+
+                var li = document.createElement("li");
+                var a = document.createElement("a");
+                a.className = "dropdown-item";
+                a.href = "#";
+                a.setAttribute("data-value", iso);
+                a.textContent = etiqueta;
+
+                a.addEventListener("click", function(e){
+                    e.preventDefault();
+                    var val = this.getAttribute("data-value");
+                    document.getElementById("fecha").value = val;
+                    btn.textContent = this.textContent.trim();
+                    closeAll();
+                    if (typeof recargarReserva === "function") recargarReserva();
+                });
+
+                li.appendChild(a);
+                menu.appendChild(li);
+                }
+
+                document.getElementById("fecha").value = formatISODateLocal(hoy);
+                btn.textContent = formatEtiquetaDia(hoy);
+            }
+
+            /* Funcion que produce las horas de las reservas */
+            function buildFranjas(){
+                var menu = document.getElementById("ddHoraMenu");
+                var btn = document.getElementById("ddHoraBtn");
+                menu.innerHTML = "";
+
+                var apertura = { h: 8, m: 0 };
+                var cierre = { h: 23, m: 0 };
+                var dur = 90;
+
+                var cur = { h: apertura.h, m: apertura.m };
+
+                while (true){
+                var fin = addMinutes(cur.h, cur.m, dur);
+
+                var finTotal = fin.h * 60 + fin.m;
+                var cierreTotal = cierre.h * 60 + cierre.m;
+                if (finTotal > cierreTotal) break;
+
+                var inicioStr = formatHHMM(cur.h, cur.m);
+                var finStr = formatHHMM(fin.h, fin.m);
+                var etiqueta = inicioStr + "-" + finStr;
+
+                var li = document.createElement("li");
+                var a = document.createElement("a");
+                a.className = "dropdown-item";
+                a.href = "#";
+                a.setAttribute("data-value", inicioStr);
+                a.textContent = etiqueta;
+
+                a.addEventListener("click", function(e){
+                    e.preventDefault();
+                    var val = this.getAttribute("data-value");
+                    document.getElementById("franjaInicio").value = val;
+                    btn.textContent = this.textContent.trim();
+                    closeAll();
+                    if (typeof recargarReserva === "function") recargarReserva();
+                });
+
+                li.appendChild(a);
+                menu.appendChild(li);
+
+                cur = addMinutes(cur.h, cur.m, dur);
+                }
+
+                var first = menu.querySelector("a.dropdown-item");
+                if (first) {
+                document.getElementById("franjaInicio").value = first.getAttribute("data-value");
+                btn.textContent = first.textContent.trim();
+                }
+            }
+
+            document.addEventListener("click", closeAll);
+
+            document.addEventListener("DOMContentLoaded", function(){
+                setupToggle("ddDiaBtn", "ddDiaMenu");
+                setupToggle("ddHoraBtn", "ddHoraMenu");
+
+                buildDias();
+                buildFranjas();
+
+                if (typeof recargarReserva === "function") recargarReserva();
             });
         </script>
+
+
         
         <script src = js/cabecera.js></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

@@ -51,6 +51,16 @@ label{
 
 }
 
+.selector-reserva{
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap; /* permite bajar en pantallas MUY pequeñas */
+}
+
+
 .dropdown-menu::-webkit-scrollbar {
   width: 8px;
   border-top-left-radius: 0;
@@ -162,3 +172,18 @@ iframe{
   .usuario-cuadrante[data-posicion="3"] { top: 68%; left: 38%; }
   .usuario-cuadrante[data-posicion="4"] { top: 68%; left: 61%; }
 }
+
+
+#pistaGroup{ position: relative; display: inline-block; }
+
+#pistaMenu{
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  display: none;
+  z-index: 5000;
+}
+
+#pistaMenu.show{ display: block; }
+
