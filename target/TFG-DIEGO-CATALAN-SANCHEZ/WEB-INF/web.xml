@@ -59,4 +59,13 @@
             <url-pattern>/Registro</url-pattern>
         </servlet-mapping>
 
+        <servlet>
+            <servlet-name>Reserva</servlet-name>
+            <servlet-class>servlets.Reserva</servlet-class>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>Reserva</servlet-name>
+            <url-pattern>/Reserva</url-pattern>
+        </servlet-mapping>
+
 </web-app>

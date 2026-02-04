@@ -24,7 +24,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 		int codigo = con.comprobarUsuarioBD(usuario,clave);
 		if (codigo>0) {
 			session.setAttribute("usuario",codigo);
-			response.sendRedirect(request.getContextPath() + "/Perfil");
+			response.sendRedirect(request.getContextPath() + "/web/Perfil.jsp");
 		}
 		else {
 			session.setAttribute("mensaje","Usuario y/o clave incorrectos");

@@ -1,6 +1,7 @@
 package servlets;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -263,4 +264,112 @@ public final class AccesoBD {
 			e.printStackTrace();
 			}
     }
+
+	public Integer[] obtenerReserva(int municipioId, int numeroPista, LocalDateTime fechaHora) throws SQLException {
+
+		abrirConexionBD();
+		Integer[] usuarios = new Integer[4];
+
+		try { 
+			String con = "SELECT creador_id, invitado1_id, invitado2_id, invitado3_id" +
+			" FROM reservas WHERE municipio_id = ? AND numero_pista = ? AND fecha_hora = ? AND estado <> 'cancelada' " +
+			"LIMIT 1";
+
+			PreparedStatement ps = conexionBD.prepareStatement(con);
+
+			ps.setInt(1, municipioId);
+			ps.setInt(2, numeroPista);
+			ps.setTimestamp(3, Timestamp.valueOf(fechaHora));
+			ResultSet rs = ps.executeQuery();
+            if (rs.next()){
+
+            usuarios[0]= rs.getInt("creador_id");
+
+            usuarios[1]= rs.getInt("invitado1_id");
+            usuarios[2]= rs.getInt("invitado2_id");
+            usuarios[3] = rs.getInt("invitado3_id");
+			}
+		}
+		catch(Exception e) {
+			System.err.println("Error ejecutando la consulta a la base de datos");
+			System.err.println(e.getMessage());
+		}
+            return usuarios;
+        }
+
+		public static class UsuarioVista {
+			private int id;
+			private String nombreUsuario;
+			private String imagenPerfil;
+
+			public UsuarioVista() {}
+
+			public UsuarioVista(int id, String nombreUsuario, String imagenPerfil) {
+				this.id = id;
+				this.nombreUsuario = nombreUsuario;
+				this.imagenPerfil = imagenPerfil;
+			}
+
+			public int getId() { return id; }
+			public void setId(int id) { this.id = id; }
+
+			public String getNombreUsuario() { return nombreUsuario; }
+			public void setNombreUsuario(String nombreUsuario) { this.nombreUsuario = nombreUsuario; }
+
+			public String getImagenPerfil() { return imagenPerfil; }
+			public void setImagenPerfil(String imagenPerfil) { this.imagenPerfil = imagenPerfil; }
+		}
+
+		public UsuarioVista obtenerUsuarioVistaPorId(int userId) throws SQLException {
+
+			if (userId <= 0) return null;
+
+			abrirConexionBD();
+
+			String sql = "SELECT id, nombre_usuario, imagen_perfil FROM usuarios WHERE id = ? LIMIT 1";
+
+			try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
+				ps.setInt(1, userId);
+
+				try (ResultSet rs = ps.executeQuery()) {
+					if (!rs.next()) return null;
+
+					UsuarioVista u = new UsuarioVista();
+					u.setId(rs.getInt("id"));
+					u.setNombreUsuario(rs.getString("nombre_usuario"));
+					u.setImagenPerfil(rs.getString("imagen_perfil"));
+					return u;
+				}
+			}
+		}
+
+
+		public ArrayList<UsuarioVista> obtenerUsuariosInvitables() throws SQLException {
+
+			abrirConexionBD();
+			ArrayList<UsuarioVista> lista = new ArrayList<>();
+
+			String sql =
+				"SELECT id, nombre_usuario, imagen_perfil " +
+				"FROM usuarios " +
+				"WHERE recibir_invitaciones = TRUE " +
+				"ORDER BY nombre_usuario ASC";
+
+			try (PreparedStatement ps = conexionBD.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery()) {
+
+				while (rs.next()) {
+					UsuarioVista u = new UsuarioVista();
+					u.setId(rs.getInt("id"));
+					u.setNombreUsuario(rs.getString("nombre_usuario"));
+					u.setImagenPerfil(rs.getString("imagen_perfil"));
+					lista.add(u);
+				}
+			}
+
+			return lista;
+		}
+
+
+
 };
