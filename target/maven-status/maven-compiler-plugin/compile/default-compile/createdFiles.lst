@@ -3,6 +3,10 @@ servlets\Registro.class
 servlets\Home.class
 servlets\LoginBD.class
 servlets\LogOut.class
+servlets\ReservaMunicipio.class
+servlets\Reserva.class
 servlets\Perfil.class
 servlets\AccesoBD.class
+servlets\ReservaBD.class
 servlets\UsuarioBD.class
+servlets\AccesoBD$UsuarioVista.class
