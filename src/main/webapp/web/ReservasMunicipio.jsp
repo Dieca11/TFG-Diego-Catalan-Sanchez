@@ -28,7 +28,7 @@
         <mi-cabecera></mi-cabecera>
 
         <%
-
+            AccesoBD con=AccesoBD.getInstance();
             MunicipioBD municipio = (MunicipioBD) request.getAttribute("municipio");
 
             if (municipio == null) {
@@ -103,7 +103,7 @@
                         
                         <!-- Valores reales para enviar / usar en AJAX -->
                         <input type="hidden" id="fecha" name="fecha" value="">
-                        <input type="hidden" id="franjaInicio" name="franjaInicio" value="">
+                        <input type="hidden" id="franjaInicio" name="franja" value="">
 
                         <div class="selector-reserva">
                             <!-- Dropdown de día -->
@@ -122,6 +122,41 @@
                                 <ul class="dropdown-menu dropmenu2" id="ddHoraMenu"></ul>
                             </div>
                         </div>
+
+                        <%
+                            ArrayList<Integer> invitadosSel = (ArrayList<Integer>) session.getAttribute("invitadosReserva");
+                            if (invitadosSel == null) invitadosSel = new ArrayList<>();
+                            %>
+
+                            <div class="mt-2">
+                                <strong>Invitados:</strong>
+
+                                <% if (invitadosSel.isEmpty()) { %>
+                                    <span>Ninguno</span>
+                                <% } else { %>
+                                    <% for (Integer invId : invitadosSel) { 
+                                        String nombreInv = con.obtenerNombreUsuarioPorId(invId);
+                                    %>
+                                    <form method="post" action="<%= request.getContextPath() %>/Reserva" style="display:inline;"
+                                            onsubmit="
+                                            this.numero_pista.value = document.getElementById('numeroPista').value;
+                                            this.fecha.value = document.getElementById('fecha').value;
+                                            this.franja.value = document.getElementById('franjaInicio').value;
+                                            ">
+                                            
+                                        <input type="hidden" name="action" value="delInv">
+                                        <input type="hidden" name="invitado_id" value="<%= invId %>">
+                                        <input type="hidden" name="numero_pista" value="">
+                                        <input type="hidden" name="fecha" value="">
+                                        <input type="hidden" name="franja" value="">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        Quitar <%= nombreInv %>
+                                        </button>
+                                    </form>
+                                    <% } %>
+                                <% } %>
+                            </div>
+
 
                         <div class="botones">
                             <button id="btnInvitaciones" class="btn-secondary">Invitaciones</button>
@@ -168,12 +203,31 @@
 
                                             <%
                                                 boolean esCreador = (u.getId() == idSesion);
+                                                boolean yaInvitado = invitadosSel.contains(u.getId());
                                             %>
 
                                             <% if (esCreador) { %>
                                                 <span class="badge-creador">Creador</span>
+                                            <% } else if (yaInvitado) { %>
+                                                    <span class="badge-invitado">Invitado</span>
                                             <% } else { %>
-                                                <button type="button" class="btn btn-success" disabled>Invitar</button>
+                                                <form method="post" action="<%= request.getContextPath() %>/Reserva" style="margin:0;"
+                                                    onsubmit="
+                                                    this.numero_pista.value = document.getElementById('numeroPista').value;
+                                                    this.fecha.value = document.getElementById('fecha').value;
+                                                    this.franja.value = document.getElementById('franjaInicio').value;
+                                                    ">
+                                                    <input type="hidden" name="action" value="addInv">
+                                                    <input type="hidden" name="invitado_id" value="<%= u.getId() %>">
+
+                                                    <!-- estos se rellenan en onsubmit -->
+                                                    <input type="hidden" name="numero_pista" value="">
+                                                    <input type="hidden" name="fecha" value="">
+                                                    <input type="hidden" name="franja" value="">
+
+                                                    <button type="submit" class="btn btn-success">Invitar</button>
+                                                </form>
+
                                             <% } %>
 
                                         </div>

@@ -289,5 +289,14 @@ iframe{
   background: rgba(0,0,0,.08);
 }
 
+.badge-invitado{
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  background: rgba(0, 128, 0, 0.10);
+}
+
 
 

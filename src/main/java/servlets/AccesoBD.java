@@ -50,7 +50,7 @@ public final class AccesoBD {
 	public List<MunicipioBD> obtenerMunicipiosBD(){
 		abrirConexionBD();
 
-		ArrayList<MunicipioBD> municipios = new ArrayList();
+		ArrayList<MunicipioBD> municipios = new ArrayList<>();
 
 		try{
 			String con = "SELECT id, municipio, imagen, map_iframe, num_pistas, activo FROM municipios";
@@ -370,6 +370,22 @@ public final class AccesoBD {
 			return lista;
 		}
 
+		public String obtenerNombreUsuarioPorId(int idUsuario) throws SQLException {
+			abrirConexionBD();
+
+			String nombre = null;
+			String sql = "SELECT nombre_usuario FROM usuarios WHERE id = ?";
+
+			try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
+				ps.setInt(1, idUsuario);
+				try (ResultSet rs = ps.executeQuery()) {
+					if (rs.next()) {
+						nombre = rs.getString("nombre_usuario");
+					}
+				}
+			}
+			return nombre;
+		}
 
 
 };
