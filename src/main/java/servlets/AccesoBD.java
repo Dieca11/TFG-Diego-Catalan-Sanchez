@@ -297,95 +297,224 @@ public final class AccesoBD {
             return usuarios;
         }
 
-		public static class UsuarioVista {
-			private int id;
-			private String nombreUsuario;
-			private String imagenPerfil;
+	public static class UsuarioVista {
+		private int id;
+		private String nombreUsuario;
+		private String imagenPerfil;
 
-			public UsuarioVista() {}
+		public UsuarioVista() {}
 
-			public UsuarioVista(int id, String nombreUsuario, String imagenPerfil) {
-				this.id = id;
-				this.nombreUsuario = nombreUsuario;
-				this.imagenPerfil = imagenPerfil;
-			}
-
-			public int getId() { return id; }
-			public void setId(int id) { this.id = id; }
-
-			public String getNombreUsuario() { return nombreUsuario; }
-			public void setNombreUsuario(String nombreUsuario) { this.nombreUsuario = nombreUsuario; }
-
-			public String getImagenPerfil() { return imagenPerfil; }
-			public void setImagenPerfil(String imagenPerfil) { this.imagenPerfil = imagenPerfil; }
+		public UsuarioVista(int id, String nombreUsuario, String imagenPerfil) {
+			this.id = id;
+			this.nombreUsuario = nombreUsuario;
+			this.imagenPerfil = imagenPerfil;
 		}
 
-		public UsuarioVista obtenerUsuarioVistaPorId(int userId) throws SQLException {
+		public int getId() { return id; }
+		public void setId(int id) { this.id = id; }
 
-			if (userId <= 0) return null;
+		public String getNombreUsuario() { return nombreUsuario; }
+		public void setNombreUsuario(String nombreUsuario) { this.nombreUsuario = nombreUsuario; }
 
-			abrirConexionBD();
+		public String getImagenPerfil() { return imagenPerfil; }
+		public void setImagenPerfil(String imagenPerfil) { this.imagenPerfil = imagenPerfil; }
+	}
 
-			String sql = "SELECT id, nombre_usuario, imagen_perfil FROM usuarios WHERE id = ? LIMIT 1";
+	public UsuarioVista obtenerUsuarioVistaPorId(int userId) throws SQLException {
 
-			try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
-				ps.setInt(1, userId);
+		if (userId <= 0) return null;
 
-				try (ResultSet rs = ps.executeQuery()) {
-					if (!rs.next()) return null;
+		abrirConexionBD();
 
-					UsuarioVista u = new UsuarioVista();
-					u.setId(rs.getInt("id"));
-					u.setNombreUsuario(rs.getString("nombre_usuario"));
-					u.setImagenPerfil(rs.getString("imagen_perfil"));
-					return u;
+		String sql = "SELECT id, nombre_usuario, imagen_perfil FROM usuarios WHERE id = ? LIMIT 1";
+
+		try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
+			ps.setInt(1, userId);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				if (!rs.next()) return null;
+
+				UsuarioVista u = new UsuarioVista();
+				u.setId(rs.getInt("id"));
+				u.setNombreUsuario(rs.getString("nombre_usuario"));
+				u.setImagenPerfil(rs.getString("imagen_perfil"));
+				return u;
+			}
+		}
+	}
+
+
+	public ArrayList<UsuarioVista> obtenerUsuariosInvitables() throws SQLException {
+
+		abrirConexionBD();
+		ArrayList<UsuarioVista> lista = new ArrayList<>();
+
+		String sql =
+			"SELECT id, nombre_usuario, imagen_perfil " +
+			"FROM usuarios " +
+			"WHERE recibir_invitaciones = TRUE " +
+			"ORDER BY nombre_usuario ASC";
+
+		try (PreparedStatement ps = conexionBD.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery()) {
+
+			while (rs.next()) {
+				UsuarioVista u = new UsuarioVista();
+				u.setId(rs.getInt("id"));
+				u.setNombreUsuario(rs.getString("nombre_usuario"));
+				u.setImagenPerfil(rs.getString("imagen_perfil"));
+				lista.add(u);
+			}
+		}
+
+		return lista;
+	}
+
+	public String obtenerNombreUsuarioPorId(int idUsuario) throws SQLException {
+		abrirConexionBD();
+
+		String nombre = null;
+		String sql = "SELECT nombre_usuario FROM usuarios WHERE id = ?";
+
+		try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
+			ps.setInt(1, idUsuario);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					nombre = rs.getString("nombre_usuario");
 				}
 			}
 		}
+		return nombre;
+	}
 
+	public enum ResultadoReserva {
+		CREADA, UNIDO, YA_ESTAS, LLENA
+	}
 
-		public ArrayList<UsuarioVista> obtenerUsuariosInvitables() throws SQLException {
+	public ResultadoReserva crearOUnirseReserva(
+			int municipioId, int numeroPista, LocalDateTime fechaHora,
+			int usuarioSesion, java.util.List<Integer> invitacionesIniciales
+	) throws SQLException {
 
-			abrirConexionBD();
-			ArrayList<UsuarioVista> lista = new ArrayList<>();
+		abrirConexionBD();
+		conexionBD.setAutoCommit(false);
 
-			String sql =
-				"SELECT id, nombre_usuario, imagen_perfil " +
-				"FROM usuarios " +
-				"WHERE recibir_invitaciones = TRUE " +
-				"ORDER BY nombre_usuario ASC";
+		try {
+			// 1) Intentar localizar reserva existente (pendiente, no cancelada)
+			String sel = "SELECT id, creador_id, invitado1_id, invitado2_id, invitado3_id " +
+						"FROM reservas " +
+						"WHERE municipio_id=? AND numero_pista=? AND fecha_hora=? AND estado='pendiente' " +
+						"LIMIT 1 FOR UPDATE";
 
-			try (PreparedStatement ps = conexionBD.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery()) {
+			Integer reservaId = null;
+			Integer creadorId = null;
+			Integer inv1 = null, inv2 = null, inv3 = null;
 
-				while (rs.next()) {
-					UsuarioVista u = new UsuarioVista();
-					u.setId(rs.getInt("id"));
-					u.setNombreUsuario(rs.getString("nombre_usuario"));
-					u.setImagenPerfil(rs.getString("imagen_perfil"));
-					lista.add(u);
-				}
-			}
+			try (PreparedStatement ps = conexionBD.prepareStatement(sel)) {
+				ps.setInt(1, municipioId);
+				ps.setInt(2, numeroPista);
+				ps.setTimestamp(3, java.sql.Timestamp.valueOf(fechaHora));
 
-			return lista;
-		}
-
-		public String obtenerNombreUsuarioPorId(int idUsuario) throws SQLException {
-			abrirConexionBD();
-
-			String nombre = null;
-			String sql = "SELECT nombre_usuario FROM usuarios WHERE id = ?";
-
-			try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
-				ps.setInt(1, idUsuario);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
-						nombre = rs.getString("nombre_usuario");
+						reservaId = rs.getInt("id");
+						creadorId = rs.getInt("creador_id");
+						inv1 = (Integer) rs.getObject("invitado1_id");
+						inv2 = (Integer) rs.getObject("invitado2_id");
+						inv3 = (Integer) rs.getObject("invitado3_id");
 					}
 				}
 			}
-			return nombre;
+
+			// 2) Si NO existe: crear (creador + invitacionesIniciales)
+			if (reservaId == null) {
+
+				// Normaliza invitaciones: max 3, sin repetidos, sin auto-invitar
+				java.util.ArrayList<Integer> invs = new java.util.ArrayList<>();
+				if (invitacionesIniciales != null) {
+					for (Integer x : invitacionesIniciales) {
+						if (x == null) continue;
+						if (x == usuarioSesion) continue;
+						if (!invs.contains(x)) invs.add(x);
+						if (invs.size() == 3) break;
+					}
+				}
+
+				Integer i1 = invs.size() >= 1 ? invs.get(0) : null;
+				Integer i2 = invs.size() >= 2 ? invs.get(1) : null;
+				Integer i3 = invs.size() >= 3 ? invs.get(2) : null;
+
+				String ins = "INSERT INTO reservas " +
+							"(municipio_id, numero_pista, creador_id, invitado1_id, invitado2_id, invitado3_id, fecha_hora, estado) " +
+							"VALUES (?, ?, ?, ?, ?, ?, ?, 'pendiente')";
+
+				try (PreparedStatement ps = conexionBD.prepareStatement(ins)) {
+					ps.setInt(1, municipioId);
+					ps.setInt(2, numeroPista);
+					ps.setInt(3, usuarioSesion);
+
+					if (i1 == null) ps.setNull(4, java.sql.Types.INTEGER); else ps.setInt(4, i1);
+					if (i2 == null) ps.setNull(5, java.sql.Types.INTEGER); else ps.setInt(5, i2);
+					if (i3 == null) ps.setNull(6, java.sql.Types.INTEGER); else ps.setInt(6, i3);
+
+					ps.setTimestamp(7, java.sql.Timestamp.valueOf(fechaHora));
+					ps.executeUpdate();
+				}
+
+				conexionBD.commit();
+				return ResultadoReserva.CREADA;
+			}
+
+			// 3) Si existe: unirse (si hay hueco y no está ya)
+			if (usuarioSesion == creadorId ||
+				(inv1 != null && inv1 == usuarioSesion) ||
+				(inv2 != null && inv2 == usuarioSesion) ||
+				(inv3 != null && inv3 == usuarioSesion)) {
+
+				conexionBD.commit();
+				return ResultadoReserva.YA_ESTAS;
+			}
+
+			// buscar primer hueco libre
+			if (inv1 == null) {
+				String upd = "UPDATE reservas SET invitado1_id=? WHERE id=?";
+				try (PreparedStatement ps = conexionBD.prepareStatement(upd)) {
+					ps.setInt(1, usuarioSesion);
+					ps.setInt(2, reservaId);
+					ps.executeUpdate();
+				}
+				conexionBD.commit();
+				return ResultadoReserva.UNIDO;
+			}
+			if (inv2 == null) {
+				String upd = "UPDATE reservas SET invitado2_id=? WHERE id=?";
+				try (PreparedStatement ps = conexionBD.prepareStatement(upd)) {
+					ps.setInt(1, usuarioSesion);
+					ps.setInt(2, reservaId);
+					ps.executeUpdate();
+				}
+				conexionBD.commit();
+				return ResultadoReserva.UNIDO;
+			}
+			if (inv3 == null) {
+				String upd = "UPDATE reservas SET invitado3_id=? WHERE id=?";
+				try (PreparedStatement ps = conexionBD.prepareStatement(upd)) {
+					ps.setInt(1, usuarioSesion);
+					ps.setInt(2, reservaId);
+					ps.executeUpdate();
+				}
+				conexionBD.commit();
+				return ResultadoReserva.UNIDO;
+			}
+
+			conexionBD.commit();
+			return ResultadoReserva.LLENA;
+
+		} catch (SQLException e) {
+			try { conexionBD.rollback(); } catch (SQLException ignore) {}
+			throw e;
+		} finally {
+			try { conexionBD.setAutoCommit(true); } catch (SQLException ignore) {}
 		}
-
-
+	}
 };

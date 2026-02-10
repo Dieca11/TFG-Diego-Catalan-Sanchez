@@ -26,6 +26,20 @@
     <body>
         <mi-cabecera></mi-cabecera>
 
+        <%
+            String popupMsg = (session != null) ? (String) session.getAttribute("popupMsg") : null;
+            if (popupMsg != null) {
+                session.removeAttribute("popupMsg"); // para que salga una sola vez
+            }
+            %>
+
+            <% if (popupMsg != null) { %>
+            <div style="background:#fff3cd; border:1px solid #ffeeba; color:#856404; padding:12px; border-radius:8px; margin:12px 0;">
+                <%= popupMsg %>
+            </div>
+            <% } %>
+
+
             <%
                 AccesoBD con=AccesoBD.getInstance();
                 List<MunicipioBD> municipios  = con.obtenerMunicipiosBD();

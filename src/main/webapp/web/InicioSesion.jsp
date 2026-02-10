@@ -37,10 +37,9 @@
         %>
 
         <%
-            String mensajeError = (String) session.getAttribute("mensajeError");
+            String mensajeError = (String) session.getAttribute("popupMsg");
             if (mensajeError != null) {
-                session.removeAttribute("mensajeError"); // IMPORTANTE: solo una vez
-                // Escapado mínimo para meterlo dentro de una cadena JS entre comillas
+                session.removeAttribute("popupMsg");
             String msgError = mensajeError
                 .replace("\\", "\\\\")
                 .replace("'", "\\'")

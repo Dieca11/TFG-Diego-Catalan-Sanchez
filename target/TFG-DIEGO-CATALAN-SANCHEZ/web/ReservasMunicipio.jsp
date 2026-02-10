@@ -28,6 +28,31 @@
         <mi-cabecera></mi-cabecera>
 
         <%
+        String msg = (String) request.getAttribute("popupMsg");
+        %>
+
+        <% if (msg != null) { %>
+        <div id="toastMsg"
+            style="position:fixed; top:16px; left:50%; transform:translateX(-50%);
+                    z-index:999999; background:#fff3cd; border:1px solid #ffeeba;
+                    color:#856404; padding:12px 16px; border-radius:10px;
+                    box-shadow:0 6px 18px rgba(0,0,0,.15); max-width:90%;
+                    font-weight:600;">
+            <%= msg %>
+        </div>
+
+        <script>
+            // se autocierra a los 3s (opcional)
+            setTimeout(function(){
+            var t = document.getElementById("toastMsg");
+            if (t) t.remove();
+            }, 3000);
+        </script>
+        <% } %>
+
+
+
+        <%
             AccesoBD con=AccesoBD.getInstance();
             MunicipioBD municipio = (MunicipioBD) request.getAttribute("municipio");
 
@@ -84,7 +109,7 @@
                         <h1><%=nombre%></h1>
                         <label for="pista">SELECCIONA UNA PISTA:</label>
 
-                        <input type="hidden" id="numeroPista" value="1">
+                        <input type="hidden" id="numeroPista" name="numero_pista" value="1">
 
                         <div class="btn-group2" id="pistaGroup">
                             <button class="btn btn-secondary" id="pistaBtn" type="button">PISTA 1</button>
@@ -104,6 +129,7 @@
                         <!-- Valores reales para enviar / usar en AJAX -->
                         <input type="hidden" id="fecha" name="fecha" value="">
                         <input type="hidden" id="franjaInicio" name="franja" value="">
+                        <input type="hidden" id="municipioId" name="municipio_id" value="<%= municipio.getId() %>">
 
                         <div class="selector-reserva">
                             <!-- Dropdown de día -->
@@ -160,7 +186,30 @@
 
                         <div class="botones">
                             <button id="btnInvitaciones" class="btn-secondary">Invitaciones</button>
-                            <button class="btn-secondary">Reservar</button>
+                            <form method="post" action="<%= request.getContextPath() %>/Reserva" style="margin:0;"
+                                onsubmit="
+                                    var p = document.getElementById('numeroPista').value;
+                                    var f = document.getElementById('fecha').value;
+                                    var h = document.getElementById('franjaInicio').value;
+                                    var m = document.getElementById('municipioId').value;
+
+                                    if (!p || !f || !h || !m) { alert('Selecciona pista, día y hora.'); return false; }
+
+                                    this.municipio_id.value = m;
+                                    this.numero_pista.value = p;
+                                    this.fecha.value = f;
+                                    this.franja.value = h;
+                                ">
+                                <input type="hidden" name="action" value="crearReserva">
+                                <input type="hidden" name="municipio_id" value="">
+                                <input type="hidden" name="numero_pista" value="">
+                                <input type="hidden" name="fecha" value="">
+                                <input type="hidden" name="franja" value="">
+
+                                <button type="submit" class="btn-secondary">Reservar</button>
+                            </form>
+
+
                         </div>
                         <iframe src="<%= mapIframe %>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
@@ -231,7 +280,6 @@
                                             <% } %>
 
                                         </div>
-
                                         <% } %>
                                     <% } %>
                                 </div>

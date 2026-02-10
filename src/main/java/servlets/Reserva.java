@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -20,59 +22,69 @@ public class Reserva extends HttpServlet {
         HttpSession session = request.getSession(false);
         Integer codigo = (session != null) ? (Integer) session.getAttribute("usuario") : null;
 
+        // Si no hay sesión, crea una para poder guardar mensaje y redirigir
         if (codigo == null || codigo <= 0) {
-            session.setAttribute("mensajeError", "Para acceder a la reserva de pistas debes iniciar sesión.");
+            HttpSession s2 = request.getSession(true);
+            s2.setAttribute("popupMsg", "Para acceder a la reserva de pistas debes iniciar sesión.");
             response.sendRedirect(request.getContextPath() + "/web/InicioSesion.jsp");
             return;
         }
 
-        AccesoBD con = AccesoBD.getInstance();
-
-        // 1) municipio_id: si viene por parámetro, lo guardas en sesión
-        String municipioParam = request.getParameter("id");
-        if (municipioParam != null && !municipioParam.isEmpty()) {
-            session.setAttribute("id", Integer.parseInt(municipioParam));
+        // A partir de aquí session NO es null
+        // 1) Consumir popupMsg (flash): sesión -> request
+        String msg = (String) session.getAttribute("popupMsg");
+        if (msg != null) {
+            request.setAttribute("popupMsg", msg);
+            session.removeAttribute("popupMsg");
         }
 
-        // 2) si no hay municipio en sesión, no puedes continuar
-        Object midObj = session.getAttribute("id");
+        AccesoBD con = AccesoBD.getInstance();
+
+        // 2) municipio: usa UNA clave consistente en sesión (ej: "municipio_id")
+        String municipioParam = request.getParameter("id"); // si tu enlace usa ?id=...
+        if (municipioParam != null && !municipioParam.isEmpty()) {
+            session.setAttribute("municipio_id", Integer.parseInt(municipioParam));
+        }
+
+        Object midObj = session.getAttribute("municipio_id");
         if (midObj == null) {
-            response.sendRedirect("web/Reservas.jsp"); // o donde toque
+            // vuelve a lista de municipios (con contextPath)
+            response.sendRedirect(request.getContextPath() + "/web/Reservas.jsp");
             return;
         }
         int municipioId = (midObj instanceof Integer) ? (Integer) midObj : Integer.parseInt(midObj.toString());
 
-        // 3) SIEMPRE cargar invitables para el modal
-        try{
-        request.setAttribute("usuariosInvitables", con.obtenerUsuariosInvitables());
+        // 3) Usuarios invitables
+        try {
+            request.setAttribute("usuariosInvitables", con.obtenerUsuariosInvitables());
         } catch (SQLException e) {
-			System.err.println("Error al obtener los datos de la reserva");
-			System.err.println(e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("usuariosInvitables", new java.util.ArrayList<>());
         }
 
-        // 4) valores de selección (pueden venir vacíos la primera vez)
+        // 4) Selección actual
         String pistaStr = request.getParameter("numero_pista");
         String fechaStr = request.getParameter("fecha");
         String franjaStr = request.getParameter("franja");
 
-        if (pistaStr != null) request.setAttribute("numero_pista", Integer.parseInt(pistaStr));
-        if (fechaStr != null) request.setAttribute("fecha", fechaStr);
-        if (franjaStr != null) request.setAttribute("franja", franjaStr);
+        if (pistaStr != null && !pistaStr.isEmpty()) request.setAttribute("numero_pista", Integer.parseInt(pistaStr));
+        if (fechaStr != null && !fechaStr.isEmpty()) request.setAttribute("fecha", fechaStr);
+        if (franjaStr != null && !franjaStr.isEmpty()) request.setAttribute("franja", franjaStr);
 
-        // 5) Si tienes los 3, cargas u1..u4. Si no, los dejas a null.
+        // 5) Cargar usuarios de la reserva si hay slot completo (cuando lo actives)
         if (pistaStr != null && fechaStr != null && franjaStr != null &&
             !pistaStr.isEmpty() && !fechaStr.isEmpty() && !franjaStr.isEmpty()) {
 
             int numeroPista = Integer.parseInt(pistaStr);
             LocalDateTime fechaHora = LocalDateTime.of(LocalDate.parse(fechaStr), LocalTime.parse(franjaStr));
-   /*
-            int[] ids = con.obtenerReservaIdsUsuarios(municipioId, numeroPista, fechaHora);
-            AccesoBD.UsuarioVista[] usuarios = con.obtenerUsuariosVistaPorIds(ids);
-        
-            request.setAttribute("u1", usuarios[0]);
-            request.setAttribute("u2", usuarios[1]);
-            request.setAttribute("u3", usuarios[2]);
-            request.setAttribute("u4", usuarios[3]);      */   
+
+            // aquí tu lógica futura de cargar u1..u4
+            // ahora mismo, deja null si no lo tienes implementado
+            request.setAttribute("u1", null);
+            request.setAttribute("u2", null);
+            request.setAttribute("u3", null);
+            request.setAttribute("u4", null);
+
         } else {
             request.setAttribute("u1", null);
             request.setAttribute("u2", null);
@@ -80,26 +92,25 @@ public class Reserva extends HttpServlet {
             request.setAttribute("u4", null);
         }
 
-        // 6) forward SIEMPRE a la JSP
+        // 6) Forward
         MunicipioBD municipio = con.obtenerMunicipioBD(municipioId);
         request.setAttribute("municipio", municipio);
 
-        request.getRequestDispatcher("/web/ReservasMunicipio.jsp")
-                   .forward(request, response);
-        return;
-        }
+        request.getRequestDispatcher("/web/ReservasMunicipio.jsp").forward(request, response);
+    }
+
 
         @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
 
-        // 1) Bloqueo por sesión (mismo patrón que usas en Perfil)
-        HttpSession s = request.getSession(false);
+                HttpSession s = request.getSession(true);
+
         Integer codigo = (s != null) ? (Integer) s.getAttribute("usuario") : null;
 
+
         if (codigo == null || codigo <= 0) {
-            HttpSession s2 = request.getSession(true);
-            s2.setAttribute("popupMsg", "Para acceder a la reserva de pistas debes iniciar sesión.");
+            s.setAttribute("popupMsg", "Para acceder a la reserva de pistas debes iniciar sesión.");
             response.sendRedirect(request.getContextPath() + "/web/InicioSesion.jsp");
             return;
         }
@@ -112,6 +123,11 @@ public class Reserva extends HttpServlet {
         String pistaStr = request.getParameter("numero_pista");
         String fechaStr = request.getParameter("fecha");
         String franjaStr = request.getParameter("franja");
+        String municipioStr = request.getParameter("municipio_id");
+        if (municipioStr != null && !municipioStr.isEmpty()) {
+            s.setAttribute("municipio_id", Integer.parseInt(municipioStr));
+        }
+
 
         // 4) Recuperar / crear lista en sesión
         @SuppressWarnings("unchecked")
@@ -148,13 +164,84 @@ public class Reserva extends HttpServlet {
                 }
                 s.setAttribute("invitadosReserva", invitados);
             }
+            else if ("crearReserva".equals(action)) {
+
+                if (pistaStr == null || fechaStr == null || franjaStr == null ||
+                    pistaStr.isEmpty() || fechaStr.isEmpty() || franjaStr.isEmpty()) {
+                    s.setAttribute("popupMsg", "Selecciona pista, día y hora antes de reservar.");
+                    response.sendRedirect(buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
+                    return;
+                }
+
+                Object midObj = s.getAttribute("municipio_id");
+                if (midObj == null) {
+                    s.setAttribute("popupMsg", "ERROR: municipio no identificado.");
+                    response.sendRedirect(request.getContextPath() + "/web/Reservas.jsp");
+                    return;
+                }
+                int municipioId = (midObj instanceof Integer) ? (Integer) midObj : Integer.parseInt(midObj.toString());
+
+
+                int numeroPista = Integer.parseInt(pistaStr);
+
+                LocalDateTime fechaHora = LocalDateTime.of(LocalDate.parse(fechaStr), LocalTime.parse(franjaStr));
+
+                ZoneId zid = ZoneId.of("Europe/Madrid");
+                LocalDateTime ahora = LocalDateTime.now(zid);
+                if (fechaHora.isBefore(ahora)) {
+                    s.setAttribute("popupMsg", "No puedes reservar una pista para una hora que ya ha pasado.");
+                    response.sendRedirect(buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
+                    return;
+                }
+
+                // invitaciones actuales (solo se usan si NO existe reserva)
+                @SuppressWarnings("unchecked")
+                ArrayList<Integer> invitaciones = (ArrayList<Integer>) s.getAttribute("invitadosReserva");
+                if (invitaciones == null) invitaciones = new ArrayList<>();
+
+                try {
+                    AccesoBD.ResultadoReserva r = AccesoBD.getInstance()
+                            .crearOUnirseReserva(municipioId, numeroPista, fechaHora, codigo, invitaciones);
+
+                    // limpiar siempre para no arrastrar invitaciones
+                    invitaciones.clear();
+                    s.setAttribute("invitadosReserva", invitaciones);
+
+                    switch (r) {
+                        case CREADA:
+                            s.setAttribute("popupMsg", "Reserva creada. Eres el creador.");
+                            break;
+                        case UNIDO:
+                            s.setAttribute("popupMsg", "Te has unido a la reserva.");
+                            break;
+                        case YA_ESTAS:
+                            s.setAttribute("popupMsg", "Ya estás dentro de esta reserva.");
+                            break;
+                        case LLENA:
+                            s.setAttribute("popupMsg", "Esta reserva ya está completa.");
+                            break;
+                    }
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    s.setAttribute("popupMsg", "Error creando/unirte a la reserva.");
+                }
+                
+        System.out.println("DEBUG POST popupMsg=" + s.getAttribute("popupMsg"));
+        System.out.println("DEBUG POST redirect=" + buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
+                response.sendRedirect(buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
+                return;
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
             s.setAttribute("popupMsg", "Error procesando la invitación.");
         }
 
-        // 5) Volver a /Reserva manteniendo pista/fecha/franja
+        System.out.println("DEBUG POST popupMsg=" + s.getAttribute("popupMsg"));
+        System.out.println("DEBUG POST redirect=" + buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
+
         response.sendRedirect(buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
     }
 
