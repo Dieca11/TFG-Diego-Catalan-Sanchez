@@ -109,7 +109,7 @@
                         <h1><%=nombre%></h1>
                         <label for="pista">SELECCIONA UNA PISTA:</label>
 
-                        <input type="hidden" id="numeroPista" name="numero_pista" value="1">
+                        <input type="hidden" id="numeroPista" name="numero_pista" value="<%= request.getAttribute("numero_pista") != null ? request.getAttribute("numero_pista") : 1 %>">
 
                         <div class="btn-group2" id="pistaGroup">
                             <button class="btn btn-secondary" id="pistaBtn" type="button">PISTA 1</button>
@@ -127,8 +127,9 @@
                         <label for="horarios">SELECCIONA UNA FRANJA HORARIA:</label>
                         
                         <!-- Valores reales para enviar / usar en AJAX -->
-                        <input type="hidden" id="fecha" name="fecha" value="">
-                        <input type="hidden" id="franjaInicio" name="franja" value="">
+                        <input type="hidden" id="fecha" name="fecha" value="<%= request.getParameter("fecha") != null ? request.getParameter("fecha") : "" %>">
+
+<input type="hidden" id="franjaInicio" name="franja" value="<%= request.getParameter("franja") != null ? request.getParameter("franja") : "" %>">
                         <input type="hidden" id="municipioId" name="municipio_id" value="<%= municipio.getId() %>">
 
                         <div class="selector-reserva">
@@ -148,7 +149,6 @@
                                 <ul class="dropdown-menu dropmenu2" id="ddHoraMenu"></ul>
                             </div>
                         </div>
-
                         <%
                             ArrayList<Integer> invitadosSel = (ArrayList<Integer>) session.getAttribute("invitadosReserva");
                             if (invitadosSel == null) invitadosSel = new ArrayList<>();
@@ -169,12 +169,11 @@
                                             this.fecha.value = document.getElementById('fecha').value;
                                             this.franja.value = document.getElementById('franjaInicio').value;
                                             ">
-                                            
-                                        <input type="hidden" name="action" value="delInv">
-                                        <input type="hidden" name="invitado_id" value="<%= invId %>">
                                         <input type="hidden" name="numero_pista" value="">
                                         <input type="hidden" name="fecha" value="">
                                         <input type="hidden" name="franja" value="">
+                                        <input type="hidden" name="action" value="delInv">
+                                        <input type="hidden" name="invitado_id" value="<%= invId %>">
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
                                         Quitar <%= nombreInv %>
                                         </button>
@@ -434,8 +433,16 @@
                 menu.appendChild(li);
                 }
 
-                document.getElementById("fecha").value = formatISODateLocal(hoy);
+                var fechaHidden = document.getElementById("fecha");
+                var pre = fechaHidden?.value || "";
+
+                if (pre) {
+                var aSel = menu.querySelector('a.dropdown-item[data-value="' + pre + '"]');
+                btn.textContent = aSel ? aSel.textContent.trim() : pre;
+                } else {
+                fechaHidden.value = formatISODateLocal(hoy);
                 btn.textContent = formatEtiquetaDia(hoy);
+                }
             }
 
             /* Funcion que produce las horas de las reservas */
@@ -483,12 +490,20 @@
                 cur = addMinutes(cur.h, cur.m, dur);
                 }
 
+                var franjaHidden = document.getElementById("franjaInicio");
+                var pre = franjaHidden?.value || "";
+
+                if (pre) {
+                var aSel = menu.querySelector('a.dropdown-item[data-value="' + pre + '"]');
+                btn.textContent = aSel ? aSel.textContent.trim() : pre;
+                } else {
                 var first = menu.querySelector("a.dropdown-item");
                 if (first) {
-                document.getElementById("franjaInicio").value = first.getAttribute("data-value");
-                btn.textContent = first.textContent.trim();
+                    franjaHidden.value = first.getAttribute("data-value");
+                    btn.textContent = first.textContent.trim();
                 }
-            }
+                }
+        }
 
             document.addEventListener("click", closeAll);
 
@@ -496,6 +511,27 @@
                 setupToggle("ddDiaBtn", "ddDiaMenu");
                 setupToggle("ddHoraBtn", "ddHoraMenu");
 
+                const numeroPista = document.getElementById("numeroPista");
+                const pistaBtn = document.getElementById("pistaBtn");
+                const pistaMenu = document.getElementById("pistaMenu");
+
+                if (!numeroPista || !pistaBtn || !pistaMenu) return;
+
+                // Al cargar, sincroniza el texto del botón con el hidden (si vienes por redirect)
+                pistaBtn.textContent = "PISTA " + (numeroPista.value || "1");
+
+                pistaMenu.addEventListener("click", (e) => {
+                    const a = e.target.closest("a.pista-item");
+                    if (!a) return;
+                    e.preventDefault();
+
+                    const p = a.getAttribute("data-pista");
+                    if (!p) return;
+
+                    numeroPista.value = p;
+                    pistaBtn.textContent = "PISTA " + p;
+                });
+                
                 buildDias();
                 buildFranjas();
 
@@ -669,6 +705,7 @@
             }
 
         </script>
+
 
 
         <script>

@@ -22,7 +22,6 @@ public class Reserva extends HttpServlet {
         HttpSession session = request.getSession(false);
         Integer codigo = (session != null) ? (Integer) session.getAttribute("usuario") : null;
 
-        // Si no hay sesión, crea una para poder guardar mensaje y redirigir
         if (codigo == null || codigo <= 0) {
             HttpSession s2 = request.getSession(true);
             s2.setAttribute("popupMsg", "Para acceder a la reserva de pistas debes iniciar sesión.");
@@ -30,8 +29,6 @@ public class Reserva extends HttpServlet {
             return;
         }
 
-        // A partir de aquí session NO es null
-        // 1) Consumir popupMsg (flash): sesión -> request
         String msg = (String) session.getAttribute("popupMsg");
         if (msg != null) {
             request.setAttribute("popupMsg", msg);
@@ -95,6 +92,8 @@ public class Reserva extends HttpServlet {
         // 6) Forward
         MunicipioBD municipio = con.obtenerMunicipioBD(municipioId);
         request.setAttribute("municipio", municipio);
+
+        System.out.println("DEBUG POST redirect=" + buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
 
         request.getRequestDispatcher("/web/ReservasMunicipio.jsp").forward(request, response);
     }
@@ -227,8 +226,6 @@ public class Reserva extends HttpServlet {
                     s.setAttribute("popupMsg", "Error creando/unirte a la reserva.");
                 }
                 
-        System.out.println("DEBUG POST popupMsg=" + s.getAttribute("popupMsg"));
-        System.out.println("DEBUG POST redirect=" + buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
                 response.sendRedirect(buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
                 return;
             }
@@ -239,8 +236,6 @@ public class Reserva extends HttpServlet {
             s.setAttribute("popupMsg", "Error procesando la invitación.");
         }
 
-        System.out.println("DEBUG POST popupMsg=" + s.getAttribute("popupMsg"));
-        System.out.println("DEBUG POST redirect=" + buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
 
         response.sendRedirect(buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
     }

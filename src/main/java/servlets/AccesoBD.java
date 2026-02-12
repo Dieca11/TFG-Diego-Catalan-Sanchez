@@ -517,4 +517,45 @@ public final class AccesoBD {
 			try { conexionBD.setAutoCommit(true); } catch (SQLException ignore) {}
 		}
 	}
+
+	public UsuarioVista[] obtenerUsuariosReservaSlot(int municipioId, int numeroPista, LocalDateTime fechaHora)
+        throws SQLException {
+
+		abrirConexionBD();
+
+		// 4 posiciones: creador, invitado1, invitado2, invitado3
+		UsuarioVista[] out = new UsuarioVista[] { null, null, null, null };
+
+		String sql =
+			"SELECT creador_id, invitado1_id, invitado2_id, invitado3_id " +
+			"FROM reservas " +
+			"WHERE municipio_id=? AND numero_pista=? AND fecha_hora=? AND estado <> 'cancelada' " +
+			"LIMIT 1";
+
+		Integer creadorId = null, inv1 = null, inv2 = null, inv3 = null;
+
+		try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
+			ps.setInt(1, municipioId);
+			ps.setInt(2, numeroPista);
+			ps.setTimestamp(3, Timestamp.valueOf(fechaHora));
+
+			try (ResultSet rs = ps.executeQuery()) {
+				if (!rs.next()) return out; // slot libre
+
+				// CLAVE: getObject para preservar NULL
+				creadorId = (Integer) rs.getObject("creador_id");
+				inv1      = (Integer) rs.getObject("invitado1_id");
+				inv2      = (Integer) rs.getObject("invitado2_id");
+				inv3      = (Integer) rs.getObject("invitado3_id");
+			}
+		}
+
+		// Mantener posiciones (sin desplazar)
+		if (creadorId != null) out[0] = obtenerUsuarioVistaPorId(creadorId);
+		if (inv1 != null)      out[1] = obtenerUsuarioVistaPorId(inv1);
+		if (inv2 != null)      out[2] = obtenerUsuarioVistaPorId(inv2);
+		if (inv3 != null)      out[3] = obtenerUsuarioVistaPorId(inv3);
+
+		return out;
+	}
 };
