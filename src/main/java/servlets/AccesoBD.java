@@ -3,6 +3,7 @@ package servlets;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public final class AccesoBD {
@@ -557,5 +558,93 @@ public final class AccesoBD {
 		if (inv3 != null)      out[3] = obtenerUsuarioVistaPorId(inv3);
 
 		return out;
+	}
+
+	public boolean aplicarInvitacionesComoCreador(int municipioId, int numeroPista, LocalDateTime fechaHora,
+												int creadorSesion, ArrayList<Integer> invitaciones)
+			throws SQLException {
+
+		abrirConexionBD();
+		conexionBD.setAutoCommit(false);
+
+		try {
+			// 1) localizar reserva y validar creador
+					String sel = "SELECT id, creador_id, " +
+								"       invitado_1 AS invitado1_id, " +
+								"       invitado_2 AS invitado2_id, " +
+								"       invitado_3 AS invitado3_id " +
+								"FROM reservas " +
+								"WHERE municipio_id=? AND numero_pista=? AND fecha_hora=? " +
+								"LIMIT 1";
+
+
+			Integer reservaId = null;
+			Integer creadorId = null;
+			Integer cur1 = null, cur2 = null, cur3 = null;
+
+			try (PreparedStatement ps = conexionBD.prepareStatement(sel)) {
+				ps.setInt(1, municipioId);
+				ps.setInt(2, numeroPista);
+				ps.setTimestamp(3, Timestamp.valueOf(fechaHora));
+				try (ResultSet rs = ps.executeQuery()) {
+					if (rs.next()) {
+						reservaId = (Integer) rs.getObject("id");
+						creadorId = (Integer) rs.getObject("creador_id");
+						cur1 = (Integer) rs.getObject("invitado1_id");
+						cur2 = (Integer) rs.getObject("invitado2_id");
+						cur3 = (Integer) rs.getObject("invitado3_id");
+					}
+				}
+			}
+
+
+			if (reservaId == null || creadorId == null || creadorId != creadorSesion) {
+				conexionBD.rollback();
+				return false;
+			}
+
+			// 2) MERGE: primero los actuales, luego los nuevos (sin duplicados), max 3
+			LinkedHashSet<Integer> set = new LinkedHashSet<>();
+
+			// actuales (mantenerlos)
+			if (cur1 != null) set.add(cur1);
+			if (cur2 != null) set.add(cur2);
+			if (cur3 != null) set.add(cur3);
+
+			// añadir nuevos
+			if (invitaciones != null) {
+				for (Integer x : invitaciones) {
+					if (x == null) continue;
+					if (x == creadorSesion) continue;  // nunca invitar al creador
+					set.add(x);
+					if (set.size() == 3) break;
+				}
+			}
+
+			Integer[] arr = set.toArray(new Integer[0]);
+			Integer inv1 = (arr.length > 0) ? arr[0] : null;
+			Integer inv2 = (arr.length > 1) ? arr[1] : null;
+			Integer inv3 = (arr.length > 2) ? arr[2] : null;
+
+			// 3) actualizar columnas invitado1..3 (y vaciar las que no uses)
+			String upd = "UPDATE reservas SET invitado1_id=?, invitado2_id=?, invitado3_id=? WHERE id=?";
+
+			try (PreparedStatement ps = conexionBD.prepareStatement(upd)) {
+				if (inv1 == null) ps.setNull(1, Types.INTEGER); else ps.setInt(1, inv1);
+				if (inv2 == null) ps.setNull(2, Types.INTEGER); else ps.setInt(2, inv2);
+				if (inv3 == null) ps.setNull(3, Types.INTEGER); else ps.setInt(3, inv3);
+				ps.setInt(4, reservaId);
+				ps.executeUpdate();
+			}
+
+			conexionBD.commit();
+			return true;
+
+		} catch (SQLException ex) {
+			conexionBD.rollback();
+			throw ex;
+		} finally {
+			try { conexionBD.setAutoCommit(true); } catch (Exception ignore) {}
+		}
 	}
 };

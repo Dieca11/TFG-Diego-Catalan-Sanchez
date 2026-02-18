@@ -72,11 +72,6 @@ public class Reserva extends HttpServlet {
         if (pistaStr != null && fechaStr != null && franjaStr != null &&
             !pistaStr.isEmpty() && !fechaStr.isEmpty() && !franjaStr.isEmpty()) {
 
-            int numeroPista = Integer.parseInt(pistaStr);
-            LocalDateTime fechaHora = LocalDateTime.of(LocalDate.parse(fechaStr), LocalTime.parse(franjaStr));
-
-            // aquí tu lógica futura de cargar u1..u4
-            // ahora mismo, deja null si no lo tienes implementado
             request.setAttribute("u1", null);
             request.setAttribute("u2", null);
             request.setAttribute("u3", null);
@@ -88,12 +83,9 @@ public class Reserva extends HttpServlet {
             request.setAttribute("u3", null);
             request.setAttribute("u4", null);
         }
-
         // 6) Forward
         MunicipioBD municipio = con.obtenerMunicipioBD(municipioId);
         request.setAttribute("municipio", municipio);
-
-        System.out.println("DEBUG POST redirect=" + buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
 
         request.getRequestDispatcher("/web/ReservasMunicipio.jsp").forward(request, response);
     }
@@ -199,27 +191,55 @@ public class Reserva extends HttpServlet {
                 if (invitaciones == null) invitaciones = new ArrayList<>();
 
                 try {
+                    AccesoBD con = AccesoBD.getInstance();
                     AccesoBD.ResultadoReserva r = AccesoBD.getInstance()
                             .crearOUnirseReserva(municipioId, numeroPista, fechaHora, codigo, invitaciones);
 
-                    // limpiar siempre para no arrastrar invitaciones
-                    invitaciones.clear();
-                    s.setAttribute("invitadosReserva", invitaciones);
+                switch (r) {
+                    case CREADA:
+                        s.setAttribute("popupMsg", "Reserva creada. Eres el creador.");
+                        // ya se han aplicado invitaciones al crear
+                        invitaciones.clear();
+                        s.setAttribute("invitadosReserva", invitaciones);
+                        break;
 
-                    switch (r) {
-                        case CREADA:
-                            s.setAttribute("popupMsg", "Reserva creada. Eres el creador.");
-                            break;
-                        case UNIDO:
-                            s.setAttribute("popupMsg", "Te has unido a la reserva.");
-                            break;
-                        case YA_ESTAS:
+                    case UNIDO:
+                        s.setAttribute("popupMsg", "Te has unido a la reserva.");
+                        // si te unes, no tiene sentido mantener pre-invitaciones
+                        invitaciones.clear();
+                        s.setAttribute("invitadosReserva", invitaciones);
+                        break;
+
+                    case YA_ESTAS:
+                        boolean aplicadas = false;
+                        if (invitaciones != null && !invitaciones.isEmpty()) {
+                            try {
+                                aplicadas = con.aplicarInvitacionesComoCreador(municipioId, numeroPista, fechaHora, codigo, invitaciones);
+                            } catch (SQLException ex) {
+                                ex.printStackTrace();
+                                aplicadas = false;
+                            }
+                        }
+
+                        if (aplicadas) {
+                            s.setAttribute("popupMsg", "Invitaciones actualizadas correctamente.");
+                            invitaciones.clear();
+                            s.setAttribute("invitadosReserva", invitaciones);
+                        } else {
                             s.setAttribute("popupMsg", "Ya estás dentro de esta reserva.");
-                            break;
-                        case LLENA:
-                            s.setAttribute("popupMsg", "Esta reserva ya está completa.");
-                            break;
-                    }
+                        }
+                        break;
+
+                    case LLENA:
+                        s.setAttribute("popupMsg", "Esta reserva ya está completa.");
+                        invitaciones.clear();
+                        s.setAttribute("invitadosReserva", invitaciones);
+                        break;
+                }
+
+                response.sendRedirect(buildReservaUrl(request, pistaStr, fechaStr, franjaStr));
+                return;
+
 
                 } catch (SQLException ex) {
                     ex.printStackTrace();

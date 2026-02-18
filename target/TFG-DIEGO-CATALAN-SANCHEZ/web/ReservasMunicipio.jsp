@@ -78,26 +78,18 @@
                 <div class="col contenedor-pista">
                     <img class="pista-img" src="<%= request.getContextPath() %>/web/Imagenes/padel.png" alt="Pista de Padel" width="600px">
                       <div class="usuario-cuadrante" data-posicion="1">
-                        <img class="usuario-foto" src="usuarios/juan.jpg" alt="Juan">
-                        <div class="usuario-nombre">Juan Pérez</div>
                     </div>
 
                     <!-- Cuadrante 2 - Jugador 2 -->
                     <div class="usuario-cuadrante" data-posicion="2">
-                        <img class="usuario-foto" src="usuarios/maria.jpg" alt="María">
-                        <div class="usuario-nombre">María López</div>
                     </div>
 
                     <!-- Cuadrante 3 - Jugador 3 -->
                     <div class="usuario-cuadrante" data-posicion="3">
-                        
-                        <img class="usuario-foto" src="usuarios/pedro.jpg" alt="Pedro">
-                        <div class="usuario-nombre">Pedro García</div>
                     </div>
 
                     <!-- Cuadrante 4 - Jugador 4 -->
                     <div class="usuario-cuadrante" data-posicion="4">
-                        <!-- Vacío si no hay usuario -->
                     </div>
                 </div>
 
@@ -129,7 +121,7 @@
                         <!-- Valores reales para enviar / usar en AJAX -->
                         <input type="hidden" id="fecha" name="fecha" value="<%= request.getParameter("fecha") != null ? request.getParameter("fecha") : "" %>">
 
-<input type="hidden" id="franjaInicio" name="franja" value="<%= request.getParameter("franja") != null ? request.getParameter("franja") : "" %>">
+                        <input type="hidden" id="franjaInicio" name="franja" value="<%= request.getParameter("franja") != null ? request.getParameter("franja") : "" %>">
                         <input type="hidden" id="municipioId" name="municipio_id" value="<%= municipio.getId() %>">
 
                         <div class="selector-reserva">
@@ -243,7 +235,7 @@
                                             img = request.getContextPath() + "/" + img;
                                             if (img == null || img.trim().isEmpty()) img = "Imagenes/usuario.png"; %>
 
-                                        <div class="modal-item" data-nombre="<%= nombreInv.toLowerCase() %>">
+                                        <div class="modal-item" data-userid="<%= u.getId() %>" data-nombre="<%= nombreInv.toLowerCase() %>">
                                             <div class="modal-user">
                                             <img class="modal-avatar" src="<%= img %>" alt="<%= nombreInv %>">
                                             <span class="modal-username"><%= nombreInv %></span>
@@ -273,11 +265,10 @@
                                                     <input type="hidden" name="fecha" value="">
                                                     <input type="hidden" name="franja" value="">
 
-                                                    <button type="submit" class="btn btn-success">Invitar</button>
+                                                    <button type="submit" class="btn btn-success btn-invitar">Invitar</button>
                                                 </form>
 
                                             <% } %>
-
                                         </div>
                                         <% } %>
                                     <% } %>
@@ -534,6 +525,7 @@
                 
                 buildDias();
                 buildFranjas();
+                limpiarInvitaciones();
 
                 if (typeof recargarReserva === "function") recargarReserva();
             });
@@ -571,7 +563,6 @@
                 var numeroPista = document.getElementById("numeroPista").value;
                 var fecha = document.getElementById("fecha").value;           // YYYY-MM-DD
                 var franja = document.getElementById("franjaInicio").value;   // HH:mm
-
                 if (!municipioId || !numeroPista || !fecha || !franja) return;
 
                 var params = new URLSearchParams({
@@ -592,14 +583,63 @@
                 }
 
                 var data = await resp.json();
+                window.slotState = {
+                libre: data.libre === true,
+                creadorId: data.creadorId,
+                puedeInvitar: data.puedeInvitar === true,
+                idsEnPartida: new Set(data.idsEnPartida || [])
+                };
 
+                const btnInv = document.getElementById("btnInvitaciones"); // <-- pon aquí TU id real
+                    if (btnInv) {
+                    // Si hay reserva (no libre) y no eres creador, deshabilita
+                    if (window.slotState.libre) {
+                        btnInv.disabled = false;
+                        btnInv.title = "";
+                    } else if (!window.slotState.puedeInvitar) {
+                        btnInv.disabled = true;
+                        btnInv.title = "Solo el creador puede invitar en esta partida.";
+                    } else {
+                        btnInv.disabled = false;
+                        btnInv.title = "";
+                    }
+                }
+                    console.log(data);
                 if (data.libre) {
                 pintarCuadrantesDesdeUsuarios([]);
                 } else {
                 // data.usuarios ya viene en orden (creador, invitado1..3)
                 pintarCuadrantesDesdeUsuarios(data.usuarios || []);
                 }
+
             }
+
+            function aplicarEstadoInvitacionesEnModal() {
+                if (!window.slotState) return;
+
+                document.querySelectorAll(".modal-item[data-userid]").forEach(item => {
+                    const uid = parseInt(item.getAttribute("data-userid"), 10);
+
+                    const badgeCreador = item.querySelector(".badge-creador");
+                    const badgeDentro = item.querySelector(".badge-dentro");
+                    const btnInvitar = item.querySelector("button.btn-invitar");
+
+                    const esCreadorReal = (window.slotState.creadorId != null && uid === window.slotState.creadorId);
+                    const estaDentro = window.slotState.idsEnPartida.has(uid);
+
+                    // Mostrar/ocultar badges
+                    if (badgeCreador) badgeCreador.style.display = esCreadorReal ? "" : "none";
+                    if (badgeDentro) badgeDentro.style.display = (!esCreadorReal && estaDentro) ? "" : "none";
+
+                    // Botón "Invitar": solo si soy creador y el usuario no está dentro
+                    if (btnInvitar) {
+                        const puede = (window.slotState.libre || window.slotState.puedeInvitar) && !estaDentro&& !esCreadorReal;
+                        btnInvitar.style.display = puede ? "" : "none";
+                        btnInvitar.disabled = !puede;
+                    }
+                });
+            }
+
         </script>
 
         <script>
@@ -637,6 +677,7 @@
                 modal.classList.add("open");
                 modal.setAttribute("aria-hidden", "false");
 
+                aplicarEstadoInvitacionesEnModal();
                 // Reset buscador al abrir
                 if (buscador) {
                 buscador.value = "";
@@ -705,6 +746,26 @@
             }
 
         </script>
+
+        <script>
+            function limpiarInvitaciones() {
+                // 1) Vacía la lista del modal (se re-pintará al recargar página o reabrir)
+                const lista = document.getElementById("invitadosReserva");
+                if (lista) lista.innerHTML = "";
+
+                // 2) Limpia el buscador del modal si existe
+                const buscador = document.getElementById("buscarInv"); // ajusta si tu id es otro
+                if (buscador) buscador.value = "";
+
+                // 4) Cierra el modal si está abierto (Bootstrap)
+                const modalEl = document.getElementById("modalInvitaciones"); // ajusta si tu id es otro
+                if (modalEl && window.bootstrap) {
+                    const inst = window.bootstrap.Modal.getInstance(modalEl);
+                    if (inst) inst.hide();
+                }
+            }
+        </script>
+
 
 
 
