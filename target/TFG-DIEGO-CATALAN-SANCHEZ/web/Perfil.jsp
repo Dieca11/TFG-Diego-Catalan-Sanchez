@@ -62,7 +62,7 @@
         <div class="container-perfil">
             
             <div class="perfil-principal">
-                <img src="<%= usuario.getFoto_perfil() %>">
+                <img src="<%= usuario.getFoto_perfil() %>" alt=" Foto de perfil del Usuario">
                 <label class="nombre-usuario"><%= usuario.getUsuario() %></label>
                 <label class="email-usuario"><%= usuario.getEmail() %></label>
                 <a class="btn" href="${pageContext.request.contextPath}/LogOut">Cerrar Sesion</a>

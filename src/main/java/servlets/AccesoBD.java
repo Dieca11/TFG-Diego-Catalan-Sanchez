@@ -647,4 +647,26 @@ public final class AccesoBD {
 			try { conexionBD.setAutoCommit(true); } catch (Exception ignore) {}
 		}
 	}
+
+	public void ActualizaPartidas() throws SQLException {
+
+		int DURACION_PARTIDA = 90;
+
+		abrirConexionBD();
+
+		String sql = " UPDATE reservas set estado='jugada' where estado = 'pendiente' " +
+						"AND DATE_ADD(fecha_hora, INTERVAL ? MINUTE) <= NOW()";
+
+		String sql_2 = "INSERT IGNORE INTO partidas (reserva_id)" +
+		"SELECT r.id FROM reservas r WHERE r.estado='jugada' ";
+
+		try (PreparedStatement ps = conexionBD.prepareStatement(sql)){
+			ps.setInt(1, DURACION_PARTIDA);
+			ps.executeUpdate();
+			try(PreparedStatement ps2 = conexionBD.prepareStatement(sql_2)){
+				ps2.executeUpdate();
+			}
+		}
+			conexionBD.commit();
+	}
 };

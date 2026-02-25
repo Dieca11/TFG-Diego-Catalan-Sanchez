@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 
@@ -24,6 +26,11 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 		int codigo = con.comprobarUsuarioBD(usuario,clave);
 		if (codigo>0) {
 			session.setAttribute("usuario",codigo);
+			try {
+				con.ActualizaPartidas();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			response.sendRedirect(request.getContextPath() + "/web/Perfil.jsp");
 		}
 		else {
