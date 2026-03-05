@@ -4,8 +4,8 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="css/cabecera-footer.css">
-        <link rel="stylesheet" type="text/css" href="css/Perfil.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/web/css/cabecera-footer.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/web/css/Perfil.css">
 
         <title>HOME</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
@@ -62,7 +62,7 @@
         <div class="container-perfil">
             
             <div class="perfil-principal">
-                <img src="<%= usuario.getFoto_perfil() %>" alt=" Foto de perfil del Usuario">
+                <img src='<%= usuario.getFoto_perfil() %>' alt=" Foto de perfil del Usuario">
                 <label class="nombre-usuario"><%= usuario.getUsuario() %></label>
                 <label class="email-usuario"><%= usuario.getEmail() %></label>
                 <a class="btn" href="${pageContext.request.contextPath}/LogOut">Cerrar Sesion</a>
@@ -163,65 +163,124 @@
                         </div>
 
                         <div class="content-block" id="contenido2">
-                            <h2 class="titulo-editar">HISTORIAL DE PARTIDAS</h2>
-                            <table >
-                                <thead>
-                                    <tr>
-                                        <th>FECHA</th>
-                                        <th>LUGAR</th>
-                                        <th>RESULTADO </th>
-                                        <th>PARTICIPANTES </th>
-                                    </tr>
-                                </thead>
-                                
-                                <tbody>
-                                    <tr>
-                                        <td>10/12/2025</td>
-                                        <td>MORA DE RUBIELOS</td>
-                                        <td>6-0/3-6/6-2</td>
-                                        <td><button>Participantes</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>10/12/2025</td>
-                                        <td>MORA DE RUBIELOS</td>
-                                        <td>6-0/3-6/6-2</td>
-                                        <td><button>Participantes</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>10/12/2025</td>
-                                        <td>MORA DE RUBIELOS</td>
-                                        <td>6-0/3-6/6-2</td>
-                                        <td><button>Participantes</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>10/12/2025</td>
-                                        <td>MORA DE RUBIELOS</td>
-                                        <td>6-0/3-6/6-2</td>
-                                        <td><button>Participantes</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>10/12/2025</td>
-                                        <td>MORA DE RUBIELOS</td>
-                                        <td>6-0/3-6/6-2</td>
-                                        <td><button>Participantes</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>10/12/2025</td>
-                                        <td>MORA DE RUBIELOS</td>
-                                        <td>6-0/3-6/6-2</td>
-                                        <td><button>Participantes</button></td>
-                                    </tr>
-                                    <tr>
-                                        <td>10/12/2025</td>
-                                        <td>MORA DE RUBIELOS</td>
-                                        <td>6-0/3-6/6-2</td>
-                                        <td><button>Participantes</button></td>
-                                    </tr>
+                            <div class="partidas-tabla">
+                                <div class="partidas-lista">
+                                    <h3 class="titulo-partidas"> PENDIENTES</h3>
 
-                                </tbody>
-                            </table>
+                                    <div class="partidas-card">
+                                        <div class="partida-head">
+                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
+                                            <div class="partida-estado"> Pendiente</div>
+                                        </div>
+
+                                        <div class="partida-info">
+                                            <div class="partida-lugar"> Mora de Rubielos</div>
+                                            <div class="partida-pista"> Pista 1</div>
+                                        </div>
+
+                                        <div class="partida-actions">
+                                            <div class="btn-partida"> Participantes</div>
+                                            <div class="btn-cancelar">Cancelar</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="partidas-card">
+                                        <div class="partida-head">
+                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
+                                            <div class="partida-estado"> Pendiente</div>
+                                        </div>
+
+                                        <div class="partida-info">
+                                            <div class="partida-lugar"> Mora de Rubielos</div>
+                                            <div class="partida-pista"> Pista 1</div>
+                                        </div>
+
+                                        <div class="partida-actions">
+                                            <div class="btn-partida"> Participantes</div>
+                                            <div class="btn-cancelar">Cancelar</div>
+                                        </div>
+
+
+                                    </div>
+  
+                                    <div class="partidas-card">
+                                        <div class="partida-head">
+                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
+                                            <div class="partida-estado"> Pendiente</div>
+                                        </div>
+
+                                        <div class="partida-info">
+                                            <div class="partida-lugar"> Mora de Rubielos</div>
+                                            <div class="partida-pista"> Pista 1</div>
+                                        </div>
+
+                                        <div class="partida-actions">
+                                            <div class="btn-partida"> Participantes</div>
+                                            <div class="btn-cancelar">Cancelar</div>
+                                        </div>
+                                    </div>
+                                    <div class="partidas-card">
+                                        <div class="partida-head">
+                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
+                                            <div class="partida-estado"> Pendiente</div>
+                                        </div>
+
+                                        <div class="partida-info">
+                                            <div class="partida-lugar"> Mora de Rubielos</div>
+                                            <div class="partida-pista"> Pista 1</div>
+                                        </div>
+
+                                        <div class="partida-actions">
+                                            <div class="btn-partida"> Participantes</div>
+                                            <div class="btn-cancelar">Cancelar</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="partidas-lista">
+                                    <h3 class="titulo-partidas"> HISTORIAL</h3>
+                                    <div class="partidas-card">
+                                        <div class="partida-head">
+                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
+                                            <div class="partida-estado"> Finalizada</div>
+                                        </div>
+                                        <div class="partida-info">
+                                            <div class="partida-resultado"> Resultado: 6-2/3-6/4-6</div>
+                                        </div>
+                                        <div class="partida-actions">
+                                            <div class="btn-partida">Detalles</div>
+                                            <div class="btn-resultado"> Anotar Resultado</div>
+                                        </div>
+                                    </div>
+                                    <div class="partidas-card">
+                                        <div class="partida-head">
+                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
+                                            <div class="partida-estado"> Finalizada</div>
+                                        </div>
+                                        <div class="partida-info">
+                                            <div class="partida-resultado"> Resultado: 6-2/3-6/4-6</div>
+                                        </div>
+                                        <div class="partida-actions">
+                                            <div class="btn-partida">Detalles</div>
+                                            <div class="btn-resultado"> Anotar Resultado</div>
+                                        </div>
+                                    </div>
+                                    <div class="partidas-card">
+                                        <div class="partida-head">
+                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
+                                            <div class="partida-estado"> Finalizada</div>
+                                        </div>
+                                        <div class="partida-info">
+                                            <div class="partida-resultado"> Resultado: 6-2/3-6/4-6</div>
+                                        </div>
+                                        <div class="partida-actions">
+                                            <div class="btn-partida">Detalles</div>
+                                            <div class="btn-resultado"> Anotar Resultado</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                         <div class="content-block" id="contenido3">
                             <h2 class="titulo-editar">GESTIONAR LA PRIVACIDAD DE DATOS</h2>
 
