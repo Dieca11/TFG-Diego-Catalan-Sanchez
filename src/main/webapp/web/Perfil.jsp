@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" import=" java.util.List,servlets.*" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" import=" java.util.*,servlets.*" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -23,7 +23,7 @@
             <link rel="stylesheet" href="https://unpkg.com/@coreui/icons@3.0.0/css/coreui-icons.min.css" />
 
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+7GDvjz4Et6kcu9teW7RSJoV++Ar5QnFexl3O9b" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="icon" href="Imagenes/raqueta-de-padel.png" type="image/png" class="logo">
     </head>
     <body>
@@ -59,6 +59,16 @@
         }
         %>
 
+        <%
+        ArrayList<PartidaPerfilBD> pendientes =
+            (ArrayList<PartidaPerfilBD>) session.getAttribute("pendientesPerfil");
+
+        ArrayList<PartidaPerfilBD> historial =
+            (ArrayList<PartidaPerfilBD>) session.getAttribute("historialPerfil");
+
+        if (pendientes == null) pendientes = new ArrayList<>();
+        if (historial == null) historial = new ArrayList<>();
+        %>
         <div class="container-perfil">
             
             <div class="perfil-principal">
@@ -167,120 +177,72 @@
                                 <div class="partidas-lista">
                                     <h3 class="titulo-partidas"> PENDIENTES</h3>
 
-                                    <div class="partidas-card">
-                                        <div class="partida-head">
-                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
-                                            <div class="partida-estado"> Pendiente</div>
-                                        </div>
+                                    <% if (pendientes.isEmpty()) { %>
+                                        <p> No hay partidas Pendientes</p>
+                                    <% } else { %>
+                                        <% for (PartidaPerfilBD p : pendientes) { %>
+                                        <div class="partidas-card" id="colpendientes">
+                                            <div class="partida-head">
+                                                <%
+                                                    java.text.SimpleDateFormat formato =
+                                                        new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
 
-                                        <div class="partida-info">
-                                            <div class="partida-lugar"> Mora de Rubielos</div>
-                                            <div class="partida-pista"> Pista 1</div>
-                                        </div>
+                                                    String fecha = formato.format(p.getFechaHora());
+                                                    %>
+                                                <div class="partida-fecha"><%= fecha %></div>
+                                                <div class="partida-estado"><%= p.getEstado() %></div>
+                                            </div>
 
-                                        <div class="partida-actions">
-                                            <div class="btn-partida"> Participantes</div>
-                                            <div class="btn-cancelar">Cancelar</div>
-                                        </div>
-                                    </div>
+                                            <div class="partida-info">
+                                                <div class="partida-lugar"> <%= p.getMunicipio() %></div>
+                                                <div class="partida-pista">Pista: <%= p.getNumeroPista() %></div>
+                                            </div>
 
-                                    <div class="partidas-card">
-                                        <div class="partida-head">
-                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
-                                            <div class="partida-estado"> Pendiente</div>
+                                            <div class="partida-actions">
+                                                <div class="btn-partida"> Participantes</div>
+                                                <% if (p.isCreador()) { %>
+                                                <div class="btn-cancelar">Cancelar</div>
+                                                <% } %>
+                                            </div>
                                         </div>
-
-                                        <div class="partida-info">
-                                            <div class="partida-lugar"> Mora de Rubielos</div>
-                                            <div class="partida-pista"> Pista 1</div>
-                                        </div>
-
-                                        <div class="partida-actions">
-                                            <div class="btn-partida"> Participantes</div>
-                                            <div class="btn-cancelar">Cancelar</div>
-                                        </div>
-
-
-                                    </div>
-  
-                                    <div class="partidas-card">
-                                        <div class="partida-head">
-                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
-                                            <div class="partida-estado"> Pendiente</div>
-                                        </div>
-
-                                        <div class="partida-info">
-                                            <div class="partida-lugar"> Mora de Rubielos</div>
-                                            <div class="partida-pista"> Pista 1</div>
-                                        </div>
-
-                                        <div class="partida-actions">
-                                            <div class="btn-partida"> Participantes</div>
-                                            <div class="btn-cancelar">Cancelar</div>
-                                        </div>
-                                    </div>
-                                    <div class="partidas-card">
-                                        <div class="partida-head">
-                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
-                                            <div class="partida-estado"> Pendiente</div>
-                                        </div>
-
-                                        <div class="partida-info">
-                                            <div class="partida-lugar"> Mora de Rubielos</div>
-                                            <div class="partida-pista"> Pista 1</div>
-                                        </div>
-
-                                        <div class="partida-actions">
-                                            <div class="btn-partida"> Participantes</div>
-                                            <div class="btn-cancelar">Cancelar</div>
-                                        </div>
-                                    </div>
+                                        <% } %>
+                                    <% } %>
                                 </div>
 
                                 <div class="partidas-lista">
                                     <h3 class="titulo-partidas"> HISTORIAL</h3>
-                                    <div class="partidas-card">
-                                        <div class="partida-head">
-                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
-                                            <div class="partida-estado"> Finalizada</div>
-                                        </div>
-                                        <div class="partida-info">
-                                            <div class="partida-resultado"> Resultado: 6-2/3-6/4-6</div>
-                                        </div>
-                                        <div class="partida-actions">
-                                            <div class="btn-partida">Detalles</div>
-                                            <div class="btn-resultado"> Anotar Resultado</div>
-                                        </div>
-                                    </div>
-                                    <div class="partidas-card">
-                                        <div class="partida-head">
-                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
-                                            <div class="partida-estado"> Finalizada</div>
-                                        </div>
-                                        <div class="partida-info">
-                                            <div class="partida-resultado"> Resultado: 6-2/3-6/4-6</div>
-                                        </div>
-                                        <div class="partida-actions">
-                                            <div class="btn-partida">Detalles</div>
-                                            <div class="btn-resultado"> Anotar Resultado</div>
-                                        </div>
-                                    </div>
-                                    <div class="partidas-card">
-                                        <div class="partida-head">
-                                            <div class="partida-fecha">19/06/2026 20:00-21:30</div>
-                                            <div class="partida-estado"> Finalizada</div>
-                                        </div>
-                                        <div class="partida-info">
-                                            <div class="partida-resultado"> Resultado: 6-2/3-6/4-6</div>
-                                        </div>
-                                        <div class="partida-actions">
-                                            <div class="btn-partida">Detalles</div>
-                                            <div class="btn-resultado"> Anotar Resultado</div>
-                                        </div>
-                                    </div>
+
+                                    <% if (historial.isEmpty()) { %>
+                                        <p> No has jugado partidas todavia</p>
+                                    <% } else { %>
+                                        <% for ( PartidaPerfilBD h : historial) { %>
+                                            <div class="partidas-card" id="colHistorial">
+                                                <div class="partida-head">
+                                                    <%
+                                                        java.text.SimpleDateFormat formato =
+                                                            new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+                                                        String fecha = formato.format(p.getFechaHora());
+                                                    %>
+                                                    <div class="partida-fecha"><%= fecha %></div>
+                                                    <div class="partida-estado"><%= h.getEstado() %></div>
+                                                </div>
+                                                <div class="partida-info">
+                                                    <div class="partida-resultado"> Resultado: </div>
+                                                </div>
+                                                <div class="partida-actions">
+                                                    <div class="btn-partida">Detalles</div>
+                                                    <% if (h.isCreador()) { %>
+                                                        <div class="btn-resultado"> Anotar Resultado</div> 
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    <%} %>
                                 </div>
                             </div>
                         </div>
+
                         <div class="content-block" id="contenido3">
                             <h2 class="titulo-editar">GESTIONAR LA PRIVACIDAD DE DATOS</h2>
 
@@ -355,11 +317,20 @@
                     </div>
                 </form>
             </div>
-
         </div>
-        
-        
-        
+
+        <div id="overlayPartida" class="overlay-partida" style="display:none;">
+            <div class="overlay-contenido">
+                <div class="overlay-cabecera">
+                    <h3 id="overlayTitulo">Detalles</h3>
+                    <button type="button" class="overlay-cerrar" onclick="cerrarOverlay()">×</button>
+                </div>
+
+                <div id="overlayBody" class="overlay-body">
+                </div>
+            </div>
+        </div>
+
         
         <script>
             document.querySelectorAll('.link-usuario').forEach(link => {

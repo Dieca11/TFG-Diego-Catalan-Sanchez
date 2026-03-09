@@ -669,4 +669,96 @@ public final class AccesoBD {
 		}
 			conexionBD.commit();
 	}
+
+	public ArrayList<PartidaPerfilBD> obtenerPartidasPerfil(int idUsuario) throws SQLException {
+    abrirConexionBD();
+
+    ArrayList<PartidaPerfilBD> lista = new ArrayList<>();
+
+    String sql =
+        "SELECT r.id, r.fecha_hora, r.numero_pista, r.creador_id, " +
+        "       r.invitado1_id, r.invitado2_id, r.invitado3_id, " +
+        "       r.estado, m.municipio " +
+        "FROM reservas r " +
+        "JOIN municipios m ON m.id = r.municipio_id " +
+        "WHERE r.creador_id = ? " +
+        "   OR r.invitado1_id = ? " +
+        "   OR r.invitado2_id = ? " +
+        "   OR r.invitado3_id = ? " +
+        "ORDER BY r.fecha_hora DESC";
+
+    try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
+        ps.setInt(1, idUsuario);
+        ps.setInt(2, idUsuario);
+        ps.setInt(3, idUsuario);
+        ps.setInt(4, idUsuario);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                PartidaPerfilBD p = new PartidaPerfilBD();
+
+                p.setId(rs.getInt("id"));
+                p.setFechaHora(rs.getTimestamp("fecha_hora"));
+                p.setMunicipio(rs.getString("municipio"));
+                p.setNumeroPista(rs.getInt("numero_pista"));
+                p.setEstado(rs.getString("estado"));
+                p.setCreador(rs.getInt("creador_id") == idUsuario);
+
+                ArrayList<String> participantes = new ArrayList<>();
+
+                Integer creadorId = (Integer) rs.getObject("creador_id");
+                Integer inv1 = (Integer) rs.getObject("invitado1_id");
+                Integer inv2 = (Integer) rs.getObject("invitado2_id");
+                Integer inv3 = (Integer) rs.getObject("invitado3_id");
+
+                if (creadorId != null) {
+                    String nombre = obtenerNombreUsuarioPorId(creadorId);
+                    if (nombre != null) participantes.add(nombre);
+                }
+                if (inv1 != null) {
+                    String nombre = obtenerNombreUsuarioPorId(inv1);
+                    if (nombre != null) participantes.add(nombre);
+                }
+                if (inv2 != null) {
+                    String nombre = obtenerNombreUsuarioPorId(inv2);
+                    if (nombre != null) participantes.add(nombre);
+                }
+                if (inv3 != null) {
+                    String nombre = obtenerNombreUsuarioPorId(inv3);
+                    if (nombre != null) participantes.add(nombre);
+                }
+
+                p.setParticipantes(participantes);
+
+                lista.add(p);
+            }
+        }
+    }
+
+    return lista;
+	}
+
+	public ArrayList<PartidaPerfilBD> obtenerPendientesPerfil(int idUsuario) throws SQLException {
+		ArrayList<PartidaPerfilBD> todas = obtenerPartidasPerfil(idUsuario);
+		ArrayList<PartidaPerfilBD> pendientes = new ArrayList<>();
+
+		for (PartidaPerfilBD p : todas) {
+			if ("pendiente".equalsIgnoreCase(p.getEstado())) {
+				pendientes.add(p);
+			}
+		}
+		return pendientes;
+	}
+
+	public ArrayList<PartidaPerfilBD> obtenerHistorialPerfil(int idUsuario) throws SQLException {
+		ArrayList<PartidaPerfilBD> todas = obtenerPartidasPerfil(idUsuario);
+		ArrayList<PartidaPerfilBD> historial = new ArrayList<>();
+
+		for (PartidaPerfilBD p : todas) {
+			if ("jugada".equalsIgnoreCase(p.getEstado())) {
+				historial.add(p);
+			}
+		}
+		return historial;
+	}
 };

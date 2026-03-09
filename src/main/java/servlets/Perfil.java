@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
+
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 
@@ -21,6 +23,15 @@ public class Perfil extends HttpServlet {
 
     UsuarioBD u = con.obtenerUsuarioPorCodigo(codigo);
     s.setAttribute("usuarioPerfil", u);
+    try {
+        s.setAttribute("pendientesPerfil",con.obtenerPendientesPerfil(codigo));
+        s.setAttribute("historialPerfil", con.obtenerHistorialPerfil(codigo));
+    } catch (SQLException e) {
+        e.printStackTrace();
+        s.setAttribute("mensajePerfil", "No se pudieron cargar las partidas del perfil.");
+        response.sendRedirect(request.getContextPath() + "/web/Perfil.jsp");
+    }
+
     response.sendRedirect(request.getContextPath() + "/web/Perfil.jsp");
 
     return;
