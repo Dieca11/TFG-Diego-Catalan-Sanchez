@@ -46,6 +46,29 @@ public class Perfil extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/web/InicioSesion.jsp");
                 return;
             }
+
+
+            String accion = request.getParameter("accion");
+
+            if ("cancelarPartida".equals(accion)) {
+                String idReservaStr = request.getParameter("idReserva");
+
+                try {
+                    int idReserva = Integer.parseInt(idReservaStr);
+
+                    AccesoBD con = AccesoBD.getInstance();
+                    con.cancelarReserva(idReserva);
+
+                    response.sendRedirect(request.getContextPath() + "/Perfil");
+                    return;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+    // aquí va la lógica normal de guardar cambios del perfil
+    response.sendRedirect(request.getContextPath() + "/Perfil");
             //Recogemos los datos a actualizar
             Integer id_usu = Integer.parseInt(request.getParameter("id_usu"));
             String imagen = request.getParameter("imagen_usuario");
@@ -108,6 +131,9 @@ public class Perfil extends HttpServlet {
              UsuarioBD actualizado = con.obtenerUsuarioPorCodigo(id_usu);
              session.setAttribute("usuarioPerfil", actualizado);
             response.sendRedirect(request.getContextPath() + "/web/Perfil.jsp");
+
+
         }
+
 
 }

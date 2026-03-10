@@ -181,7 +181,11 @@
                                         <p> No hay partidas Pendientes</p>
                                     <% } else { %>
                                         <% for (PartidaPerfilBD p : pendientes) { %>
-                                        <div class="partidas-card" id="colpendientes">
+                                            <%
+                                            String Participantes = String.join("|", p.getParticipantes());
+                                            %>
+
+                                        <div class="partidas-card" id="colpendientes" data-participantes="<%= Participantes %>">
                                             <div class="partida-head">
                                                 <%
                                                     java.text.SimpleDateFormat formato =
@@ -199,9 +203,11 @@
                                             </div>
 
                                             <div class="partida-actions">
-                                                <div class="btn-partida"> Participantes</div>
+                                                <button type="button" class="btn-partida" onclick="abrirParticipantes(this)"> Participantes</button>
                                                 <% if (p.isCreador()) { %>
-                                                <div class="btn-cancelar">Cancelar</div>
+                                                        <button type="button" class="btn-cancelar" data-id="<%= p.getId() %>" onclick="cancelarPartida(this.dataset.id)">
+                                                            Cancelar
+                                                        </button>
                                                 <% } %>
                                             </div>
                                         </div>
@@ -216,16 +222,29 @@
                                         <p> No has jugado partidas todavia</p>
                                     <% } else { %>
                                         <% for ( PartidaPerfilBD h : historial) { %>
-                                            <div class="partidas-card" id="colHistorial">
+                                            <%
+                                                java.text.SimpleDateFormat formato =
+                                                new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+                                                String fecha = formato.format(h.getFechaHora());
+                                            %>
+                                                                                        <%
+                                            String Participantes = String.join("|", h.getParticipantes());
+                                            %>
+                                            <div class="partidas-card" id="colHistorial" data-fecha="<%=fecha%>"
+                                                                                        data-lugar="<%=h.getMunicipio()%>"
+                                                                                        data-pista="<%=h.getNumeroPista()%>"
+                                                                                        data-participantes="<%= Participantes%>"
+                                                                                        >
                                                 <div class="partida-head">
-                                                    <div class="partida-fecha"><%= h.getFechaHora() %></div>
+
+                                                    <div class="partida-fecha"><%= fecha %></div>
                                                     <div class="partida-estado"><%= h.getEstado() %></div>
                                                 </div>
                                                 <div class="partida-info">
                                                     <div class="partida-resultado"> Resultado: </div>
                                                 </div>
                                                 <div class="partida-actions">
-                                                    <div class="btn-partida">Detalles</div>
+                                                    <button type="button" class="btn-partida" onclick="abrirDetalles(this)">Detalles</button>
                                                     <% if (h.isCreador()) { %>
                                                         <div class="btn-resultado"> Anotar Resultado</div> 
                                                     <% } %>
@@ -313,6 +332,22 @@
             </div>
         </div>
 
+        <form id="formCancelarPartida" method="post" action="<%= request.getContextPath() %>/Perfil" style="display:none;">
+            <input type="hidden" name="accion" value="cancelarPartida">
+            <input type="hidden" name="idReserva" id="idReservaCancelar">
+        </form>
+
+        <script>
+            function cancelarPartida(idReserva) {
+                if (!confirm("¿Seguro que quieres cancelar esta partida?")) {
+                    return;
+                }
+
+                document.getElementById("idReservaCancelar").value = idReserva;
+                document.getElementById("formCancelarPartida").submit();
+            }
+        </script>
+
         <div id="overlayPartida" class="overlay-partida" style="display:none;">
             <div class="overlay-contenido">
                 <div class="overlay-cabecera">
@@ -325,7 +360,80 @@
             </div>
         </div>
 
-        
+        <script>
+            function cerrarOverlay() {
+                document.getElementById("overlayPartida").style.display = "none";
+                document.getElementById("overlayTitulo").textContent = "";
+                document.getElementById("overlayBody").innerHTML = "";
+            }
+
+            function abrirOverlay(titulo, contenidoHtml) {
+                document.getElementById("overlayTitulo").textContent = titulo;
+                document.getElementById("overlayBody").innerHTML = contenidoHtml;
+                document.getElementById("overlayPartida").style.display = "flex";
+            }
+
+            function abrirParticipantes(boton) {
+                const card = boton.closest(".partidas-card");
+                const participantesTexto = card.dataset.participantes || "";
+                const participantes = participantesTexto.split("|").filter(p => p.trim() !== "");
+
+                let html = "";
+
+                if (participantes.length === 0) {
+                    html = "<p>No hay participantes disponibles.</p>";
+                } else {
+                    html = "<ul class='overlay-lista'>";
+                    participantes.forEach(function(p, index) {
+                        html += "<li>Participante "+ (index + 1) + ": " + p + "</li>";
+                    });
+                    html += "</ul>";
+                }
+
+                abrirOverlay("Participantes", html);
+            }
+
+            function abrirDetalles(boton) {
+                const card = boton.closest(".partidas-card");
+
+                const fecha = card.dataset.fecha || "-";
+                const lugar = card.dataset.lugar || "-";
+                const pista = card.dataset.pista || "-";
+                const resultado = card.dataset.resultado || "Resultado no disponible";
+                const participantesTexto = card.dataset.participantes || "";
+                const participantes = participantesTexto.split("|").filter(p => p.trim() !== "");
+
+                let html = "";
+                html += "<p><b>Fecha:</b> " + fecha + "</p>";
+                html += "<p><b>Lugar:</b> " + lugar + "</p>";
+                html += "<p><b>Pista:</b> " + pista + "</p>";
+                html += "<p><b>Resultado:</b> " + resultado + "</p>";
+                html += "<p><b>Participantes:</b></p>";
+
+                if (participantes.length === 0) {
+                    html += "<p>No hay participantes disponibles.</p>";
+                } else {
+                    html += "<ul class='overlay-lista'>";
+                    participantes.forEach(function(p, index) {
+                        html += "<li>Participante "+ (index + 1) + ": " + p + "</li>";
+                    });
+                    html += "</ul>";
+                }
+
+                abrirOverlay("Detalles de la partida", html);
+            }
+
+            window.addEventListener("click", function(event) {
+                const overlay = document.getElementById("overlayPartida");
+                if (event.target === overlay) {
+                    cerrarOverlay();
+                }
+            });
+            </script>
+
+
+
+
         <script>
             document.querySelectorAll('.link-usuario').forEach(link => {
             link.addEventListener('click', function(e) {
@@ -339,11 +447,6 @@
             });
             });
         </script>
-        
-        
-        
-        
-        
         
         <script>
             window.APP_CTX = "<%= request.getContextPath() %>";

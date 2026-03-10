@@ -60,7 +60,7 @@ public class PartidaPerfilBD {
         this.resultado = resultado;
     }
     public void setParticipantes(List<String> participantes) {
-        participantes = participantes;
+        this.participantes = participantes;
     }
     
 }

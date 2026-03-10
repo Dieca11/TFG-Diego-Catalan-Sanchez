@@ -761,4 +761,16 @@ public final class AccesoBD {
 		}
 		return historial;
 	}
+
+
+	public void cancelarReserva(int idReserva) throws SQLException {
+		abrirConexionBD();
+
+		String sql = "UPDATE reservas SET estado = 'cancelada' WHERE id = ?";
+
+		try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
+			ps.setInt(1, idReserva);
+			ps.executeUpdate();
+		}
+	}
 };
