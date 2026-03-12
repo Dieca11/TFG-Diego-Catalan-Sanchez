@@ -38,7 +38,7 @@ public class Perfil extends HttpServlet {
   }
   @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws IOException {
+        throws IOException, ServletException {
             HttpSession session = request.getSession(false);
             Integer id = (session != null) ? (Integer) session.getAttribute("usuario") : null;
 
@@ -67,8 +67,51 @@ public class Perfil extends HttpServlet {
                 }
             }
 
-    // aquí va la lógica normal de guardar cambios del perfil
-    response.sendRedirect(request.getContextPath() + "/Perfil");
+            if ("anotarResultado".equals(accion)) {
+
+                String idReservaStr = request.getParameter("idReserva");
+                String resultado = request.getParameter("resultado");
+                String[] ganadores = request.getParameterValues("ganadores");
+
+                if (idReservaStr == null || idReservaStr.isBlank()) {
+                    throw new ServletException("No se recibió idReserva.");
+                }
+
+                int idReserva = Integer.parseInt(idReservaStr);
+
+                if (ganadores == null || ganadores.length != 2) {
+                    session.setAttribute("mensajePerfil", "Debes seleccionar exactamente 2 ganadores.");
+                    response.sendRedirect(request.getContextPath() + "/Perfil");
+                    return;
+                }
+
+                AccesoBD con = AccesoBD.getInstance();
+
+                if (!con.esResultadoPadelValido(resultado)) {
+                    session.setAttribute("mensajePerfil", "El resultado introducido no es válido.");
+                    response.sendRedirect(request.getContextPath() + "/Perfil");
+                    return;
+                }
+
+                try {
+                    int ganador1 = Integer.parseInt(ganadores[0]);
+                    int ganador2 = Integer.parseInt(ganadores[1]);
+
+                    con.guardarResultadoPartida(idReserva, resultado, ganador1, ganador2);
+
+                    session.setAttribute("mensajePerfil", "Resultado guardado correctamente.");
+                    response.sendRedirect(request.getContextPath() + "/Perfil");
+                    return;
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    session.setAttribute("mensajePerfil", "No se pudo guardar el resultado.");
+                    response.sendRedirect(request.getContextPath() + "/Perfil");
+                    return;
+                }
+            }
+
+ 
             //Recogemos los datos a actualizar
             Integer id_usu = Integer.parseInt(request.getParameter("id_usu"));
             String imagen = request.getParameter("imagen_usuario");
@@ -131,8 +174,6 @@ public class Perfil extends HttpServlet {
              UsuarioBD actualizado = con.obtenerUsuarioPorCodigo(id_usu);
              session.setAttribute("usuarioPerfil", actualizado);
             response.sendRedirect(request.getContextPath() + "/web/Perfil.jsp");
-
-
         }
 
 

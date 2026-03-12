@@ -330,3 +330,32 @@ input:checked + .slider:before {
     list-style: none;
     font-size: 18px !important;
 }
+
+.bloque-overlay-resultado{
+    margin-bottom: 18px;
+}
+
+.input-resultado{
+    width: 100%;
+    max-width: 250px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #54708d;
+    font-size: 18px;
+    margin-top: 8px;
+}
+
+.fila-ganador{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: rgb(50, 83, 146);
+}
+
+.icono-ganador{
+    color: #d4a017;
+    margin-left: 6px;
+    font-size: 18px;
+}

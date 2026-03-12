@@ -12,7 +12,23 @@ public class PartidaPerfilBD {
     private boolean creador;
     private String estado;
     private String resultado;
-    private List<String> participantes= new ArrayList<>();
+    private int ganador1_id;
+    private int ganador2_id;
+    private List<ParticipantePerfilBD> participantes= new ArrayList<>();
+
+    public void setGanador1_id(int ganador1_id) {
+        this.ganador1_id = ganador1_id;
+    }
+    public void setGanador2_id(int ganador2_id) {
+        this.ganador2_id = ganador2_id;
+    }
+    public int getGanador1_id() {
+        return ganador1_id;
+    }
+    public int getGanador2_id() {
+        return ganador2_id;
+    }
+    
 
     public int getId() {
         return id;
@@ -35,7 +51,7 @@ public class PartidaPerfilBD {
     public String getResultado() {
         return resultado;
     }
-    public List<String> getParticipantes() {
+    public List<ParticipantePerfilBD> getParticipantes() {
         return participantes;
     }
     public void setId(int id) {
@@ -59,7 +75,7 @@ public class PartidaPerfilBD {
     public void setResultado(String resultado) {
         this.resultado = resultado;
     }
-    public void setParticipantes(List<String> participantes) {
+    public void setParticipantes(List<ParticipantePerfilBD> participantes) {
         this.participantes = participantes;
     }
     

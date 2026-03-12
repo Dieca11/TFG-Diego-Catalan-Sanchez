@@ -180,12 +180,17 @@
                                     <% if (pendientes.isEmpty()) { %>
                                         <p> No hay partidas Pendientes</p>
                                     <% } else { %>
-                                        <% for (PartidaPerfilBD p : pendientes) { %>
-                                            <%
-                                            String Participantes = String.join("|", p.getParticipantes());
+                                            <% for (PartidaPerfilBD p : pendientes) { 
+
+                                            String participantesP = "";
+                                            for (int i = 0; i < p.getParticipantes().size(); i++) {
+                                                ParticipantePerfilBD participante = p.getParticipantes().get(i);
+                                                if (i > 0) participantesP += "|";
+                                                participantesP += participante.getId() + "##" + participante.getNombre();
+                                            }
                                             %>
 
-                                        <div class="partidas-card" id="colpendientes" data-participantes="<%= Participantes %>">
+                                        <div class="partidas-card" id="colpendientes" data-participantes="<%= participantesP %>">
                                             <div class="partida-head">
                                                 <%
                                                     java.text.SimpleDateFormat formato =
@@ -227,13 +232,21 @@
                                                 new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
                                                 String fecha = formato.format(h.getFechaHora());
                                             %>
-                                                                                        <%
-                                            String Participantes = String.join("|", h.getParticipantes());
-                                            %>
+                                            <%
+                                                String participantesH = "";
+                                                for (int i = 0; i < h.getParticipantes().size(); i++) {
+                                                    ParticipantePerfilBD participante = h.getParticipantes().get(i);
+                                                    if (i > 0) participantesH += "|";
+                                                    participantesH += participante.getId() + "##" + participante.getNombre();
+                                                }
+                                                %>
                                             <div class="partidas-card" id="colHistorial" data-fecha="<%=fecha%>"
                                                                                         data-lugar="<%=h.getMunicipio()%>"
                                                                                         data-pista="<%=h.getNumeroPista()%>"
-                                                                                        data-participantes="<%= Participantes%>"
+                                                                                        data-participantes="<%= participantesH%>"
+                                                                                        data-resultado="<%= h.getResultado()%>"
+                                                                                        data-ganador1="<%= h.getGanador1_id()%>"
+                                                                                        data-ganador2="<%= h.getGanador2_id()%>"
                                                                                         >
                                                 <div class="partida-head">
 
@@ -241,12 +254,24 @@
                                                     <div class="partida-estado"><%= h.getEstado() %></div>
                                                 </div>
                                                 <div class="partida-info">
-                                                    <div class="partida-resultado"> Resultado: </div>
+                                                    <%
+                                                        String resultado = h.getResultado();
+                                                        if (resultado == null || resultado.isBlank()) {
+                                                            resultado = "Resultado no disponible todavía";
+                                                        }
+                                                    %>
+                                                    <div class="partida-resultado"> Resultado: <%= resultado %> </div>
                                                 </div>
                                                 <div class="partida-actions">
                                                     <button type="button" class="btn-partida" onclick="abrirDetalles(this)">Detalles</button>
-                                                    <% if (h.isCreador()) { %>
-                                                        <div class="btn-resultado"> Anotar Resultado</div> 
+                                                    <%
+                                                        boolean puedeAnotar = h.isCreador() && h.getParticipantes() != null && h.getParticipantes().size() == 4;
+                                                    %>
+                                                    <% if (puedeAnotar==true && h.getResultado()==null) { %>
+                                                        <button type="button" class="btn-resultado" data-id="<%= h.getId() %>" data-participantes="<%= participantesH %>"
+                                                                onclick="abrirResultado(this)"> 
+                                                            Anotar Resultado
+                                                        </button> 
                                                     <% } %>
                                                 </div>
                                             </div>
@@ -360,6 +385,41 @@
             </div>
         </div>
 
+        <div id="overlayResultado" class="overlay-partida" style="display:none;">
+            <div class="overlay-contenido">
+                <div class="overlay-cabecera">
+                    <h3 id="overlayResultadoTitulo">Anotar resultado</h3>
+                    <button type="button" class="overlay-cerrar" onclick="cerrarOverlayResultado()">×</button>
+                </div>
+
+                <div class="overlay-body">
+                    <form id="formResultadoPartida" method="post" action="<%= request.getContextPath() %>/Perfil" onsubmit="return validarFormularioResultado()">
+                        <input type="hidden" name="accion" value="anotarResultado">
+                        <input type="hidden" name="idReserva" id="resultadoIdReserva">
+
+                        <div class="bloque-overlay-resultado">
+                            <label for="inputResultado"><b>Resultado: </b></label>
+                            <input type="text"
+                                id="inputResultado"
+                                name="resultado"
+                                class="input-resultado"
+                                placeholder="Ej: 7-6/6-2"
+                                required>
+                        </div>
+
+                        <div class="bloque-overlay-resultado">
+                            <p><b>Selecciona los 2 ganadores</b></p>
+                            <div id="contenedorGanadores"></div>
+                        </div>
+
+                        <div class="partida-actions">
+                            <button type="submit" class="btn-partida btn-resultado">Guardar resultado</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <script>
             function cerrarOverlay() {
                 document.getElementById("overlayPartida").style.display = "none";
@@ -384,8 +444,12 @@
                     html = "<p>No hay participantes disponibles.</p>";
                 } else {
                     html = "<ul class='overlay-lista'>";
-                    participantes.forEach(function(p, index) {
-                        html += "<li>Participante "+ (index + 1) + ": " + p + "</li>";
+                    participantes.forEach(function(item, index) {
+                        const partes = item.split("##");
+                        const idUsuario = partes[0];
+                        const nombre = partes[1];
+
+                        html += "<li>Participante "+ (index + 1) + ": " + nombre + "</li>";
                     });
                     html += "</ul>";
                 }
@@ -399,6 +463,8 @@
                 const fecha = card.dataset.fecha || "-";
                 const lugar = card.dataset.lugar || "-";
                 const pista = card.dataset.pista || "-";
+                const ganador1 = card.dataset.ganador1 || "";
+                const ganador2 = card.dataset.ganador2 || "";
                 const resultado = card.dataset.resultado || "Resultado no disponible";
                 const participantesTexto = card.dataset.participantes || "";
                 const participantes = participantesTexto.split("|").filter(p => p.trim() !== "");
@@ -414,8 +480,19 @@
                     html += "<p>No hay participantes disponibles.</p>";
                 } else {
                     html += "<ul class='overlay-lista'>";
-                    participantes.forEach(function(p, index) {
-                        html += "<li>Participante "+ (index + 1) + ": " + p + "</li>";
+                    participantes.forEach(function(item, index) {
+
+                        const partes = item.split("##");
+                        const idUsuario = partes[0];
+                        const nombre = partes[1];
+                        
+                        const esGanador = (idUsuario=== ganador1 || idUsuario===ganador2)
+                        html += "<li>Participante "+ (index + 1) + ": " + nombre ;
+
+                        if(esGanador){
+                            html += " <i class='bi bi-trophy-fill icono-ganador'> </i>";
+                        }
+                        html += " <li>";
                     });
                     html += "</ul>";
                 }
@@ -429,9 +506,123 @@
                     cerrarOverlay();
                 }
             });
+        </script>
+
+        <script>
+            function abrirResultado(boton) {
+                const idReserva = boton.dataset.id;
+                const participantesTexto = boton.dataset.participantes || "";
+                const participantes = participantesTexto
+                    .split("|")
+                    .map(function(p) { return p.trim(); })
+                    .filter(function(p) { return p !== ""; });
+
+                document.getElementById("resultadoIdReserva").value = idReserva;
+
+                const contenedor = document.getElementById("contenedorGanadores");
+                contenedor.innerHTML = "";
+
+                participantes.forEach(function(item, index) {
+
+                    const partes = item.split("##");
+                    const idUsuario = partes[0];
+                    const nombre = partes[1];
+
+                    contenedor.innerHTML +=
+                        "<div class='fila-ganador'>" +
+                            "<input type='checkbox' name='ganadores' value='" + idUsuario + "'>" +
+                            "<span>Participante " + (index + 1) + ": " + nombre + "</span>" +
+                        "</div>";
+                });
+
+                document.getElementById("overlayResultado").style.display = "flex";
+            }
+
+            function cerrarOverlayResultado() {
+                document.getElementById("overlayResultado").style.display = "none";
+                document.getElementById("resultadoIdReserva").value = "";
+                document.getElementById("inputResultado").value = "";
+                document.getElementById("contenedorGanadores").innerHTML = "";
+            }
+        </script>
+
+        <script>
+            function validarFormularioResultado() {
+                const resultado = document.getElementById("inputResultado").value.trim();
+                const ganadores = document.querySelectorAll("input[name='ganadores']:checked");
+
+                if (ganadores.length !== 2) {
+                    alert("Debes seleccionar exactamente 2 ganadores.");
+                    return false;
+                }
+
+                if (!esResultadoPadelValido(resultado)) {
+                    alert("Introduce un resultado válido de pádel. Ejemplo: 7-6/2-6/6-4");
+                    return false;
+                }
+
+                return true;
+            }
+
+            function esResultadoPadelValido(resultado) {
+                if (!resultado) return false;
+
+                const sets = resultado.split("/");
+
+                if (sets.length < 1 || sets.length > 3) return false;
+
+                let setsGanadosA = 0;
+                let setsGanadosB = 0;
+
+                for (let i = 0; i < sets.length; i++) {
+
+                    const set = sets[i].trim();
+
+                    if (!esSetValido(set)) {
+                        return false;
+                    }
+
+                    const partes = set.split("-");
+                    const a = parseInt(partes[0].trim(), 10);
+                    const b = parseInt(partes[1].trim(), 10);
+
+                    if (a > b) {
+                        setsGanadosA++;
+                    } else {
+                        setsGanadosB++;
+                    }
+                }
+
+                return (setsGanadosA === 2 || setsGanadosB === 2);
+            }
+
+            function esSetValido(set) {
+                const partes = set.split("-");
+
+                if (partes.length !== 2) return false;
+
+                const a = parseInt(partes[0].trim(), 10);
+                const b = parseInt(partes[1].trim(), 10);
+
+                if (isNaN(a) || isNaN(b)) return false;
+                if (a === b) return false;
+                if (a < 0 || b < 0) return false;
+                if (a > 7 || b > 7) return false;
+
+                const max = Math.max(a, b);
+                const min = Math.min(a, b);
+
+                if (max === 6) {
+                    return min >= 0 && min <= 4;
+                }
+
+                if (max === 7) {
+                    return min === 5 || min === 6;
+                }
+
+                return false;
+            }
             </script>
-
-
 
 
         <script>

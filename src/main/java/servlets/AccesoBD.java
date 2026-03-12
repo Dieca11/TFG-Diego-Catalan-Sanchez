@@ -678,9 +678,10 @@ public final class AccesoBD {
     String sql =
         "SELECT r.id, r.fecha_hora, r.numero_pista, r.creador_id, " +
         "       r.invitado1_id, r.invitado2_id, r.invitado3_id, " +
-        "       r.estado, m.municipio " +
+        "       r.estado, m.municipio, p.resultado, p.ganador1_id, p.ganador2_id " +
         "FROM reservas r " +
         "JOIN municipios m ON m.id = r.municipio_id " +
+		"LEFT JOIN partidas p ON p.reserva_id = r.id " +
         "WHERE r.creador_id = ? " +
         "   OR r.invitado1_id = ? " +
         "   OR r.invitado2_id = ? " +
@@ -702,9 +703,12 @@ public final class AccesoBD {
                 p.setMunicipio(rs.getString("municipio"));
                 p.setNumeroPista(rs.getInt("numero_pista"));
                 p.setEstado(rs.getString("estado"));
+				p.setResultado(rs.getString("resultado"));
+				p.setGanador1_id(rs.getInt("ganador1_id"));
+				p.setGanador2_id(rs.getInt("ganador2_id"));
                 p.setCreador(rs.getInt("creador_id") == idUsuario);
 
-                ArrayList<String> participantes = new ArrayList<>();
+                ArrayList<ParticipantePerfilBD> participantes = new ArrayList<>();
 
                 Integer creadorId = (Integer) rs.getObject("creador_id");
                 Integer inv1 = (Integer) rs.getObject("invitado1_id");
@@ -713,19 +717,19 @@ public final class AccesoBD {
 
                 if (creadorId != null) {
                     String nombre = obtenerNombreUsuarioPorId(creadorId);
-                    if (nombre != null) participantes.add(nombre);
+                    if (nombre != null) participantes.add(new ParticipantePerfilBD(creadorId, nombre));
                 }
                 if (inv1 != null) {
                     String nombre = obtenerNombreUsuarioPorId(inv1);
-                    if (nombre != null) participantes.add(nombre);
+                    if (nombre != null) participantes.add(new ParticipantePerfilBD(inv1, nombre));
                 }
                 if (inv2 != null) {
                     String nombre = obtenerNombreUsuarioPorId(inv2);
-                    if (nombre != null) participantes.add(nombre);
+                    if (nombre != null) participantes.add(new ParticipantePerfilBD(inv2, nombre));
                 }
                 if (inv3 != null) {
                     String nombre = obtenerNombreUsuarioPorId(inv3);
-                    if (nombre != null) participantes.add(nombre);
+                    if (nombre != null) participantes.add(new ParticipantePerfilBD(inv3, nombre));
                 }
 
                 p.setParticipantes(participantes);
@@ -773,4 +777,79 @@ public final class AccesoBD {
 			ps.executeUpdate();
 		}
 	}
+
+	public boolean esResultadoPadelValido(String resultado) {
+		if (resultado == null || resultado.isBlank()) return false;
+
+		String[] sets = resultado.split("/");
+		if (sets.length < 1 || sets.length > 3) return false;
+
+		int setsGanadosA = 0;
+		int setsGanadosB = 0;
+
+		for (String set : sets) {
+			String setLimpio = set.trim();
+
+			if (!esSetValido(setLimpio)) {
+				return false;
+			}
+
+			String[] partes = setLimpio.split("-");
+			int a = Integer.parseInt(partes[0].trim());
+			int b = Integer.parseInt(partes[1].trim());
+
+			if (a > b) {
+				setsGanadosA++;
+			} else {
+				setsGanadosB++;
+			}
+		}
+
+		return setsGanadosA == 2 || setsGanadosB == 2;
+	}
+
+	private boolean esSetValido(String set) {
+		String[] partes = set.split("-");
+		if (partes.length != 2) return false;
+
+		int a, b;
+		try {
+			a = Integer.parseInt(partes[0].trim());
+			b = Integer.parseInt(partes[1].trim());
+		} catch (NumberFormatException e) {
+			return false;
+		}
+
+		if (a == b) return false;
+		if (a < 0 || b < 0) return false;
+		if (a > 7 || b > 7) return false;
+
+		int max = Math.max(a, b);
+		int min = Math.min(a, b);
+
+		if (max == 6) {
+			return min >= 0 && min <= 4;
+		}
+
+		if (max == 7) {
+			return min == 5 || min == 6;
+		}
+
+		return false;
+	}
+
+	public void guardarResultadoPartida(int idReserva, String resultado, int ganador1, int ganador2) throws SQLException {
+		abrirConexionBD();
+
+		String sql = "UPDATE partidas SET resultado = ?, ganador1_id = ?, ganador2_id = ? WHERE reserva_id = ?";
+
+		try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
+			ps.setString(1, resultado);
+			ps.setInt(2, ganador1);
+			ps.setInt(3, ganador2);
+			ps.setInt(4, idReserva);
+			ps.executeUpdate();
+		}
+	}
+
 };
