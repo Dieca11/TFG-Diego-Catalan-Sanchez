@@ -1,11 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" import=" java.util.List, servlets.*" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" import=" java.util.ArrayList, servlets.*" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="css/cabecera-footer.css">
-        <link rel="stylesheet" type="text/css" href="css/Clasificacion.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/web/css/cabecera-footer.css">
+        <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/web/css/Clasificacion.css">
 
 
         <title>CLASIFICACION</title>
@@ -26,7 +26,25 @@
     </head>
     <body>
         <mi-cabecera></mi-cabecera>
+
+        <%
+            ArrayList<MunicipioBD> municipios =
+                (ArrayList<MunicipioBD>) session.getAttribute("municipiosClasificacion");
+
+            if (municipios == null) municipios = new ArrayList<MunicipioBD>();
+
+            ArrayList<UsuarioClasificacion> clasificacion =
+                (ArrayList<UsuarioClasificacion>) session.getAttribute("clasificacionGeneral");
+
+            if (clasificacion == null) clasificacion = new ArrayList<>();
+
+            String filtroClasificacion = (String) session.getAttribute("filtroClasificacion");
+            if (filtroClasificacion == null) filtroClasificacion = "General";
+        %>
+
         <div class="container gx-0 cuerpo">
+
+            <h1> CLASIFICACION DE USUARIOS</h1>
 
             <div class="btn-group dropend">
                 <button type="button" class=" dropdown-btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -34,92 +52,51 @@
                 </button>
                     <ul class="dropdown-menu">
                         <li data-value="General">GENERAL</li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li data-value="municipio1">MORA DE RUBIELOS</li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li data-value="municipio2">Municipio 3</li>
-                    </ul>
+                        
+                        <% for (MunicipioBD m : municipios) { %>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <%= m.getMunicipio() %>
+                                </a>
+                            </li>
+                        <% } %>
             </div>
+
             <div class="tabla-scroll">
                 <table >
                     <thead>
                         <tr>
                             <th>POSICION</th>
-                            <th>NOMBRE DE USUARIO</th>
-                            <th>LUGAR</th>
-                            <th>PARTIDOS JUGADOS </th>
-                            <th>PARTIDOS GANADOS</th>
-                            <th>ULTIMO RESULTADO </th>
+                            <th>USUARIO</th>
+                            <th>PARTIDOS J. </th>
+                            <th>PARTIDOS G.</th>
                             <th>%VICTORIAS</th>
+                            <th>RACHA ACTUAL</th>
                         </tr>
                     </thead>
                     
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Dieca11</td>
-                            <td>MORA DE RUBIELOS</td>
-                            <td>10</td>
-                            <td>9</td>
-                            <td>6-0/3-6/6-2</td>
-                            <td>90%</td>
-                        </tr>
-
-                        <tr>
-                            <td>2</td>
-                            <td>Dieca11</td>
-                            <td>VALBONA</td>
-                            <td>10</td>
-                            <td>9</td>
-                            <td>6-0/3-6/6-2</td>
-                            <td>90%</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Dieca11</td>
-                            <td>VALBONA</td>
-                            <td>10</td>
-                            <td>9</td>
-                            <td>6-0/3-6/6-2</td>
-                            <td>90%</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Dieca11</td>
-                            <td>VALBONA</td>
-                            <td>10</td>
-                            <td>9</td>
-                            <td>6-0/3-6/6-2</td>
-                            <td>90%</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Dieca11</td>
-                            <td>VALBONA</td>
-                            <td>10</td>
-                            <td>9</td>
-                            <td>6-0/3-6/6-2</td>
-                            <td>90%</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Dieca11</td>
-                            <td>VALBONA</td>
-                            <td>10</td>
-                            <td>9</td>
-                            <td>6-0/3-6/6-2</td>
-                            <td>90%</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Dieca11</td>
-                            <td>VALBONA</td>
-                            <td>10</td>
-                            <td>9</td>
-                            <td>6-0/3-6/6-2</td>
-                            <td>90%</td>
-                        </tr>
-                        
+                        <% if (clasificacion.isEmpty()) { %>
+                            <tr>
+                                <td> No hay usuarios suficientes para mostrar la clasificacion</td>
+                            </tr>
+                        <% } else { %>
+                            <% for (UsuarioClasificacion u : clasificacion) { %>
+                                <tr class="<%= u.getPosicion() == 1 ? "top1" : u.getPosicion() == 2 ? "top2" : u.getPosicion() == 3 ? "top3" : "" %>">
+                                    <td><%= u.getPosicion() %></td>
+                                    <td><%= u.getNombreUsuario() %></td>
+                                    <td><%= u.getPartidasJugadas() %></td>
+                                    <td><%= u.getPartidasGanadas() %></td>
+                                    <td><%= u.getPorcentajeV() %>%</td>
+                                    <td>
+                                        <span class="<%= u.getRacha().contains("V") ? "racha-victoria" : "racha-derrota" %>">
+                                            <%= u.getRacha() %>
+                                        </span>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        <% } %>
                     </tbody>
                 </table>
             </div>

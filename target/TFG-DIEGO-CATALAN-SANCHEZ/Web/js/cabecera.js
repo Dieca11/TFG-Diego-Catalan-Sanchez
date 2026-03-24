@@ -21,7 +21,7 @@ class Cabecera extends HTMLElement {
                                     <a class="nav-link" href="${BASE}Reservas.jsp">RESERVAS</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="${BASE}Clasificaciones.jsp">CLASIFICACIONES</a>
+                                    <a class="nav-link" href="/TFG-DIEGO-CATALAN-SANCHEZ/Clasificacion">CLASIFICACIONES</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="${BASE}Reseñas.jsp">RESEÑAS</a>

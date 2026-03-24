@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -32,10 +33,31 @@ public class Perfil extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/web/Perfil.jsp");
     }
 
+    try {
+    ArrayList<UsuarioClasificacion> clasificacion = AccesoBD.getInstance().obtenerClasificacionGeneral();
+
+        System.out.println("=== PRUEBA CLASIFICACION CON RACHA ===");
+        for (UsuarioClasificacion us : clasificacion) {
+            System.out.println(
+                us.getPosicion() + " | " +
+                us.getNombreUsuario() + " | PJ: " +
+                us.getPartidasJugadas() + " | PG: " +
+                us.getPartidasGanadas() + " | %V: " +
+                us.getPorcentajeV() + " | Racha: " +
+                us.getRacha()
+            );
+        }
+        System.out.println("=== FIN PRUEBA ===");
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
     response.sendRedirect(request.getContextPath() + "/web/Perfil.jsp");
 
     return;
   }
+
   @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException {
