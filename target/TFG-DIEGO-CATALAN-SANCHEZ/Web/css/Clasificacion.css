@@ -1,9 +1,7 @@
 table{ 
   border-collapse: separate !important;
-  border-spacing: 10px !important; 
+  border-spacing: 20px !important; 
   text-align: center !important;
-  margin-left: auto;
-  margin-right: auto;
   font-size: 20px;
   font-weight: 600;
   border: 2px solid  #54708d;
@@ -12,6 +10,7 @@ table{
   color: rgb(50, 83, 146);
   min-width: 500px;
   table-layout: fixed;
+  margin: 0;
 }
 
 
@@ -43,18 +42,21 @@ th {
 
 .cuerpo {
   display: flex;
-  align-items: flex-start;
   gap: 20px;
-  justify-content: center;
   flex-direction: column;
-  margin-top: 40px;
+  margin: auto;
+  width: fit-content;
+}
+
+.group-btn{
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .btn-secondary {
   position: relative;
-  width: 100%;
-  padding:8px 8px;
-  margin-left: 18px;
+  padding:8px 16px;
   border-radius: 8px;
   border: 2px solid #7facdd;
   background-color: rgba(178, 204, 231, 0.5);
@@ -63,15 +65,15 @@ th {
   cursor: pointer;
 }
 
-
 .dropdown-menu{
 
-  position: absolute;
+  position: relative;
   top: 0;
-  left: 100%;
+  left: 80%;
   display: none;
   z-index: 10;
   background-color: rgba(178, 204, 231) !important;
+  color: rgb(50, 83, 146) !important;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
   border-top-right-radius: 0;
@@ -80,6 +82,11 @@ th {
   overflow-y: auto;
   border: 1px solid #ccc;
   width: 250px;
+}
+h1{
+  color: rgb(50, 83, 146) !important;
+  margin: 0 auto;
+  margin-top: 20px !important;
 }
 
 .dropdown-menu li{

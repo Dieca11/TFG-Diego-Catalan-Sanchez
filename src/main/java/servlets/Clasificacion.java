@@ -1,7 +1,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import jakarta.servlet.ServletException;
@@ -13,30 +12,42 @@ import jakarta.servlet.http.HttpSession;
 public class Clasificacion extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
 
         HttpSession session = request.getSession();
 
-        ArrayList<MunicipioBD> municipios =
-        (ArrayList<MunicipioBD>) AccesoBD.getInstance().obtenerMunicipiosBD();
-
-        session.setAttribute("municipiosClasificacion", municipios);
-
         try {
+            String idMunicipioStr = request.getParameter("idMunicipio");
+            Integer idMunicipio = null;
+
+            if (idMunicipioStr != null && !idMunicipioStr.trim().isEmpty()) {
+                idMunicipio = Integer.parseInt(idMunicipioStr);
+            }
+
             ArrayList<UsuarioClasificacion> clasificacion =
-                AccesoBD.getInstance().obtenerClasificacionGeneral();
+                AccesoBD.getInstance().obtenerClasificacionPorMunicipio(idMunicipio);
+
+            ArrayList<MunicipioBD> municipios =
+                (ArrayList<MunicipioBD>) AccesoBD.getInstance().obtenerMunicipiosBD();
+
+            // Nombre del filtro
+            String filtro = "GENERAL";
+
+            if (idMunicipio != null) {
+                MunicipioBD m = AccesoBD.getInstance().obtenerMunicipioBD(idMunicipio);
+                if (m != null) {
+                    filtro = m.getMunicipio();
+                }
+            }
 
             session.setAttribute("clasificacionGeneral", clasificacion);
-            session.setAttribute("filtroClasificacion", "General");
-
-            System.out.println("TAMANO CLASIFICACION EN SERVLET: " + clasificacion.size());
-            session.setAttribute("clasificacionGeneral", clasificacion);
-            System.out.println("ATRIBUTO GUARDADO EN SESION: " + session.getAttribute("clasificacionGeneral"));
+            session.setAttribute("municipiosClasificacion", municipios);
+            session.setAttribute("filtroClasificacion", filtro);
+            session.setAttribute("idMunicipioSeleccionado", idMunicipio);
 
             response.sendRedirect(request.getContextPath() + "/web/Clasificaciones.jsp");
 
-        } catch (SQLException e) {
-            System.err.println("Error al cargar la clasificación");
+        } catch (Exception e) {
             e.printStackTrace();
             throw new ServletException(e);
         }

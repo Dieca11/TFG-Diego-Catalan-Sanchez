@@ -39,28 +39,32 @@
             if (clasificacion == null) clasificacion = new ArrayList<>();
 
             String filtroClasificacion = (String) session.getAttribute("filtroClasificacion");
-            if (filtroClasificacion == null) filtroClasificacion = "General";
+            if (filtroClasificacion == null) filtroClasificacion = "GENERAL";
         %>
 
-        <div class="container gx-0 cuerpo">
+        <div class="cuerpo">
 
-            <h1> CLASIFICACION DE USUARIOS</h1>
+            <h1> CLASIFICACION - <%= filtroClasificacion %></h1>
 
             <div class="btn-group dropend">
                 <button type="button" class=" dropdown-btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    GENERAL
+                    <%= filtroClasificacion %>
                 </button>
                     <ul class="dropdown-menu">
-                        <li data-value="General">GENERAL</li>
+                        <li data-value="GENERAL">
+                            <a class="dropdown-item" href="<%= request.getContextPath() %>/Clasificacion">GENERAL</a></li>
                         
                         <% for (MunicipioBD m : municipios) { %>
+                            <% if (m.isActivo()) { %>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="<%= request.getContextPath() %>/Clasificacion?idMunicipio=<%= m.getId() %>">
                                     <%= m.getMunicipio() %>
                                 </a>
                             </li>
                         <% } %>
+                        <% } %>
+                    </ul>
             </div>
 
             <div class="tabla-scroll">
@@ -79,7 +83,7 @@
                     <tbody>
                         <% if (clasificacion.isEmpty()) { %>
                             <tr>
-                                <td> No hay usuarios suficientes para mostrar la clasificacion</td>
+                                <td colspan="6"> No hay usuarios suficientes para mostrar la clasificacion</td>
                             </tr>
                         <% } else { %>
                             <% for (UsuarioClasificacion u : clasificacion) { %>

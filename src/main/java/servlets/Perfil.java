@@ -34,24 +34,22 @@ public class Perfil extends HttpServlet {
     }
 
     try {
-    ArrayList<UsuarioClasificacion> clasificacion = AccesoBD.getInstance().obtenerClasificacionGeneral();
+    ArrayList<UsuarioClasificacion> clasificacion = AccesoBD.getInstance().obtenerClasificacionPorMunicipio(2);
 
-        System.out.println("=== PRUEBA CLASIFICACION CON RACHA ===");
-        for (UsuarioClasificacion us : clasificacion) {
-            System.out.println(
-                us.getPosicion() + " | " +
-                us.getNombreUsuario() + " | PJ: " +
-                us.getPartidasJugadas() + " | PG: " +
-                us.getPartidasGanadas() + " | %V: " +
-                us.getPorcentajeV() + " | Racha: " +
-                us.getRacha()
-            );
-        }
-        System.out.println("=== FIN PRUEBA ===");
-
-    } catch (SQLException e) {
-        e.printStackTrace();
+    System.out.println("=== CLASIFICACION MUNICIPIO 1 ===");
+    for (UsuarioClasificacion us : clasificacion) {
+        System.out.println(
+            us.getPosicion() + " | " +
+            us.getNombreUsuario() + " | PJ: " +
+            us.getPartidasJugadas() + " | PG: " +
+            us.getPartidasGanadas() + " | %V: " +
+            us.getPorcentajeV() + " | Racha: " +
+            us.getRacha()
+        );
     }
+} catch (SQLException e) {
+    e.printStackTrace();
+}
 
     response.sendRedirect(request.getContextPath() + "/web/Perfil.jsp");
 

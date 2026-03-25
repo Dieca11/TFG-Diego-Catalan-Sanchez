@@ -58,7 +58,7 @@
 			    %>
                 <div class="col-lg-4 col-md-6 col-sm-12 mb-4"><img class="municipio" src=" <%=imagen%> " alt="<%=municipio%>">
                     <label class="texto"><%=municipio%></label>
-                    <a href="<%= request.getContextPath() %>/Reserva?id=<%= Municipio.getId() %>">
+                    <a class="boton" href="<%= request.getContextPath() %>/Reserva?id=<%= Municipio.getId() %>">
                         Reservar
                     </a>
 

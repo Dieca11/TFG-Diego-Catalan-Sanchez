@@ -969,4 +969,132 @@ public final class AccesoBD {
 		return contador + primero;
 	}
 
+	public ArrayList<UsuarioClasificacion> obtenerClasificacionPorMunicipio(Integer idMunicipio) throws SQLException {
+		abrirConexionBD();
+
+		ArrayList<UsuarioClasificacion> lista = new ArrayList<>();
+
+		String sql =
+			"SELECT u.id AS id_usuario, u.nombre_usuario, " +
+			"COUNT(*) AS partidas_jugadas, " +
+			"SUM(CASE " +
+			"WHEN u.id = p.ganador1_id OR u.id = p.ganador2_id " +
+			"THEN 1 ELSE 0 END) AS partidas_ganadas, " +
+			"ROUND( " +
+			"SUM(CASE " +
+			"WHEN u.id = p.ganador1_id OR u.id = p.ganador2_id " +
+			"THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 1) AS porcentaje_victorias " +
+			"FROM usuarios u " +
+			"JOIN ( " +
+			"SELECT creador_id AS id_usuario, id AS reserva_id FROM reservas " +
+			"UNION ALL " +
+			"SELECT invitado1_id, id FROM reservas WHERE invitado1_id IS NOT NULL " +
+			"UNION ALL " +
+			"SELECT invitado2_id, id FROM reservas WHERE invitado2_id IS NOT NULL " +
+			"UNION ALL " +
+			"SELECT invitado3_id, id FROM reservas WHERE invitado3_id IS NOT NULL " +
+			") participantes ON participantes.id_usuario = u.id " +
+			"JOIN reservas r ON r.id = participantes.reserva_id " +
+			"JOIN partidas p ON p.reserva_id = r.id " +
+			"WHERE r.estado = 'jugada' " +
+			"AND p.resultado IS NOT NULL ";
+
+		if (idMunicipio != null) {
+			sql += "AND r.municipio_id = ? ";
+		}
+
+		sql +=
+			"GROUP BY u.id, u.nombre_usuario " +
+			"HAVING COUNT(*) >= 5 " +
+			"ORDER BY porcentaje_victorias DESC, partidas_ganadas DESC, partidas_jugadas DESC, nombre_usuario ASC " +
+			"LIMIT 20";
+
+		try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
+
+			if (idMunicipio != null) {
+				ps.setInt(1, idMunicipio);
+			}
+
+			try (ResultSet rs = ps.executeQuery()) {
+				int posicion = 1;
+
+				while (rs.next()) {
+					UsuarioClasificacion u = new UsuarioClasificacion();
+
+					u.setPosicion(posicion++);
+					u.setIdUsuario(rs.getInt("id_usuario"));
+					u.setNombreUsuario(rs.getString("nombre_usuario"));
+					u.setPartidasJugadas(rs.getInt("partidas_jugadas"));
+					u.setPartidasGanadas(rs.getInt("partidas_ganadas"));
+					u.setPorcentajeV(rs.getDouble("porcentaje_victorias"));
+					u.setRacha(obtenerRachaUsuarioPorMunicipio(u.getIdUsuario(), idMunicipio));
+
+					lista.add(u);
+				}
+			}
+		}
+
+		return lista;
+	}
+
+	public String obtenerRachaUsuarioPorMunicipio(int idUsuario, Integer idMunicipio) throws SQLException {
+		abrirConexionBD();
+
+		ArrayList<String> resultados = new ArrayList<>();
+
+		String sql =
+			"SELECT r.fecha_hora, " +
+			"CASE " +
+			"WHEN p.ganador1_id = ? OR p.ganador2_id = ? THEN 'V' " +
+			"ELSE 'D' " +
+			"END AS resultado_usuario " +
+			"FROM reservas r " +
+			"JOIN partidas p ON p.reserva_id = r.id " +
+			"WHERE r.estado = 'jugada' " +
+			"AND p.resultado IS NOT NULL " +
+			"AND (r.creador_id = ? OR r.invitado1_id = ? OR r.invitado2_id = ? OR r.invitado3_id = ?) ";
+
+		if (idMunicipio != null) {
+			sql += "AND r.municipio_id = ? ";
+		}
+
+		sql += "ORDER BY r.fecha_hora DESC";
+
+		try (PreparedStatement ps = conexionBD.prepareStatement(sql)) {
+			ps.setInt(1, idUsuario);
+			ps.setInt(2, idUsuario);
+			ps.setInt(3, idUsuario);
+			ps.setInt(4, idUsuario);
+			ps.setInt(5, idUsuario);
+			ps.setInt(6, idUsuario);
+
+			if (idMunicipio != null) {
+				ps.setInt(7, idMunicipio);
+			}
+
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					resultados.add(rs.getString("resultado_usuario"));
+				}
+			}
+		}
+
+		if (resultados.isEmpty()) {
+			return "0";
+		}
+
+		String primero = resultados.get(0);
+		int contador = 0;
+
+		for (String r : resultados) {
+			if (r.equals(primero)) {
+				contador++;
+			} else {
+				break;
+			}
+		}
+
+		return contador + primero;
+	}
+
 };
