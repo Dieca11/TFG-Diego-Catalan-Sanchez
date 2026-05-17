@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="css/cabecera-footer.css">
         <link rel="stylesheet" type="text/css" href="css/InicioSesion.css">
 
-        <title>INICIO SESION</title>
+        <title>REGISTRO</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         
@@ -51,8 +51,8 @@
 
                 <div class="row-lg-12 row-md-2 row-sm-2 row-xs-2 Inicio">
 
-                    <a href="InicioSesion.jsp">INICIAR SESION</a>
-                    <a href="#">REGISTRARSE</a>
+                    <a class="cabecera" href="InicioSesion.jsp">INICIAR SESION</a>
+                    <a class="cabecera" href="#">REGISTRARSE</a>
 
                 </div>
 
@@ -74,6 +74,13 @@
 
                     <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
                         <input type="password" name="clave2" placeholder=" CONFIRMAR CONTRASEÑA" required>
+                    </div>
+
+                    <div class="politica">
+                        <label class=" col-auto politica-label">
+                            <input type="checkbox" name="aceptaPolitica" value="true" required>
+                            <span>Acepto la <a href="PoliticaPrivacidad.jsp"> politica de datos y privacidad </a></span>
+                        </label>
                     </div>
 
                     <div class="row-lg-1 wor-md-2 row-sm-2 row-xs-2">

@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="css/cabecera-footer.css">
         <link rel="stylesheet" type="text/css" href="css/InicioSesion.css">
 
-        <title>INICIO SESION</title>
+        <title>REGISTRO</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         
@@ -23,6 +23,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+7GDvjz4Et6kcu9teW7RSJoV++Ar5QnFexl3O9b" crossorigin="anonymous">
         <link rel="icon" href="Imagenes/raqueta-de-padel.png" type="image/png" class="logo">
     </head>
+    
     <body>
         <mi-cabecera></mi-cabecera>
 
@@ -51,8 +52,8 @@
 
                 <div class="row-lg-12 row-md-2 row-sm-2 row-xs-2 Inicio">
 
-                    <a href="InicioSesion.jsp">INICIAR SESION</a>
-                    <a href="#">REGISTRARSE</a>
+                    <a class="cabecera" href="InicioSesion.jsp">INICIAR SESION</a>
+                    <a class="cabecera" href="#">REGISTRARSE</a>
 
                 </div>
 
@@ -74,6 +75,13 @@
 
                     <div class="row-lg-2 row-md-2 row-sm-2 row-xs-2">
                         <input type="password" name="clave2" placeholder=" CONFIRMAR CONTRASEÑA" required>
+                    </div>
+
+                    <div class="politica">
+                        <label class=" col-auto politica-label">
+                            <input type="checkbox" name="aceptaPolitica" value="true" required>
+                            <span>Acepto la <a href="PoliticaPrivacidad.jsp"> politica de datos y privacidad </a></span>
+                        </label>
                     </div>
 
                     <div class="row-lg-1 wor-md-2 row-sm-2 row-xs-2">

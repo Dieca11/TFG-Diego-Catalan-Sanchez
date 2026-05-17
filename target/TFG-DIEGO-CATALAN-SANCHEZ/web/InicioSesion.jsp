@@ -81,8 +81,8 @@
 
                 <div class="row-lg-12 row-md-2 row-sm-2 row-xs-2 Inicio">
 
-                    <a href="#">INICIAR SESION</a>
-                    <a href="Registro.jsp">REGISTRARSE</a>
+                    <a class="cabecera" href="#">INICIAR SESION</a>
+                    <a class="cabecera" href="Registro.jsp">REGISTRARSE</a>
 
                 </div>
 

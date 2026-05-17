@@ -19,6 +19,7 @@ public class Registro extends HttpServlet {
         String email = request.getParameter("email");
         String clave1 = request.getParameter("clave1");
         String clave2 = request.getParameter("clave2");
+        String aceptaPolitica = request.getParameter("aceptaPolitica");
 
         if (nombreUsuario == null || nombreUsuario.isEmpty() ||
                 email == null || email.isEmpty() ||
@@ -27,6 +28,17 @@ public class Registro extends HttpServlet {
                 session.setAttribute("mensajeRegistro", "Todos los campos son obligatorios");
                 response.sendRedirect(request.getContextPath() + "/web/Registro.jsp");
                 return;
+        }
+
+        if (aceptaPolitica == null) {
+
+            request.setAttribute("mensajeRegistro", 
+                "Debes aceptar la política de privacidad y protección de datos.");
+
+            request.getRequestDispatcher("/web/Registro.jsp")
+                .forward(request, response);
+
+            return;
         }
 
         AccesoBD con = AccesoBD.getInstance();
@@ -49,8 +61,9 @@ public class Registro extends HttpServlet {
                     return;
             }
         }
+        String claveHash = Seguridad.hashearPassword(clave1);
 
-        con.RegistarUsuario(nombreUsuario, email, clave1);
+        con.RegistarUsuario(nombreUsuario, email, claveHash);
         response.sendRedirect(request.getContextPath() + "/web/InicioSesion.jsp");
 
     }

@@ -113,16 +113,17 @@ public final class AccesoBD {
 		int id = -1;
 
 		try{
-			String con = "SELECT id FROM usuarios WHERE nombre_usuario=? AND contrasena=?";
+			String con = "SELECT id,contrasena FROM usuarios WHERE nombre_usuario=?";
 			PreparedStatement s = conexionBD.prepareStatement(con);
 			s.setString(1,usuario);
-			s.setString(2,clave);
 
 			ResultSet resultado = s.executeQuery();
 
 			// El usuario/clave se encuentra en la BD
 
 			if ( resultado.next() ) {
+				String hashBD= resultado.getString("contrasena");
+				if(Seguridad.verificarPassword(clave, hashBD))
 				id =  resultado.getInt("id");
 			}
 		}

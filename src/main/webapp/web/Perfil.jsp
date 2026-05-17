@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/web/css/cabecera-footer.css">
         <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/web/css/Perfil.css">
 
-        <title>HOME</title>
+        <title>PERFIL</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" 
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         
@@ -72,7 +72,7 @@
         <div class="container-perfil">
             
             <div class="perfil-principal">
-                <img src='<%= usuario.getFoto_perfil() %>' alt=" Foto de perfil del Usuario">
+                <img src="<%= request.getContextPath() %>/<%= usuario.getFoto_perfil() %>" alt=" Foto de perfil del Usuario">
                 <label class="nombre-usuario"><%= usuario.getUsuario() %></label>
                 <label class="email-usuario"><%= usuario.getEmail() %></label>
                 <a class="btn" href="${pageContext.request.contextPath}/LogOut">Cerrar Sesion</a>
@@ -127,18 +127,6 @@
                             </div>
                         </a>
                     </li>
-
-                    <li>
-                        <a class="link-usuario" data-target="contenido5" href="#">
-                            <div class="bi bi-credit-card-fill fs-2"></div>
-
-                            <div class="texto">
-                                <span class="titulo">Metodo de pago</span>
-                                <span> Gestiona tu metodo de pago</span>
-                            </div>
-                        </a>
-                    </li>
-
                 </ul>
 
                 <div class="opciones-configuracion-editar">
@@ -326,29 +314,6 @@
                             </div>
 
                             <div class=" form-usuario">
-                                <input type="submit" value="Cambiar Datos" class="btn">
-                            </div>
-                        </div>
-
-
-                        <div class="content-block" id="contenido5">
-
-                            <h2 class="titulo-editar">CAMBIAR METODO DE PAGO</h2>
-
-                            <div class="form-pago form-usuario">
-                                <span> NUMERO DE TARJETA</span>
-                                <input type="number" name="tarjeta" value="<%=usuario.getTarjeta()%>">
-                            </div>
-
-                            <div class="form-pago form-usuario">
-                                <span> FECHA DE CADUCIDAD</span>
-                                <input type="password" placeholder="10/26" readonly>
-                            </div>
-                            <div class="form-pago form-usuario">
-                                <input type="password" placeholder=" Confirmar contraseña" readonly>
-                            </div>
-
-                            <div class=" form-pago form-usuario">
                                 <input type="submit" value="Cambiar Datos" class="btn">
                             </div>
                         </div>
