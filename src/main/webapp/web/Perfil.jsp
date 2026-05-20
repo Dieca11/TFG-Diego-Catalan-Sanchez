@@ -151,10 +151,6 @@
                                 <input type="text" placeholder="<%=usuario.getEmail()%> " readonly>
                             </div>
 
-                            <div class="form-usuario">
-                                <input type="password" placeholder="<%=usuario.getContraseña()%>" readonly>
-                            </div>
-
                             <div class=" form-usuario">
                                 <input type="submit" value="Cambiar Datos" class="btn">
                             </div>

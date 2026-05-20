@@ -212,6 +212,7 @@ public class Reserva extends HttpServlet {
 
                     case YA_ESTAS:
                         boolean aplicadas = false;
+
                         if (invitaciones != null && !invitaciones.isEmpty()) {
                             try {
                                 aplicadas = con.aplicarInvitacionesComoCreador(municipioId, numeroPista, fechaHora, codigo, invitaciones);
@@ -226,7 +227,7 @@ public class Reserva extends HttpServlet {
                             invitaciones.clear();
                             s.setAttribute("invitadosReserva", invitaciones);
                         } else {
-                            s.setAttribute("popupMsg", "Ya estás dentro de esta reserva.");
+                            s.setAttribute("popupMsg", "La partida ya esta completa.");
                         }
                         break;
 

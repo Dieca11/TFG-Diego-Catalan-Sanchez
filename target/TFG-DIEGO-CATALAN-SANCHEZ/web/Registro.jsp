@@ -23,6 +23,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+7GDvjz4Et6kcu9teW7RSJoV++Ar5QnFexl3O9b" crossorigin="anonymous">
         <link rel="icon" href="Imagenes/raqueta-de-padel.png" type="image/png" class="logo">
     </head>
+    
     <body>
         <mi-cabecera></mi-cabecera>
 

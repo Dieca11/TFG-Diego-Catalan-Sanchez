@@ -571,9 +571,9 @@ public final class AccesoBD {
 		try {
 			// 1) localizar reserva y validar creador
 					String sel = "SELECT id, creador_id, " +
-								"       invitado_1 AS invitado1_id, " +
-								"       invitado_2 AS invitado2_id, " +
-								"       invitado_3 AS invitado3_id " +
+								"       invitado1_id, " +
+								"       invitado2_id, " +
+								"       invitado3_id " +
 								"FROM reservas " +
 								"WHERE municipio_id=? AND numero_pista=? AND fecha_hora=? " +
 								"LIMIT 1";
@@ -612,13 +612,25 @@ public final class AccesoBD {
 			if (cur2 != null) set.add(cur2);
 			if (cur3 != null) set.add(cur3);
 
+			int sizeAntes = set.size();
+			boolean ocupado = false;
+
 			// añadir nuevos
 			if (invitaciones != null) {
 				for (Integer x : invitaciones) {
 					if (x == null) continue;
 					if (x == creadorSesion) continue;  // nunca invitar al creador
+					if(set.contains(x)) continue;
+					if (set.size() == 3){
+						ocupado = true;
+						break;
+					}
 					set.add(x);
-					if (set.size() == 3) break;
+				}
+				int sizeDespues = set.size();
+				if (ocupado || sizeDespues == sizeAntes){
+					conexionBD.rollback();
+					return false;
 				}
 			}
 
