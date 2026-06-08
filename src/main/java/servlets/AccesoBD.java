@@ -6,7 +6,16 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+/**
+ * Clase encargada de centralizar el acceso a la base de datos de la aplicación.
+ * 
+ * Implementa un patrón Singleton para mantener una única instancia de conexión
+ * y proporciona métodos para gestionar usuarios, municipios, reservas, partidas,
+ * perfil de usuario y clasificación.
+*/
+
 public final class AccesoBD {
+
 	private static AccesoBD instanciaUnica = null;
 	private Connection conexionBD = null;
 
@@ -17,9 +26,24 @@ public final class AccesoBD {
 		return instanciaUnica;
 	}
 
+
+	/**
+	 * Constructor privado de la clase.
+	 * 
+	 * Evita que se puedan crear instancias de AccesoBD desde otras clases
+	 * y abre la conexión con la base de datos al inicializar el objeto.
+	*/
+
 	private AccesoBD() {
 		abrirConexionBD();
 	}
+
+	/**
+	 * Abre la conexión con la base de datos MariaDB si todavía no existe.
+	 * 
+	 * Carga el driver JDBC, establece la conexión con la base de datos del proyecto
+	 * y almacena dicha conexión para ser reutilizada por el resto de métodos.
+	*/
 
 	public void abrirConexionBD() {
 		if (conexionBD == null)
@@ -42,12 +66,29 @@ public final class AccesoBD {
 		}
 	}
 
+	/**
+	 * Comprueba si existe conexión activa con la base de datos.
+	 * 
+	 * Antes de realizar la comprobación intenta abrir la conexión si todavía
+	 * no ha sido inicializada.
+	 * 
+	 * @return true si la conexión con la base de datos está disponible, false en caso contrario.
+	*/
+
 	public boolean comprobarAcceso() {
 		abrirConexionBD();
 		return (conexionBD != null);
 	}
 
-	/*Espacio Reservado para la muestra y obtencion de datos de los Municipios */
+	/**
+	 * Obtiene la lista de municipios registrados en la base de datos.
+	 * 
+	 * Recupera los datos principales de cada municipio, incluyendo su identificador,
+	 * nombre, imagen, mapa, número de pistas y estado de activación.
+	 * 
+	 * @return lista de municipios almacenados en la base de datos.
+	*/
+
 	public List<MunicipioBD> obtenerMunicipiosBD(){
 		abrirConexionBD();
 
@@ -76,6 +117,17 @@ public final class AccesoBD {
 
 	return municipios;
 	}
+
+
+	/**
+	 * Obtiene la información de un municipio concreto.
+	 * 
+	 * Busca en la base de datos el municipio cuyo identificador coincide con el
+	 * valor recibido y devuelve sus datos principales.
+	 * 
+	 * @param idMunicipio identificador del municipio que se desea consultar.
+	 * @return objeto MunicipioBD con los datos del municipio, o null si no existe.
+	*/
 
 	public MunicipioBD obtenerMunicipioBD( int idMunicipio){
 		abrirConexionBD();
@@ -106,7 +158,18 @@ public final class AccesoBD {
 	return municipio;
 	}
 
-	/*Espacio reservado para la comprobacion, modificacion y obtencion de los usuarios */
+
+	/**
+	 * Comprueba las credenciales de inicio de sesión de un usuario.
+	 * 
+	 * Busca el usuario por su nombre de usuario y compara la contraseña introducida
+	 * con el hash almacenado en la base de datos mediante BCrypt.
+	 * 
+	 * @param usuario nombre de usuario introducido en el formulario de inicio de sesión.
+	 * @param clave contraseña en texto plano introducida por el usuario.
+	 * @return identificador del usuario si las credenciales son correctas, o -1 si no lo son.
+	*/
+	
 	public int comprobarUsuarioBD(String usuario, String clave) {
 		abrirConexionBD();
 
@@ -137,6 +200,17 @@ public final class AccesoBD {
 
 		return id;
 	}
+
+	/**
+	 * Obtiene los datos completos de un usuario a partir de su identificador.
+	 * 
+	 * Recupera la información personal del usuario, incluyendo nombre, correo,
+	 * contraseña cifrada, imagen de perfil, preferencias de privacidad e información
+	 * de tarjeta.
+	 * 
+	 * @param codigo identificador del usuario que se desea consultar.
+	 * @return objeto UsuarioBD con los datos del usuario, o null si no existe.
+	*/
 
 	public UsuarioBD obtenerUsuarioPorCodigo(int codigo) {
 		abrirConexionBD();
@@ -170,6 +244,18 @@ public final class AccesoBD {
 		return u;
 	}
 
+	/**
+	 * Comprueba si ya existe otro usuario con el mismo nombre de usuario o correo electrónico.
+	 * 
+	 * Se utiliza tanto en el registro como en la actualización del perfil. El parámetro
+	 * id permite excluir al propio usuario durante una modificación de datos.
+	 * 
+	 * @param id identificador del usuario actual, o 0 si se trata de un nuevo registro.
+	 * @param usu nombre de usuario que se desea comprobar.
+	 * @param email correo electrónico que se desea comprobar.
+	 * @return true si existe otro usuario con ese nombre o correo, false en caso contrario.
+	*/
+
 	public boolean existeUsuOEmail(int id, String usu, String email){
 
 		abrirConexionBD();
@@ -198,56 +284,86 @@ public final class AccesoBD {
 		}
 		return false;
 	}
+
+	/**
+	 * Actualiza los datos personales de un usuario.
+	 * 
+	 * Modifica el nombre de usuario, correo electrónico, preferencias de invitaciones,
+	 * visibilidad de partidas y tarjeta. Si se recibe una contraseña o imagen nueva,
+	 * también actualiza esos campos.
+	 * 
+	 * @param id identificador del usuario que se desea actualizar.
+	 * @param nombre_usu nuevo nombre de usuario.
+	 * @param email nuevo correo electrónico.
+	 * @param imagen nueva imagen de perfil, si se desea modificar.
+	 * @param invitacion indica si el usuario permite recibir invitaciones.
+	 * @param partidas indica si el usuario permite mostrar sus partidas en la clasificación.
+	 * @param clave1 nueva contraseña cifrada, si se desea modificar.
+	 * @param tarjeta tarjeta asociada al usuario.
+	*/
+
 	public void ActualizarUsuario(Integer id,String nombre_usu,String email,
 		String imagen,boolean invitacion,boolean partidas, String clave1,String tarjeta){
-			abrirConexionBD();
 
-			StringBuilder con = new StringBuilder( 
-					"UPDATE usuarios SET " +
-                 	"nombre_usuario = ?, " +
-                 	"email = ?, " +
-                 	"mostrar_partidas = ?, " +
-                 	"recibir_invitaciones = ?, " +
-                 	"tarjeta_credito = ? ");
+		abrirConexionBD();
 
-			if (clave1 != null && !clave1.trim().isEmpty()) {
-        		con.append(", contrasena = ? ");
-    		}
+		StringBuilder con = new StringBuilder( 
+				"UPDATE usuarios SET " +
+				"nombre_usuario = ?, " +
+				"email = ?, " +
+				"mostrar_partidas = ?, " +
+				"recibir_invitaciones = ?, " +
+				"tarjeta_credito = ? ");
 
-			if(imagen != null && !imagen.trim().isEmpty()){
-				con.append(", imagen_perfil = ? ");
-			}
-
-			con.append(" WHERE id = ?");
-
-			try (PreparedStatement s = conexionBD.prepareStatement(con.toString())) {
-
-				int i = 1;
-				s.setString(i++, nombre_usu);
-				s.setString(i++, email);
-				s.setBoolean(i++, partidas);
-				s.setBoolean(i++, invitacion);
-				s.setString(i++, tarjeta);
-
-				if(clave1 !=null && !clave1.trim().isEmpty()){
-					s.setString(i++, clave1);
-				}
-
-				if(imagen!=null && !imagen.trim().isEmpty()){
-					s.setString(i++, imagen);
-				}
-
-				s.setInt(i, id);
-
-				s.executeUpdate();
-
-
-			} catch (Exception e) {
-			System.err.println("No ha sido posible modificar tus datos");
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-			}
+		if (clave1 != null && !clave1.trim().isEmpty()) {
+			con.append(", contrasena = ? ");
 		}
+
+		if(imagen != null && !imagen.trim().isEmpty()){
+			con.append(", imagen_perfil = ? ");
+		}
+
+		con.append(" WHERE id = ?");
+
+		try (PreparedStatement s = conexionBD.prepareStatement(con.toString())) {
+
+			int i = 1;
+			s.setString(i++, nombre_usu);
+			s.setString(i++, email);
+			s.setBoolean(i++, partidas);
+			s.setBoolean(i++, invitacion);
+			s.setString(i++, tarjeta);
+
+			if(clave1 !=null && !clave1.trim().isEmpty()){
+				s.setString(i++, clave1);
+			}
+
+			if(imagen!=null && !imagen.trim().isEmpty()){
+				s.setString(i++, imagen);
+			}
+
+			s.setInt(i, id);
+
+			s.executeUpdate();
+
+
+		} catch (Exception e) {
+		System.err.println("No ha sido posible modificar tus datos");
+		System.err.println(e.getMessage());
+		e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Registra un nuevo usuario en la base de datos.
+	 * 
+	 * Inserta el nombre de usuario, correo electrónico y contraseña cifrada
+	 * proporcionados durante el proceso de registro.
+	 * 
+	 * @param nombreUsuario nombre de usuario del nuevo usuario.
+	 * @param email correo electrónico del nuevo usuario.
+	 * @param clave1 contraseña cifrada del nuevo usuario.
+	*/
 
     public void RegistarUsuario(String nombreUsuario, String email, String clave1) {
 		abrirConexionBD();
@@ -266,6 +382,19 @@ public final class AccesoBD {
 			e.printStackTrace();
 			}
     }
+
+	/**
+	 * Obtiene los identificadores de los usuarios asociados a una reserva concreta.
+	 * 
+	 * Busca una reserva por municipio, pista, fecha y hora, siempre que no esté
+	 * cancelada, y devuelve las cuatro posiciones posibles: creador e invitados.
+	 * 
+	 * @param municipioId identificador del municipio de la reserva.
+	 * @param numeroPista número de pista reservada.
+	 * @param fechaHora fecha y hora de la reserva.
+	 * @return array con los identificadores del creador e invitados.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
 
 	public Integer[] obtenerReserva(int municipioId, int numeroPista, LocalDateTime fechaHora) throws SQLException {
 
@@ -297,14 +426,35 @@ public final class AccesoBD {
 			System.err.println(e.getMessage());
 		}
             return usuarios;
-        }
+    }
+
+	/**
+	 * Clase auxiliar utilizada para representar los datos visibles de un usuario.
+	 * 
+	 * Contiene únicamente la información necesaria para mostrar usuarios en la
+	 * interfaz: identificador, nombre de usuario e imagen de perfil.
+	*/
 
 	public static class UsuarioVista {
 		private int id;
 		private String nombreUsuario;
 		private String imagenPerfil;
 
+		/**
+		 * Constructor vacío de UsuarioVista.
+		 * 
+		 * Permite crear el objeto y asignar sus valores posteriormente mediante métodos setter.
+		*/
+
 		public UsuarioVista() {}
+
+		/**
+		 * Constructor de UsuarioVista con todos sus campos principales.
+		 * 
+		 * @param id identificador del usuario.
+		 * @param nombreUsuario nombre visible del usuario.
+		 * @param imagenPerfil ruta de la imagen de perfil del usuario.
+		*/
 
 		public UsuarioVista(int id, String nombreUsuario, String imagenPerfil) {
 			this.id = id;
@@ -321,6 +471,18 @@ public final class AccesoBD {
 		public String getImagenPerfil() { return imagenPerfil; }
 		public void setImagenPerfil(String imagenPerfil) { this.imagenPerfil = imagenPerfil; }
 	}
+
+
+	/**
+	 * Obtiene los datos visibles de un usuario por su identificador.
+	 * 
+	 * Recupera únicamente el identificador, nombre de usuario e imagen de perfil,
+	 * que son los datos necesarios para mostrar participantes en la interfaz.
+	 * 
+	 * @param userId identificador del usuario.
+	 * @return objeto UsuarioVista con los datos visibles, o null si no existe.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
 
 	public UsuarioVista obtenerUsuarioVistaPorId(int userId) throws SQLException {
 
@@ -345,6 +507,16 @@ public final class AccesoBD {
 		}
 	}
 
+
+	/**
+	 * Obtiene la lista de usuarios que aceptan recibir invitaciones.
+	 * 
+	 * Recupera los usuarios que tienen activada la opción de recibir invitaciones
+	 * y los ordena alfabéticamente por nombre de usuario.
+	 * 
+	 * @return lista de usuarios disponibles para ser invitados.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
 
 	public ArrayList<UsuarioVista> obtenerUsuariosInvitables() throws SQLException {
 
@@ -372,6 +544,17 @@ public final class AccesoBD {
 		return lista;
 	}
 
+	/**
+	 * Obtiene el nombre de usuario asociado a un identificador.
+	 * 
+	 * Se utiliza para mostrar los nombres de los participantes en reservas,
+	 * partidas e historial de usuario.
+	 * 
+	 * @param idUsuario identificador del usuario.
+	 * @return nombre de usuario correspondiente, o null si no existe.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
+
 	public String obtenerNombreUsuarioPorId(int idUsuario) throws SQLException {
 		abrirConexionBD();
 
@@ -389,128 +572,255 @@ public final class AccesoBD {
 		return nombre;
 	}
 
+	/**
+	 * Enumeración que representa el resultado de intentar crear o unirse a una reserva.
+	 * 
+	 * CREADA indica que se ha creado una nueva reserva.
+	 * UNIDO indica que el usuario se ha unido a una reserva existente.
+	 * YA_ESTAS indica que el usuario ya forma parte de esa reserva.
+	 * LLENA indica que la reserva no tiene huecos disponibles.
+	*/
+
 	public enum ResultadoReserva {
 		CREADA, UNIDO, YA_ESTAS, LLENA
 	}
 
+	/**
+	 * Crea una nueva reserva o une al usuario a una reserva existente.
+	 * 
+	 * Primero comprueba si existe una reserva pendiente para el municipio, pista,
+	 * fecha y hora indicados. Si existe, intenta añadir al usuario como invitado
+	 * siempre que no forme ya parte de la reserva y haya huecos disponibles.
+	 * 
+	 * Si no existe una reserva pendiente, comprueba si hay una reserva cancelada
+	 * para la misma franja. En ese caso, la reactiva asignando el nuevo creador
+	 * y las invitaciones iniciales. Si tampoco existe una cancelada, crea una
+	 * nueva reserva desde cero.
+	 * 
+	 * La operación se realiza dentro de una transacción para evitar inconsistencias
+	 * en caso de accesos concurrentes.
+	 * 
+	 * @param municipioId identificador del municipio donde se realiza la reserva.
+	 * @param numeroPista número de pista seleccionada.
+	 * @param fechaHora fecha y hora de inicio de la reserva.
+	 * @param usuarioSesion identificador del usuario que realiza la operación.
+	 * @param invitacionesIniciales lista de usuarios invitados inicialmente.
+	 * @return resultado de la operación de reserva.
+	 * @throws SQLException si ocurre un error durante la operación en base de datos.
+	*/
+
 	public ResultadoReserva crearOUnirseReserva(
-			int municipioId, int numeroPista, LocalDateTime fechaHora,
-			int usuarioSesion, java.util.List<Integer> invitacionesIniciales
-	) throws SQLException {
+        int municipioId, int numeroPista, LocalDateTime fechaHora,
+        int usuarioSesion, java.util.List<Integer> invitacionesIniciales
+) throws SQLException {
 
-		abrirConexionBD();
-		conexionBD.setAutoCommit(false);
+    abrirConexionBD();
+    conexionBD.setAutoCommit(false);
 
-		try {
-			// 1) Intentar localizar reserva existente (pendiente, no cancelada)
-			String sel = "SELECT id, creador_id, invitado1_id, invitado2_id, invitado3_id " +
-						"FROM reservas " +
-						"WHERE municipio_id=? AND numero_pista=? AND fecha_hora=? AND estado='pendiente' " +
-						"LIMIT 1 FOR UPDATE";
+    try {
+        // 1) Intentar localizar reserva existente pendiente
+        String sel = "SELECT id, creador_id, invitado1_id, invitado2_id, invitado3_id " +
+                    "FROM reservas " +
+                    "WHERE municipio_id=? AND numero_pista=? AND fecha_hora=? AND estado='pendiente' " +
+                    "LIMIT 1 FOR UPDATE";
 
-			Integer reservaId = null;
-			Integer creadorId = null;
-			Integer inv1 = null, inv2 = null, inv3 = null;
+        Integer reservaId = null;
+        Integer creadorId = null;
+        Integer inv1 = null, inv2 = null, inv3 = null;
 
-			try (PreparedStatement ps = conexionBD.prepareStatement(sel)) {
-				ps.setInt(1, municipioId);
-				ps.setInt(2, numeroPista);
-				ps.setTimestamp(3, java.sql.Timestamp.valueOf(fechaHora));
+        try (PreparedStatement ps = conexionBD.prepareStatement(sel)) {
+            ps.setInt(1, municipioId);
+            ps.setInt(2, numeroPista);
+            ps.setTimestamp(3, java.sql.Timestamp.valueOf(fechaHora));
 
-				try (ResultSet rs = ps.executeQuery()) {
-					if (rs.next()) {
-						reservaId = rs.getInt("id");
-						creadorId = rs.getInt("creador_id");
-						inv1 = (Integer) rs.getObject("invitado1_id");
-						inv2 = (Integer) rs.getObject("invitado2_id");
-						inv3 = (Integer) rs.getObject("invitado3_id");
-					}
-				}
-			}
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    reservaId = rs.getInt("id");
+                    creadorId = rs.getInt("creador_id");
+                    inv1 = (Integer) rs.getObject("invitado1_id");
+                    inv2 = (Integer) rs.getObject("invitado2_id");
+                    inv3 = (Integer) rs.getObject("invitado3_id");
+                }
+            }
+        }
 
-			// 2) Si NO existe: crear (creador + invitacionesIniciales)
-			if (reservaId == null) {
+        // 2) Normalizar invitaciones iniciales
+        java.util.ArrayList<Integer> invs = new java.util.ArrayList<>();
 
-				// Normaliza invitaciones: max 3, sin repetidos, sin auto-invitar
-				java.util.ArrayList<Integer> invs = new java.util.ArrayList<>();
-				if (invitacionesIniciales != null) {
-					for (Integer x : invitacionesIniciales) {
-						if (x == null) continue;
-						if (x == usuarioSesion) continue;
-						if (!invs.contains(x)) invs.add(x);
-						if (invs.size() == 3) break;
-					}
-				}
+        if (invitacionesIniciales != null) {
+            for (Integer x : invitacionesIniciales) {
+                if (x == null) {
+                    continue;
+                }
 
-				Integer i1 = invs.size() >= 1 ? invs.get(0) : null;
-				Integer i2 = invs.size() >= 2 ? invs.get(1) : null;
-				Integer i3 = invs.size() >= 3 ? invs.get(2) : null;
+                if (x == usuarioSesion) {
+                    continue;
+                }
 
-				String ins = "INSERT INTO reservas " +
-							"(municipio_id, numero_pista, creador_id, invitado1_id, invitado2_id, invitado3_id, fecha_hora, estado) " +
-							"VALUES (?, ?, ?, ?, ?, ?, ?, 'pendiente')";
+                if (!invs.contains(x)) {
+                    invs.add(x);
+                }
 
-				try (PreparedStatement ps = conexionBD.prepareStatement(ins)) {
-					ps.setInt(1, municipioId);
-					ps.setInt(2, numeroPista);
-					ps.setInt(3, usuarioSesion);
+                if (invs.size() == 3) {
+                    break;
+                }
+            }
+        }
 
-					if (i1 == null) ps.setNull(4, java.sql.Types.INTEGER); else ps.setInt(4, i1);
-					if (i2 == null) ps.setNull(5, java.sql.Types.INTEGER); else ps.setInt(5, i2);
-					if (i3 == null) ps.setNull(6, java.sql.Types.INTEGER); else ps.setInt(6, i3);
+        Integer i1 = invs.size() >= 1 ? invs.get(0) : null;
+        Integer i2 = invs.size() >= 2 ? invs.get(1) : null;
+        Integer i3 = invs.size() >= 3 ? invs.get(2) : null;
 
-					ps.setTimestamp(7, java.sql.Timestamp.valueOf(fechaHora));
-					ps.executeUpdate();
-				}
+		// 3) Si NO existe reserva pendiente, comprobar si existe una cancelada
+        if (reservaId == null) {
 
-				conexionBD.commit();
-				return ResultadoReserva.CREADA;
-			}
+            String selCancelada = "SELECT id " +
+                                "FROM reservas " +
+                                "WHERE municipio_id=? AND numero_pista=? AND fecha_hora=? AND estado='cancelada' " +
+                                "LIMIT 1 FOR UPDATE";
 
-			// 3) Si existe: unirse (si hay hueco y no está ya)
-			if (usuarioSesion == creadorId ||
-				(inv1 != null && inv1 == usuarioSesion) ||
-				(inv2 != null && inv2 == usuarioSesion) ||
-				(inv3 != null && inv3 == usuarioSesion)) {
+            Integer reservaCanceladaId = null;
 
-				conexionBD.commit();
-				return ResultadoReserva.YA_ESTAS;
-			}
+            try (PreparedStatement ps = conexionBD.prepareStatement(selCancelada)) {
+                ps.setInt(1, municipioId);
+                ps.setInt(2, numeroPista);
+                ps.setTimestamp(3, java.sql.Timestamp.valueOf(fechaHora));
 
-			// buscar primer hueco libre
-			if (inv1 == null) {
-				String upd = "UPDATE reservas SET invitado1_id=? WHERE id=?";
-				try (PreparedStatement ps = conexionBD.prepareStatement(upd)) {
-					ps.setInt(1, usuarioSesion);
-					ps.setInt(2, reservaId);
-					ps.executeUpdate();
-				}
-				conexionBD.commit();
-				return ResultadoReserva.UNIDO;
-			}
-			if (inv2 == null) {
-				String upd = "UPDATE reservas SET invitado2_id=? WHERE id=?";
-				try (PreparedStatement ps = conexionBD.prepareStatement(upd)) {
-					ps.setInt(1, usuarioSesion);
-					ps.setInt(2, reservaId);
-					ps.executeUpdate();
-				}
-				conexionBD.commit();
-				return ResultadoReserva.UNIDO;
-			}
-			if (inv3 == null) {
-				String upd = "UPDATE reservas SET invitado3_id=? WHERE id=?";
-				try (PreparedStatement ps = conexionBD.prepareStatement(upd)) {
-					ps.setInt(1, usuarioSesion);
-					ps.setInt(2, reservaId);
-					ps.executeUpdate();
-				}
-				conexionBD.commit();
-				return ResultadoReserva.UNIDO;
-			}
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        reservaCanceladaId = rs.getInt("id");
+                    }
+                }
+            }
 
-			conexionBD.commit();
-			return ResultadoReserva.LLENA;
+            // 4) Si existe cancelada, se reactiva
+            if (reservaCanceladaId != null) {
+
+                String updCancelada = "UPDATE reservas SET " +
+                                    "creador_id=?, " +
+                                    "invitado1_id=?, " +
+                                    "invitado2_id=?, " +
+                                    "invitado3_id=?, " +
+                                    "estado='pendiente' " +
+                                    "WHERE id=?";
+
+                try (PreparedStatement ps = conexionBD.prepareStatement(updCancelada)) {
+                    ps.setInt(1, usuarioSesion);
+
+                    if (i1 == null) {
+                        ps.setNull(2, java.sql.Types.INTEGER);
+                    } else {
+                        ps.setInt(2, i1);
+                    }
+
+                    if (i2 == null) {
+                        ps.setNull(3, java.sql.Types.INTEGER);
+                    } else {
+                        ps.setInt(3, i2);
+                    }
+
+                    if (i3 == null) {
+                        ps.setNull(4, java.sql.Types.INTEGER);
+                    } else {
+                        ps.setInt(4, i3);
+                    }
+
+                    ps.setInt(5, reservaCanceladaId);
+                    ps.executeUpdate();
+                }
+
+                conexionBD.commit();
+                return ResultadoReserva.CREADA;
+            }
+
+            // 5) Si no existe ni pendiente ni cancelada, se crea una nueva
+            String ins = "INSERT INTO reservas " +
+                        "(municipio_id, numero_pista, creador_id, invitado1_id, invitado2_id, invitado3_id, fecha_hora, estado) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, 'pendiente')";
+
+            try (PreparedStatement ps = conexionBD.prepareStatement(ins)) {
+                ps.setInt(1, municipioId);
+                ps.setInt(2, numeroPista);
+                ps.setInt(3, usuarioSesion);
+
+                if (i1 == null) {
+                    ps.setNull(4, java.sql.Types.INTEGER);
+                } else {
+                    ps.setInt(4, i1);
+                }
+
+                if (i2 == null) {
+                    ps.setNull(5, java.sql.Types.INTEGER);
+                } else {
+                    ps.setInt(5, i2);
+                }
+
+                if (i3 == null) {
+                    ps.setNull(6, java.sql.Types.INTEGER);
+                } else {
+                    ps.setInt(6, i3);
+                }
+
+                ps.setTimestamp(7, java.sql.Timestamp.valueOf(fechaHora));
+                ps.executeUpdate();
+            }
+
+            conexionBD.commit();
+            return ResultadoReserva.CREADA;
+        }
+
+        // 6) Si existe reserva pendiente: comprobar si el usuario ya forma parte
+        if (usuarioSesion == creadorId ||
+            (inv1 != null && inv1 == usuarioSesion) ||
+            (inv2 != null && inv2 == usuarioSesion) ||
+            (inv3 != null && inv3 == usuarioSesion)) {
+
+            conexionBD.commit();
+            return ResultadoReserva.YA_ESTAS;
+        }
+
+        // 7) Si hay hueco, el usuario se une a la reserva pendiente
+        if (inv1 == null) {
+            String upd = "UPDATE reservas SET invitado1_id=? WHERE id=?";
+
+            try (PreparedStatement ps = conexionBD.prepareStatement(upd)) {
+                ps.setInt(1, usuarioSesion);
+                ps.setInt(2, reservaId);
+                ps.executeUpdate();
+            }
+
+            conexionBD.commit();
+            return ResultadoReserva.UNIDO;
+        }
+
+        if (inv2 == null) {
+            String upd = "UPDATE reservas SET invitado2_id=? WHERE id=?";
+
+            try (PreparedStatement ps = conexionBD.prepareStatement(upd)) {
+                ps.setInt(1, usuarioSesion);
+                ps.setInt(2, reservaId);
+                ps.executeUpdate();
+            }
+
+            conexionBD.commit();
+            return ResultadoReserva.UNIDO;
+        }
+
+        if (inv3 == null) {
+            String upd = "UPDATE reservas SET invitado3_id=? WHERE id=?";
+
+            try (PreparedStatement ps = conexionBD.prepareStatement(upd)) {
+                ps.setInt(1, usuarioSesion);
+                ps.setInt(2, reservaId);
+                ps.executeUpdate();
+            }
+
+            conexionBD.commit();
+            return ResultadoReserva.UNIDO;
+        }
+
+        conexionBD.commit();
+        return ResultadoReserva.LLENA;
 
 		} catch (SQLException e) {
 			try { conexionBD.rollback(); } catch (SQLException ignore) {}
@@ -519,6 +829,19 @@ public final class AccesoBD {
 			try { conexionBD.setAutoCommit(true); } catch (SQLException ignore) {}
 		}
 	}
+
+	/**
+	 * Obtiene los usuarios visibles que ocupan una franja concreta de reserva.
+	 * 
+	 * Devuelve un array de cuatro posiciones que representan al creador y a los tres
+	 * posibles invitados. Si una posición está vacía, se devuelve null en esa posición.
+	 * 
+	 * @param municipioId identificador del municipio.
+	 * @param numeroPista número de pista seleccionada.
+	 * @param fechaHora fecha y hora de la reserva.
+	 * @return array con los usuarios visibles de la reserva.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
 
 	public UsuarioVista[] obtenerUsuariosReservaSlot(int municipioId, int numeroPista, LocalDateTime fechaHora)
         throws SQLException {
@@ -560,6 +883,25 @@ public final class AccesoBD {
 
 		return out;
 	}
+
+	/**
+	 * Aplica nuevas invitaciones a una reserva existente si el usuario es su creador.
+	 * 
+	 * Localiza la reserva indicada, comprueba que el usuario de sesión sea el creador
+	 * y combina los invitados actuales con los nuevos, evitando duplicados y sin
+	 * superar el máximo de tres invitados.
+	 * 
+	 * La operación se realiza dentro de una transacción para mantener la coherencia
+	 * de los datos.
+	 * 
+	 * @param municipioId identificador del municipio.
+	 * @param numeroPista número de pista.
+	 * @param fechaHora fecha y hora de la reserva.
+	 * @param creadorSesion identificador del usuario que intenta aplicar las invitaciones.
+	 * @param invitaciones lista de nuevos usuarios invitados.
+	 * @return true si las invitaciones se aplican correctamente, false en caso contrario.
+	 * @throws SQLException si ocurre un error durante la actualización.
+	*/
 
 	public boolean aplicarInvitacionesComoCreador(int municipioId, int numeroPista, LocalDateTime fechaHora,
 												int creadorSesion, ArrayList<Integer> invitaciones)
@@ -661,6 +1003,16 @@ public final class AccesoBD {
 		}
 	}
 
+	/**
+	 * Actualiza automáticamente las reservas pendientes que ya han finalizado.
+	 * 
+	 * Cambia a estado jugada aquellas reservas pendientes cuya duración estimada
+	 * ya ha terminado y crea su correspondiente registro en la tabla partidas
+	 * si todavía no existe.
+	 * 
+	 * @throws SQLException si ocurre un error durante la actualización.
+	*/
+
 	public void ActualizaPartidas() throws SQLException {
 
 		int DURACION_PARTIDA = 90;
@@ -682,6 +1034,18 @@ public final class AccesoBD {
 		}
 			conexionBD.commit();
 	}
+
+	/**
+	 * Obtiene todas las partidas asociadas a un usuario.
+	 * 
+	 * Recupera tanto las reservas pendientes como las partidas jugadas en las que
+	 * el usuario aparece como creador o invitado. También carga los datos del
+	 * municipio, resultado, ganadores y participantes.
+	 * 
+	 * @param idUsuario identificador del usuario.
+	 * @return lista de partidas asociadas al perfil del usuario.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
 
 	public ArrayList<PartidaPerfilBD> obtenerPartidasPerfil(int idUsuario) throws SQLException {
     abrirConexionBD();
@@ -755,6 +1119,17 @@ public final class AccesoBD {
     return lista;
 	}
 
+	/**
+	 * Obtiene las reservas pendientes asociadas a un usuario.
+	 * 
+	 * Filtra la lista completa de partidas del perfil y devuelve únicamente aquellas
+	 * cuyo estado es pendiente.
+	 * 
+	 * @param idUsuario identificador del usuario.
+	 * @return lista de reservas pendientes del usuario.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
+
 	public ArrayList<PartidaPerfilBD> obtenerPendientesPerfil(int idUsuario) throws SQLException {
 		ArrayList<PartidaPerfilBD> todas = obtenerPartidasPerfil(idUsuario);
 		ArrayList<PartidaPerfilBD> pendientes = new ArrayList<>();
@@ -766,6 +1141,17 @@ public final class AccesoBD {
 		}
 		return pendientes;
 	}
+
+	/**
+	 * Obtiene el historial de partidas jugadas de un usuario.
+	 * 
+	 * Filtra la lista completa de partidas del perfil y devuelve únicamente aquellas
+	 * cuyo estado es jugada.
+	 * 
+	 * @param idUsuario identificador del usuario.
+	 * @return lista de partidas jugadas por el usuario.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
 
 	public ArrayList<PartidaPerfilBD> obtenerHistorialPerfil(int idUsuario) throws SQLException {
 		ArrayList<PartidaPerfilBD> todas = obtenerPartidasPerfil(idUsuario);
@@ -780,6 +1166,16 @@ public final class AccesoBD {
 	}
 
 
+	/**
+	 * Cancela una reserva existente.
+	 * 
+	 * Cambia el estado de la reserva indicada a cancelada, permitiendo que esa
+	 * franja pueda volver a estar disponible para una nueva reserva.
+	 * 
+	 * @param idReserva identificador de la reserva que se desea cancelar.
+	 * @throws SQLException si ocurre un error durante la actualización.
+	*/
+
 	public void cancelarReserva(int idReserva) throws SQLException {
 		abrirConexionBD();
 
@@ -790,6 +1186,16 @@ public final class AccesoBD {
 			ps.executeUpdate();
 		}
 	}
+
+	/**
+	 * Valida si un resultado introducido corresponde a un marcador válido de pádel.
+	 * 
+	 * Comprueba que el resultado no esté vacío, que tenga entre uno y tres sets
+	 * y que alguno de los dos equipos haya ganado dos sets.
+	 * 
+	 * @param resultado resultado introducido en formato de sets.
+	 * @return true si el resultado es válido, false en caso contrario.
+	*/
 
 	public boolean esResultadoPadelValido(String resultado) {
 		if (resultado == null || resultado.isBlank()) return false;
@@ -821,6 +1227,16 @@ public final class AccesoBD {
 		return setsGanadosA == 2 || setsGanadosB == 2;
 	}
 
+	/**
+	 * Comprueba si un set individual tiene un formato válido.
+	 * 
+	 * Valida que el set tenga dos puntuaciones separadas por guion, que sean valores
+	 * numéricos y que respeten las reglas habituales de puntuación de un set de pádel.
+	 * 
+	 * @param set set individual introducido por el usuario.
+	 * @return true si el set es válido, false en caso contrario.
+	*/
+
 	private boolean esSetValido(String set) {
 		String[] partes = set.split("-");
 		if (partes.length != 2) return false;
@@ -851,6 +1267,19 @@ public final class AccesoBD {
 		return false;
 	}
 
+	/**
+	 * Guarda el resultado y los ganadores de una partida.
+	 * 
+	 * Actualiza la partida asociada a una reserva concreta, almacenando el resultado
+	 * introducido y los dos usuarios seleccionados como ganadores.
+	 * 
+	 * @param idReserva identificador de la reserva asociada a la partida.
+	 * @param resultado resultado de la partida.
+	 * @param ganador1 identificador del primer ganador.
+	 * @param ganador2 identificador del segundo ganador.
+	 * @throws SQLException si ocurre un error durante la actualización.
+	*/
+
 	public void guardarResultadoPartida(int idReserva, String resultado, int ganador1, int ganador2) throws SQLException {
 		abrirConexionBD();
 
@@ -864,6 +1293,18 @@ public final class AccesoBD {
 			ps.executeUpdate();
 		}
 	}
+
+	/**
+	 * Obtiene la clasificación general de usuarios.
+	 * 
+	 * Calcula las partidas jugadas, partidas ganadas y porcentaje de victorias
+	 * de todos los usuarios que permiten mostrar sus partidas. Solo incluye usuarios
+	 * con un mínimo de cinco partidas jugadas y limita el resultado a los veinte
+	 * mejores clasificados.
+	 * 
+	 * @return lista de usuarios ordenados por clasificación general.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
 
 	public ArrayList<UsuarioClasificacion> obtenerClasificacionGeneral() throws SQLException {
 		abrirConexionBD();
@@ -931,6 +1372,17 @@ public final class AccesoBD {
 		return lista;
 	}
 
+	/**
+	 * Calcula la racha actual de un usuario.
+	 * 
+	 * Recorre las partidas jugadas del usuario desde la más reciente hasta la más
+	 * antigua y calcula cuántas victorias o derrotas consecutivas acumula.
+	 * 
+	 * @param idUsuario identificador del usuario.
+	 * @return cadena con la racha actual, formada por número y tipo de resultado.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
+
 	public String obtenerRachaUsuario(int idUsuario) throws SQLException {
 		abrirConexionBD();
 
@@ -981,6 +1433,18 @@ public final class AccesoBD {
 
 		return contador + primero;
 	}
+
+	/**
+	 * Obtiene la clasificación general o filtrada por municipio.
+	 * 
+	 * Calcula las estadísticas de clasificación de los usuarios teniendo en cuenta
+	 * únicamente partidas jugadas con resultado registrado. Si se recibe un municipio,
+	 * limita el cálculo a las partidas disputadas en ese municipio.
+	 * 
+	 * @param idMunicipio identificador del municipio usado como filtro, o null para clasificación general.
+	 * @return lista de usuarios clasificados.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
 
 	public ArrayList<UsuarioClasificacion> obtenerClasificacionPorMunicipio(Integer idMunicipio) throws SQLException {
 		abrirConexionBD();
@@ -1050,6 +1514,18 @@ public final class AccesoBD {
 		return lista;
 	}
 
+	/**
+	 * Calcula la racha actual de un usuario en la clasificación general o municipal.
+	 * 
+	 * Analiza las partidas jugadas del usuario, opcionalmente filtradas por municipio,
+	 * y devuelve la cantidad de victorias o derrotas consecutivas más recientes.
+	 * 
+	 * @param idUsuario identificador del usuario.
+	 * @param idMunicipio identificador del municipio usado como filtro, o null para clasificación general.
+	 * @return cadena con la racha actual del usuario.
+	 * @throws SQLException si ocurre un error al consultar la base de datos.
+	*/
+
 	public String obtenerRachaUsuarioPorMunicipio(int idUsuario, Integer idMunicipio) throws SQLException {
 		abrirConexionBD();
 
@@ -1109,5 +1585,4 @@ public final class AccesoBD {
 
 		return contador + primero;
 	}
-
 };

@@ -132,7 +132,7 @@
                 <div class="opciones-configuracion-editar">
                     <form action="<%=request.getContextPath()%>/Perfil" method="post">
 
-                        <input type="hidden" name="id_usu" value="<%=usuario.getId()%>">
+                        <input type="hidden" name="accion" value="actualizarPerfil">
 
                         <div class="content-block active" id="contenido1">
 
