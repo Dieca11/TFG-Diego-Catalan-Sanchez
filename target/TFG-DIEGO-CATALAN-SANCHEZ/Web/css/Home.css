@@ -1,74 +1,595 @@
-.container-fluid{
+.home-contenido {
+    font-family: 'Roboto', sans-serif;
+    background: #eef6ff;
+    padding: 35px 8% 45px;
+    margin-bottom: 30px;
+}
+
+/* BLOQUE PRINCIPAL: accesos izquierda + cómo funciona derecha */
+
+/* HERO SUPERIOR */
+
+.home-hero {
+    min-height: 430px;
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+    background-image: url('../Imagenes/pelota-de-tenis-de-alto-angulo-en-el-piso.jpg');
+    background-size: cover;
+    background-position: center 58%;
     font-family: 'Roboto', sans-serif;
 }
 
-.row-arriba{
-    height: 400px;
-    background-size: cover;
-    background-image: url('../Imagenes/pelota-de-tenis-de-alto-angulo-en-el-piso.jpg');
-    background-color: rgb(0, 0, 0) !important; 
-    color: white;
-    font-size: 20px;
-    z-index: 1;
-    position:relative !important;
-}
-
-h1{    
-    display: flex !important;
-    justify-content: center !important;
-    padding-top: 100px;
-}
-.row-arriba::before{
-    content: "";
+.home-hero-overlay {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    /*background-color: rgba(0, 0, 0, 0.295) !important; */
-    z-index: -1; 
+    inset: 0;
+        background:
+        linear-gradient(90deg, rgba(12, 42, 90, 0.92) 0%, rgba(12, 42, 90, 0.78) 42%, rgba(12, 42, 90, 0.35) 100%);
+    z-index: 1;
 }
 
-h1, .row-abajo{
-    z-index: 0;
+.home-hero-contenido {
+    max-width: 1400px;
+    min-height: 430px;
+    margin: 0 auto;
+    padding: 55px 8%;
     position: relative;
-
-}
-
-.boton-titulo{
-    margin-bottom: 80px;
-    display: flex;
-    justify-content: center;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 55px;
     align-items: center;
-
 }
-.botones{
-    padding-top: 60px;
-    margin-bottom: 80px;
+
+.home-hero-texto {
+    max-width: 720px;
+}
+
+.home-hero-etiqueta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.home-hero-texto h1 {
+    display: block !important;
+    padding-top: 0 !important;
+    margin: 0 0 16px;
+    font-size: clamp(38px, 4vw, 62px);
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.home-hero-texto p {
+    max-width: 650px;
+    font-size: 19px;
+    line-height: 1.5;
+    margin: 0 0 28px;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.home-hero-botones {
     display: flex;
-    gap: 80px;
-    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.btn-hero-principal{
+    border-radius: 14px;
+    padding: 14px 24px;
+    font-size: 16px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    background-color: #ffffff;
+    color: rgb(28, 65, 136);
+}
+
+
+.btn-hero-principal:hover {
+    transform: translateY(-2px);
+    background-color: #eaf3ff;
+    color: rgb(28, 65, 136);
+}
+
+.home-hero-datos {
+    display: flex;
+    gap: 18px;
     flex-wrap: wrap;
 }
 
-img{
-    height: 100px;
-    cursor: pointer;
+.home-hero-datos div {
+    min-width: 150px;
+    padding: 13px 16px;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.20);
 
 }
 
-.boton-texto {
-  font-weight: 600;
-  font-size: 20px;
-  user-select: none;
-  color:rgb(50, 83, 146);
+.home-hero-datos strong {
+    display: block;
+    font-size: 17px;
+    font-weight: 900;
+    margin-bottom: 2px;
 }
 
-.boton-contenedor a{
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-  border-radius: 20px;
-  border: 6px solid rgb(50, 83, 146);
-  padding: 30px;
-  background-color:rgba(200, 224, 255, 0.575);
+.home-hero-datos span {
+    display: block;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.86);
+}
+
+/* TARJETA DERECHA DEL HERO */
+
+.home-hero-card {
+    background-color: rgba(255, 255, 255, 0.94);
+    color: #1d2d44;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.home-hero-card h2 {
+    color: rgb(28, 65, 136);
+    font-size: 25px;
+    font-weight: 900;
+    margin: 0 0 22px;
+}
+
+.hero-card-item {
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(50, 83, 146, 0.15);
+}
+
+.hero-card-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.hero-card-item i {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 50%;
+    background-color: #dcecff;
+    color: #0b5ed7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 23px;
+}
+
+.hero-card-item h4 {
+    color: rgb(28, 65, 136);
+    font-size: 17px;
+    font-weight: 900;
+    margin: 0 0 4px;
+}
+
+.hero-card-item p {
+    color: #344258;
+    font-size: 14px;
+    line-height: 1.35;
+    margin: 0;
+}
+
+/* RESPONSIVE HERO */
+
+@media (max-width: 1000px) {
+    .home-hero-contenido {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 45px 6%;
+    }
+
+    .home-hero-card {
+        max-width: 620px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .home-hero-contenido {
+        padding: 35px 22px;
+    }
+
+    .home-hero-texto h1 {
+        font-size: 36px;
+    }
+
+    .home-hero-texto p {
+        font-size: 16px;
+    }
+
+    .home-hero-botones {
+        flex-direction: column;
+    }
+
+    .btn-hero-principal,
+    .btn-hero-secundario {
+        width: 100%;
+        text-align: center;
+    }
+
+    .home-hero-datos {
+        flex-direction: column;
+    }
+
+    .home-hero-datos div {
+        width: 100%;
+    }
+}
+
+
+
+.home-panel-principal {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 45px;
+    align-items: stretch;
+}
+
+.home-accesos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+.home-card {
+    background-color: #ffffff;
+    border-radius: 18px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 8px 24px rgba(20, 61, 126, 0.12);
+    border: 1px solid rgba(50, 83, 146, 0.14);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(20, 61, 126, 0.18);
+}
+
+.home-card-icono {
+    min-width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background-color: #dcecff;
+    color: rgb(50, 83, 146);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 34px;
+}
+
+.home-card h3 {
+    color: rgb(28, 65, 136);
+    font-size: 22px;
+    font-weight: 800;
+    margin: 0 0 8px;
+}
+
+.home-card p {
+    color: #28384d;
+    font-size: 15px;
+    line-height: 1.35;
+    margin: 0 0 10px;
+}
+
+.home-card a {
+    color: #0b5ed7;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.home-card a:hover {
+    text-decoration: underline;
+}
+
+/* CÓMO FUNCIONA */
+
+.home-como-funciona {
+    background-color: rgba(255, 255, 255, 0.75);
+    border-left: 2px solid rgba(50, 83, 146, 0.18);
+    padding-left: 38px;
+}
+
+.home-como-funciona h2,
+.home-ventajas h2 {
+    color: rgb(28, 65, 136);
+    font-weight: 900;
+    font-size: 28px;
+    margin-bottom: 22px;
+}
+
+.paso {
+    background-color: #ffffff;
+    border: 1px solid rgba(50, 83, 146, 0.12);
+    border-radius: 15px;
+    padding: 16px 22px;
+    margin-bottom: 14px;
+    display: grid;
+    grid-template-columns: 42px 58px 1fr;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 6px 18px rgba(20, 61, 126, 0.08);
+}
+
+.paso-numero {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #0b5ed7;
+    color: #ffffff;
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paso-icono {
+    color: #0b5ed7;
+    font-size: 31px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paso h4 {
+    color: rgb(28, 65, 136);
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 3px;
+}
+
+.paso p {
+    color: #344258;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* VENTAJAS */
+
+.home-ventajas {
+    max-width: 1400px;
+    margin: 35px auto 0;
+}
+
+.home-ventajas h2 {
+    text-align: center;
+}
+
+.ventajas-contenedor {
+    background-color: #ffffff;
+    border-radius: 18px;
+    border: 1px solid rgba(50, 83, 146, 0.16);
+    box-shadow: 0 8px 22px rgba(20, 61, 126, 0.1);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    overflow: hidden;
+}
+
+.ventaja {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 25px 28px;
+    border-right: 1px solid rgba(50, 83, 146, 0.16);
+}
+
+.ventaja:last-child {
+    border-right: none;
+}
+
+.ventaja i {
+    color: #0b5ed7;
+    font-size: 42px;
+}
+
+.ventaja h4 {
+    color: rgb(28, 65, 136);
+    font-size: 17px;
+    font-weight: 800;
+    margin: 0 0 5px;
+}
+
+.ventaja p {
+    color: #344258;
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.35;
+}
+
+/* CTA MUNICIPIOS */
+
+.home-cta-municipios {
+    max-width: 1400px;
+    margin: 28px auto 0;
+    padding: 28px 35px;
+    border-radius: 18px;
+    background: linear-gradient(90deg, rgb(28, 65, 136), #0b5ed7);
+    color: #ffffff;
+    display: grid;
+    grid-template-columns: 1.5fr auto;
+    align-items: center;
+    gap: 30px;
+    box-shadow: 0 12px 28px rgba(20, 61, 126, 0.24);
+    position: relative;
+    overflow: hidden;
+}
+
+.home-cta-municipios::after {
+    content: "";
+    position: absolute;
+    right: -80px;
+    top: -80px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.cta-texto {
+    position: relative;
+    z-index: 1;
+}
+
+.cta-texto h2 {
+    font-size: 27px;
+    font-weight: 900;
+    margin: 0 0 8px;
+}
+
+.cta-texto p {
+    font-size: 16px;
+    line-height: 1.45;
+    margin: 0;
+    max-width: 820px;
+}
+
+.cta-botones {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.btn-cta-principal,
+.btn-cta-secundario {
+    min-width: 185px;
+    text-align: center;
+    border-radius: 12px;
+    padding: 13px 20px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-cta-principal {
+    background-color: #ffffff;
+    color: #0b5ed7;
+}
+
+.btn-cta-secundario {
+    border: 2px solid #ffffff;
+    color: #ffffff;
+}
+
+.btn-cta-principal:hover,
+.btn-cta-secundario:hover {
+    transform: translateY(-2px);
+}
+
+.btn-cta-principal:hover {
+    color: #0b5ed7;
+    background-color: #eef6ff;
+}
+
+.btn-cta-secundario:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+    .home-panel-principal {
+        grid-template-columns: 1fr;
+    }
+
+    .home-como-funciona {
+        border-left: none;
+        padding-left: 0;
+    }
+
+    .ventajas-contenedor {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ventaja:nth-child(2) {
+        border-right: none;
+    }
+
+    .ventaja {
+        border-bottom: 1px solid rgba(50, 83, 146, 0.16);
+    }
+
+    .ventaja:nth-child(3),
+    .ventaja:nth-child(4) {
+        border-bottom: none;
+    }
+
+    .home-cta-municipios {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-botones {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 700px) {
+    .home-contenido {
+        padding: 25px 20px 35px;
+    }
+
+    .home-accesos {
+        grid-template-columns: 1fr;
+    }
+
+    .paso {
+        grid-template-columns: 38px 42px 1fr;
+        padding: 14px;
+    }
+
+    .paso-icono {
+        font-size: 25px;
+    }
+
+    .ventajas-contenedor {
+        grid-template-columns: 1fr;
+    }
+
+    .ventaja {
+        border-right: none;
+        border-bottom: 1px solid rgba(50, 83, 146, 0.16);
+    }
+
+    .ventaja:last-child {
+        border-bottom: none;
+    }
+
+    .cta-texto h2 {
+        font-size: 23px;
+    }
+
+    .cta-botones {
+        flex-direction: column;
+    }
+
+    .btn-cta-principal,
+    .btn-cta-secundario {
+        width: 100%;
+    }
 }

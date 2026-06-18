@@ -1,33 +1,129 @@
-table{ 
-  border-collapse: separate !important;
-  border-spacing: 20px !important; 
-  text-align: center !important;
-  font-size: 20px;
-  font-weight: 600;
-  border: 2px solid  #54708d;
-  border-radius: 12px;
-  background-color: rgba(178, 204, 231, 0.5);
+.cuerpo {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 20px 60px;
+}
+
+.contenedor-cabecera {
+  text-align: center;
+  margin: 28px auto 18px;
+  padding: 0 20px;
+}
+
+.contenedor-cabecera h1 {
   color: rgb(50, 83, 146);
-  min-width: 500px;
-  table-layout: fixed;
+  font-size: clamp(34px, 4vw, 52px);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.contenedor-cabecera p {
+  color: #3b4b63;
+  font-size: clamp(16px, 1.4vw, 20px);
   margin: 0;
 }
 
+.filtro-clasificacion{
+  width: min(200px, 90vw);
+  display: inline-block;
+  justify-content: center;
+  margin-top: 10px;
+}
 
-table th,
-table td {
-  padding: 5px;
+.boton-filtro{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 22px;
+  border-radius: 12px;
+  border: 1px solid #9ec2f5;
+  background: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+  text-align: left;
+  box-shadow: 0 8px 20px rgba(20, 61, 126, 0.12);
+  cursor: pointer;
+}
+
+.menu-filtro{
+  width: 100%;
+  min-width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(50, 83, 146, 0.15);
+
+  box-shadow: 0 12px 28px rgba(20, 61, 126, 0.18);
+  padding: 8px;
+}
+
+.menu-filtro .dropdown-item{
+  color: #06235c;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background-color: #ffffff;
 }
 
 .tabla-scroll{
   margin-top: 40px;
-  overflow: auto;
-  display: block;
-  width: 100%;
+  width: 75%;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 25px;
+  box-sizing: border-box;
+
 }
 
+.tabla-clasificacion{ 
+  width: 100%;
+
+  border-collapse: separate !important;
+  border-spacing: 0 !important; 
+  text-align: center !important;
+  table-layout: fixed;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 600;
+
+  color: rgb(28, 65, 136);
+  min-width: 500px;
+
+  margin: 0;
+  background-color: #ffffff;
+  border: 1px solid rgba(50, 83, 146, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(20, 61, 126, 0.12);
+}
+
+
+.tabla-clasificacion th{
+  padding: 18px 14px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tabla-clasificacion td{
+  padding: 22px 14px;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(20, 61, 126, 0.10);
+}
+
+
+
 thead {
-  border-bottom: 3px solid #007BFF !important;
+  background-color: #0b5ed7;
+  color: #ffffff;
 }
 
 tbody{
@@ -37,56 +133,6 @@ tbody{
 th {
   cursor: pointer;
   /*user-select: none;*/
-}
-
-
-.cuerpo {
-  display: flex;
-  gap: 20px;
-  flex-direction: column;
-  margin: auto;
-  width: fit-content;
-}
-
-.group-btn{
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.btn-secondary {
-  position: relative;
-  padding:8px 16px;
-  border-radius: 8px;
-  border: 2px solid #7facdd;
-  background-color: rgba(178, 204, 231, 0.5);
-  font-size: 16px;
-  text-align: left;
-  cursor: pointer;
-}
-
-.dropdown-menu{
-
-  position: relative;
-  top: 0;
-  left: 80%;
-  display: none;
-  z-index: 10;
-  background-color: rgba(178, 204, 231) !important;
-  color: rgb(50, 83, 146) !important;
-  border-top-left-radius: 8px;
-  border-bottom-left-radius: 8px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  max-height: 6em;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  width: 250px;
-}
-h1{
-  color: rgb(50, 83, 146) !important;
-  margin: 0 auto;
-  margin-top: 20px !important;
 }
 
 .dropdown-menu li{
@@ -105,7 +151,7 @@ h1{
 }
 
 .dropdown-menu::-webkit-scrollbar-track {
-  background: rgba(178, 204, 231);
+  background:  #ffffff;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-top-right-radius: 8px;
@@ -113,7 +159,7 @@ h1{
 }
 
 .dropdown-menu::-webkit-scrollbar-thumb {
-  background: rgb(150, 189, 230);
+  background: #e5e8ff;
   border-radius: 8px;
 }
 

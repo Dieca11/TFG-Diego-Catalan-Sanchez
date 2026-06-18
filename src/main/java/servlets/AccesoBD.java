@@ -186,6 +186,7 @@ public final class AccesoBD {
 
 			if ( resultado.next() ) {
 				String hashBD= resultado.getString("contrasena");
+			
 				if(Seguridad.verificarPassword(clave, hashBD))
 				id =  resultado.getInt("id");
 			}

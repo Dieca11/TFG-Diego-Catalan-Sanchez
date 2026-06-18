@@ -44,31 +44,36 @@
 
         <div class="cuerpo">
 
-            <h1> CLASIFICACION - <%= filtroClasificacion %></h1>
+            <div class="contenedor-cabecera">
+                <h1> CLASIFICACION - <%= filtroClasificacion %> </h1>
+                <p> Consulta la clasificacion de jugadores y compara su rendimiento en cada municipio.</p>
+            </div>
 
-            <div class="btn-group dropend">
-                <button type="button" class=" dropdown-btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="filtro-clasificacion dropdown">
+                <button type="button" class="boton-filtro dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-building"></i>
                     <%= filtroClasificacion %>
                 </button>
-                    <ul class="dropdown-menu">
-                        <li data-value="GENERAL">
-                            <a class="dropdown-item" href="<%= request.getContextPath() %>/Clasificacion">GENERAL</a></li>
-                        
-                        <% for (MunicipioBD m : municipios) { %>
-                            <% if (m.isActivo()) { %>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item" href="<%= request.getContextPath() %>/Clasificacion?idMunicipio=<%= m.getId() %>">
-                                    <%= m.getMunicipio() %>
-                                </a>
-                            </li>
-                        <% } %>
-                        <% } %>
-                    </ul>
+
+                <ul class="dropdown-menu menu-filtro">
+                    <li data-value="GENERAL">
+                        <a class="dropdown-item" href="<%= request.getContextPath() %>/Clasificacion">GENERAL</a></li>
+                    
+                    <% for (MunicipioBD m : municipios) { %>
+                        <% if (m.isActivo()) { %>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="<%= request.getContextPath() %>/Clasificacion?idMunicipio=<%= m.getId() %>">
+                                <%= m.getMunicipio() %>
+                            </a>
+                        </li>
+                    <% } %>
+                    <% } %>
+                </ul>
             </div>
 
             <div class="tabla-scroll">
-                <table >
+                <table class="tabla-clasificacion">
                     <thead>
                         <tr>
                             <th>POSICION</th>
@@ -105,27 +110,22 @@
                 </table>
             </div>
         </div>
-        
-
 
         <script>
-            const dropdownBtn = document.querySelector('.dropdown-btn');
+            const dropdownBtn = document.querySelector('.boton-filtro');
             const dropdownMenu = document.querySelector('.dropdown-menu');
 
-            // Alternar visibilidad al pulsar el botón
             dropdownBtn.addEventListener('click', (event) => {
-                event.stopPropagation(); // evita que se cierre al hacer clic en el botón
+                event.stopPropagation();
                 dropdownMenu.classList.toggle('show');
             });
 
-            // Cerrar al hacer clic fuera
             document.addEventListener('click', (event) => {
                 if (!dropdownBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
                     dropdownMenu.classList.remove('show');
                 }
             });
 
-            // Cambiar texto y cerrar al elegir opción
             dropdownMenu.querySelectorAll('li[data-value]').forEach(option => {
                 option.addEventListener('click', () => {
                     dropdownBtn.textContent = option.textContent;
@@ -133,6 +133,7 @@
                 });
             });
         </script>
+        
         
         <script>
             window.APP_CTX = "<%= request.getContextPath() %>";

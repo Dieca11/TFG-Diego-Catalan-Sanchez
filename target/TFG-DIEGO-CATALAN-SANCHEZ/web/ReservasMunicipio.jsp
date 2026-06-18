@@ -72,82 +72,109 @@
 
         %>
         <div class="container">
+            <div class="contenedor-cabecera">
+                <h1> <%= nombre %> </h1>
+                <p> Selecciona una pista, elige una fecha y reserva tu pista de forma rapida y sencilla.</p>
+            </div>
 
-            <div class="row mx-sm-3 mx-md-3 mx-lg-3 mx-xl-5">
+            <div class="row gx-5 gy-5">
+                
 
-                <div class="col contenedor-pista">
-                    <img class="pista-img" src="<%= request.getContextPath() %>/web/Imagenes/padel.png" alt="Pista de Padel" width="600px">
-                      <div class="usuario-cuadrante" data-posicion="1">
-                    </div>
+                <div class="col-12 col-lg-5 col-xl-5 d-flex align-items-start">
+                    <div class="contenedor-pista">
+                        <img class="pista-img" src="<%= request.getContextPath() %>/web/Imagenes/Pista_padel2.png" alt="Pista de Padel"></img> 
 
-                    <!-- Cuadrante 2 - Jugador 2 -->
-                    <div class="usuario-cuadrante" data-posicion="2">
-                    </div>
+                        <!-- Cuadrante 1 - Jugador 1 -->
+                        <div class="usuario-cuadrante" data-posicion="1">
+                        </div>
 
-                    <!-- Cuadrante 3 - Jugador 3 -->
-                    <div class="usuario-cuadrante" data-posicion="3">
-                    </div>
+                        <!-- Cuadrante 2 - Jugador 2 -->
+                        <div class="usuario-cuadrante" data-posicion="2">
+                        </div>
 
-                    <!-- Cuadrante 4 - Jugador 4 -->
-                    <div class="usuario-cuadrante" data-posicion="4">
+                        <!-- Cuadrante 3 - Jugador 3 -->
+                        <div class="usuario-cuadrante" data-posicion="3">
+                        </div>
+
+                        <!-- Cuadrante 4 - Jugador 4 -->
+                        <div class="usuario-cuadrante" data-posicion="4">
+                        </div>
                     </div>
                 </div>
 
 
 
-                <div class="col">
+                <div class="col-12 col-lg-7 col-xl-7 d-flex align-items-start">
 
                     <div class="contenedor-derecha">
-                        <h1><%=nombre%></h1>
-                        <label for="pista">SELECCIONA UNA PISTA:</label>
 
-                        <input type="hidden" id="numeroPista" name="numero_pista" value="<%= request.getAttribute("numero_pista") != null ? request.getAttribute("numero_pista") : 1 %>">
+                        <div class="titulo-contenedor-derecha"> 
+                            <i class="bi bi-calendar-check"></i>
+                            <h2>Reserva tu partida</h2>
+                        </div>
 
-                        <div class="btn-group2" id="pistaGroup">
-                            <button class="btn btn-secondary" id="pistaBtn" type="button">PISTA 1</button>
+                        <div class="fila-reserva">
+                            <div class="reserva-label">
+                                <i class="bi bi-geo-alt-fill"></i>
+                                <label for="pista">Selecciona una pista:</label>
+                            </div>
 
-                            <ul class="dropdown-menu" id="pistaMenu">
-                            <% for (int i = 1; i <= pistas; i++) { %>
-                                <li>
-                                <a class="dropdown-item pista-item" href="#" data-pista="<%= i %>">PISTA <%= i %></a>
-                                </li>
-                            <% } %>
-                            </ul>
+                            <input type="hidden" id="numeroPista" name="numero_pista" value="<%= request.getAttribute("numero_pista") != null ? request.getAttribute("numero_pista") : 1 %>">
+
+                            <div class="btn-group2 campo-selector" id="pistaGroup">
+                                <button class="btn-selector" id="pistaBtn" type="button"></button>
+                                <ul class="dropdown-menu" id="pistaMenu">
+                                <% for (int i = 1; i <= pistas; i++) { %>
+                                    <li>
+                                    <a class="dropdown-item pista-item" href="#" data-pista="<%= i %>">Pista <%= i %></a>
+                                    </li>
+                                <% } %>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="fila-reserva">
+
+                            <div class="reserva-label">
+                                <i class="bi bi-calendar-event"></i>
+                                <label for="horarios">Selecciona una fecha:</label>
+                            </div>
+                            <!-- Valores reales para enviar / usar en AJAX -->
+                            <input type="hidden" id="fecha" name="fecha" value="<%= request.getParameter("fecha") != null ? request.getParameter("fecha") : "" %>">
+
+                            <input type="hidden" id="franjaInicio" name="franja" value="<%= request.getParameter("franja") != null ? request.getParameter("franja") : "" %>">
+                            <input type="hidden" id="municipioId" name="municipio_id" value="<%= municipio.getId() %>">
+
+                                <!-- Dropdown de día -->
+                            <div class="btn-group2 campo-selector" id="ddDia">
+                                <button class="btn-selector" id="ddDiaBtn" type="button"></button>
+                                <ul class="dropdown-menu" id="ddDiaMenu"></ul>
+                            </div>
                         </div>
 
 
-                        <label for="horarios">SELECCIONA UNA FRANJA HORARIA:</label>
-                        
-                        <!-- Valores reales para enviar / usar en AJAX -->
-                        <input type="hidden" id="fecha" name="fecha" value="<%= request.getParameter("fecha") != null ? request.getParameter("fecha") : "" %>">
+                        <div class="fila-reserva">
 
-                        <input type="hidden" id="franjaInicio" name="franja" value="<%= request.getParameter("franja") != null ? request.getParameter("franja") : "" %>">
-                        <input type="hidden" id="municipioId" name="municipio_id" value="<%= municipio.getId() %>">
-
-                        <div class="selector-reserva">
-                            <!-- Dropdown de día -->
-                            <div class="btn-group2 btn2" id="ddDia">
-                                <button class="btn btn-secondary" id="ddDiaBtn" type="button">
-                                Selecciona día
-                                </button>
-                                <ul class="dropdown-menu dropmenu2" id="ddDiaMenu"></ul>
+                            <div class="reserva-label">
+                                <i class="bi bi-clock"></i>
+                                <label> Selecciona una hora:</label>
                             </div>
 
                             <!-- Dropdown de franja -->
-                            <div class="btn-group2 btn2" id="ddHora">
-                                <button class="btn btn-secondary" id="ddHoraBtn" type="button">
-                                Selecciona franja
-                                </button>
-                                <ul class="dropdown-menu dropmenu2" id="ddHoraMenu"></ul>
+                            <div class="btn-group2 campo-selector" id="ddHora">
+                                <button class="btn-selector" id="ddHoraBtn" type="button"></button>
+                                <ul class="dropdown-menu" id="ddHoraMenu"></ul>
                             </div>
+
                         </div>
                         <%
                             ArrayList<Integer> invitadosSel = (ArrayList<Integer>) session.getAttribute("invitadosReserva");
                             if (invitadosSel == null) invitadosSel = new ArrayList<>();
                             %>
 
-                            <div class="mt-2">
-                                <strong>Invitados:</strong>
+                            <div class="reserva-label">
+                                <i class="bi bi-people"></i>
+                                <label>Invitados:</label>
 
                                 <% if (invitadosSel.isEmpty()) { %>
                                     <span>Ninguno</span>
@@ -176,7 +203,8 @@
 
 
                         <div class="botones">
-                            <button id="btnInvitaciones" class="btn-secondary">Invitaciones</button>
+                            <button id="btnInvitaciones" class="btn-invitaciones">Invitaciones</button>
+
                             <form method="post" action="<%= request.getContextPath() %>/Reserva" style="margin:0;"
                                 onsubmit="
                                     var p = document.getElementById('numeroPista').value;
@@ -197,12 +225,16 @@
                                 <input type="hidden" name="fecha" value="">
                                 <input type="hidden" name="franja" value="">
 
-                                <button type="submit" class="btn-secondary">Reservar</button>
+                                <button type="submit" class="btn-reservar">Reservar</button>
                             </form>
 
 
                         </div>
-                        <iframe src="<%= mapIframe %>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+                        <div class="contenedor-mapa">
+                            <iframe src="<%= mapIframe %>" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+
                     </div>
 
                     <div id="modalInvitaciones" class="modal-overlay" aria-hidden="true">
@@ -314,7 +346,7 @@
                     if (!pista) return;
 
                     numeroPista.value = pista;
-                    pistaBtn.textContent = "PISTA " + pista;
+                    pistaBtn.textContent = "Pista " + pista;
 
                     // Cierra menú
                     pistaMenu.classList.remove("show");
@@ -509,7 +541,7 @@
                 if (!numeroPista || !pistaBtn || !pistaMenu) return;
 
                 // Al cargar, sincroniza el texto del botón con el hidden (si vienes por redirect)
-                pistaBtn.textContent = "PISTA " + (numeroPista.value || "1");
+                pistaBtn.textContent = "Pista " + (numeroPista.value || "1");
 
                 pistaMenu.addEventListener("click", (e) => {
                     const a = e.target.closest("a.pista-item");
@@ -520,7 +552,7 @@
                     if (!p) return;
 
                     numeroPista.value = p;
-                    pistaBtn.textContent = "PISTA " + p;
+                    pistaBtn.textContent = "Pista " + p;
                 });
                 
                 buildDias();

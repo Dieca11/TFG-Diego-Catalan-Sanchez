@@ -8,14 +8,15 @@
     width: 400px;
     height: auto;
     border: 2px solid  #54708d;
-    box-shadow: 6px 0 rgba(6, 61, 119, 0.5);
+    background-color: #ffffff;
+    border: 1px solid rgba(50, 83, 146, 0.12);
     border-radius: 12px;
-    background-color: rgba(178, 204, 231, 0.5);
-    color: rgb(50, 83, 146);
+    box-shadow: 0 10px 28px rgba(20, 61, 126, 0.12);
+    color: rgb(28, 65, 136) !important;
 }
 
 .cabecera{
-    color: rgb(50, 83, 146) !important;
+    color: rgb(28, 65, 136) !important;
     text-decoration: none;
     justify-content: space-between;
     padding:20px;
@@ -31,29 +32,38 @@
 input{
     display: block;
     width: 90%;
-    color: rgb(50, 83, 146);
-    background-color: rgba(143, 187, 235, 0.5);
+    color: rgb(50, 83, 146) !important;
+    background-color: #e6ebf8;
     border: none;
     border-radius: 15px;
     margin: 20px !important;
     padding: 10px;
 }
 
-.btn{
+.btn-iniciar{
     width: 90%;
     border:none;
-    background-color: rgb(147, 184, 223) !important;
+    background-color: #0b5ed7 !important;
+    color: #ffffff !important;
     text-transform: uppercase;
     border-radius: 20px;
     padding-top: 7px;
-
+    font-weight: 800;
 }
+
 .politica-label{
     display: flex;
     align-items: center;
     gap: 6px;
     font-size: 15px;
     margin-right: 0px;
+    
+}
+
+.politica-label a{
+    text-decoration: none !important;
+    font-weight: 600;
+    color: black;
 }
 
 .politica-label input[type="checkbox"]{

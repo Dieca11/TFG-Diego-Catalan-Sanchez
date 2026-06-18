@@ -53,7 +53,7 @@ footer{
     width: 100%;
     height: auto;
     bottom: 0;
-    position:absolute;
+    position: absolute;
 }
 
 .iconos{
@@ -67,7 +67,7 @@ footer{
 
 /*Estilo para margen del footer*/
 body{
-    background-color: rgba(200, 224, 255, 0.575) !important;
+    background-color: #eef6ff !important;
     width: 100%;
     overflow-x: hidden;
     padding-bottom: 40px !important;

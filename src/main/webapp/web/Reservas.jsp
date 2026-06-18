@@ -46,6 +46,10 @@
             %>
 
         <div class="container">
+            <div class="contenedor-cabecera">
+                <h1> Reserva tu pista de pádel </h1>
+                <p> Selecciona tu municipio, consulta disponibilidad y reserva tu pista en pocos pasos.</p>
+            </div>
 
             <div class="row">
                 <% for (MunicipioBD Municipio : municipios){
@@ -56,13 +60,25 @@
                     int num_pistas=Municipio.getNum_pistas();
                     boolean activo=Municipio.isActivo();
 			    %>
-                <div class="col-lg-4 col-md-6 col-sm-12 mb-4"><img class="municipio" src=" <%=imagen%> " alt="<%=municipio%>">
-                    <label class="texto"><%=municipio%></label>
-                    <a class="boton" href="<%= request.getContextPath() %>/Reserva?id=<%= Municipio.getId() %>">
-                        RESERVAR
-                    </a>
+                <% if (activo == true) { %>
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4 ">
+                    <div class="contenedor-municipio">
+                        <div class="contenedor-municipio-img">
+                            <img class="municipio-img" src=" <%=imagen%> " alt="<%=municipio%>">
+                            <span class="municipio-etiqueta">
+                                <%= num_pistas %> Pistas disponibles
+                            </span>
+                        </div>
 
+                        <div class="municipio-detalle">
+                            <label class="municipio-nombre"><%=municipio%></label>
+                            <a class="boton-reservar" href="<%= request.getContextPath() %>/Reserva?id=<%= Municipio.getId() %>">
+                                RESERVAR
+                            </a>
+                        </div>
+                    </div>
                 </div>
+           <% } %>
            <% } %>
             </div>
         </div>

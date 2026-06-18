@@ -1,74 +1,259 @@
 .container-perfil{
-    margin-top: 40px;
+    width: 100%;
+    max-width: 1750px;
+    margin: 40px auto 50px;
+    padding: 0 40px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-bottom: 50px;
+
+    box-sizing: border-box;
     font-size: 'Roboto', sans-serif;
 }
 
 /*Informacion de perfil principal */
 .perfil-principal{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+}
+.tarjeta-perfil-superior{
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 32px 28px 26px;
+
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(50, 83, 146, 0.12);
+  border-radius: 26px;
+
+  box-shadow: 0 16px 40px rgba(20, 61, 126, 0.14);
 }
 
-.perfil-principal img{
-    width: 200px;
-    border-radius: 100px;
+.avatar-perfil{
+  width: 150px;
+  height: 150px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px;
+  border-radius: 50%;
+  box-shadow: 0 10px 24px rgba(20, 61, 126, 0.12);
 }
+
+.avatar-perfil img{
+    width: 100% !important;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.datos-perfil-superior{
+  text-align: center;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
 .perfil-principal .nombre-usuario{
-    font-size: 30px;
-    font-weight: 600;
+  margin: 0;
+  color: #081f49;
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.email-usuario {
+  margin: 6px 0 0;
+
+  color: #64748b;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.btn-cerrar-sesion {
+  margin-top: 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  padding: 10px 18px;
+
+  border: 1px solid #0b5ed7;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #0b5ed7;
+
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 800;
 }
 
 /*Estilo para menu lateral*/
 .opciones-configuracion{
-    gap: 30px;
-    display: flex; 
-    flex-direction: row;
+  width: 100%;
+  max-width: 1600px;
+  gap: 100px;
+  display: flex; 
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  margin-left: 70px;
 }
 
 .opciones-configuracion-tabs{
-    display: flex;
-    gap: 10px !important;
-    padding: 20px;
-    flex-direction: column;
-    border-right: 6px solid rgb(141, 162, 203);
-    border-radius: 20px;
-    margin-bottom: 20px;
+  width: 500px;
+  min-width: 330px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px !important;
+
+  padding: 20px;
+  margin: 0;
+  list-style: none;
+  background: #ffffff;
+
+  border: 1px solid rgba(50, 83, 146, 0.12);
+  border-radius: 22px;
+  box-shadow: 0 14px 35px rgba(20, 61, 126, 0.12);
 }
+
 /*Estilo opciones de configuracion*/
 .opciones-configuracion-editar{
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: center; 
-  justify-content: center!important;
-  padding: 20px;
+  align-items: stretch; 
+  justify-content: flex-start!important;
+  padding: 0;
+}
+
+.panel-edicion{
+  width: 100%;
+  max-width: 700px;
+  padding: 32px;
+
+  background: #ffffff;
+  border: 1px solid rgba(50, 83, 146, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 14px 35px rgba(20, 61, 126, 0.12);
+}
+
+.cabecera-panel-edicion{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+
+.icono-panel-edicion{
+  width: 64px;
+  min-width: 64px;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: #edf4ff;
+  color: #0b5ed7;
+  font-size: 34px;
+}
+
+.titulo-editar{
+  margin: 0;
+  display: block;
+
+  color: #081f49;
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 900;
+  letter-spacing: 0.3px;
+}
+
+.cabecera-panel-edicion p{
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 16px;
+}
+
+.linea-panel{
+  width: 100%;
+  height: 1px;
+  margin: 24px 0 26px;
+  background: rgba(50, 83, 146, 0.18);
 }
 
 /*Estilo para editar perfil de usuario*/
-.link-usuario{
-    cursor: pointer;
-    text-decoration: none;
-    color: black;
-    display: flex;
-    margin-bottom: 20px;
-    gap: 20px;
+
+.form-usuario{
+  width: 100%;
+  padding: 0;
+  margin-bottom: 18px;
 }
+
+.link-usuario{
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 16px;
+
+  cursor: pointer;
+  text-decoration: none;
+  color: #081f49;
+
+  border-radius: 16px;
+  border: 1px solid transparent;
+
+}
+
+.icono-opcion{
+  width: 58px;
+  min-width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+  background: #edf4ff;
+
+  color: #0b5ed7;
+  font-size: 28px;
+}
+
 .texto{
     display: flex;
     flex-direction: column;
+    flex: 1;
+    min-width: 0;
 }
 
+
 .texto .titulo{ 
-    font-weight: 600;
-    font-size: 20px;
-    margin-bottom: 5px;
+    font-weight: 800;
+    font-size: 19px;
+    margin-bottom: 4px;
+    color: #081f49;
+}
+
+.flecha-opcion{
+  color: #64748b;
+  font-size: 20px;
 }
 
 .content-block{
@@ -79,121 +264,380 @@
   display: block;
 }
 
+
+
 /*Estilos para editar usuario*/
-.form-usuario{
-  padding: 10px;
+
+.label-campo{
+  display: block;
+  margin-bottom: 7px;
+
+  color: #334155;
+  font-size: 15px;
+  font-weight: 700;
 }
+
+.input-con-icono{
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+
+  border: 1px solid #c4d7f5;
+  border-radius: 14px ;
+  background: #ffffff;
+
+
+}
+
+.input-con-icono i{
+  color: #64748b;
+  font-size: 22px;
+}
+
+.input-con-icono input{
+  flex: 1;
+  width: 100%;
+
+  padding: 15px 0;
+
+  border: none;
+  outline: none;
+  background: transparent;
+
+  color: #081f49;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+
 .label-imagen{
   padding:10px;
-  width: 400px;
-  border-radius: 20px;
-  background-color: #b1c7f6;
-  font-weight:550;
+  width: 100%;
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  padding: 0 18px;
+  border: 1px solid #c4d7f5;
+  background: #f8fbff;
+
+  color: #475569;
+  font-size: 16px;
+  font-weight: 700;
+
+  cursor: pointer;
 }
 
-.form-usuario input{
-  padding: 10px;
-  border-radius: 20px;
-  width: 400px;
-  background-color: #b1c7f6;
-  color: black;
-  border: none;
+.label-imagen span{
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.btn{
-  background-color: #88acfa !important;
+.label-imagen i{
+  color: #0b5ed7;
+  font-size: 23px;
 }
 
-input::placeholder{
-  color: black;
+.btn-guardar-perfil {
+  width: 100%;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  margin-top: 8px;
+  padding: 15px 20px !important;
+
+  border: none !important;
+  border-radius: 14px !important;
+
+  background: linear-gradient(135deg, #2f6df6, #0b5ed7) !important;
+  color: #ffffff !important;
+
+  font-size: 17px !important;
+  font-weight: 800 !important;
+
+  box-shadow: 0 10px 24px rgba(11, 94, 215, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+
+
+
+
 /*Estilo para editar historial de partidas*/
-.partidas-tabla{
-  display: flex;
-  gap: 100px;
+
+.panel-partidas {
+  width: 100%;
 }
 
-.partidas-lista{
+.partidas-tabla {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 34px;
+
+  padding: 28px;
+
+  background: #ffffff;
+  border: 1px solid rgba(50, 83, 146, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 14px 35px rgba(20, 61, 126, 0.12);
+}
+
+.columna-partidas {
+  min-width: 0;
+}
+
+.cabecera-partidas {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.icono-titulo-partidas {
+  width: 46px;
+  min-width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: #edf4ff;
+  color: #0b5ed7;
+
+  font-size: 25px;
+}
+
+.titulo-partidas {
+  margin: 0;
+
+  color: #081f49;
+  font-size: clamp(24px, 2.2vw, 30px);
+  font-weight: 900;
+  letter-spacing: 0.3px;
+}
+
+.partidas-lista {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
+.partidas-card {
+  width: 100%;
 
-.partidas-card{
   display: flex;
-  flex-direction: column;
-  border: 2px solid #54708d;
-  border-radius: 15px;
-  background-color: rgba(178, 204, 231, 0.5);
-  padding: 30px;
-  color: rgb(50, 83, 146);
-}
-.titulo-partidas{
-  text-align: center;
-  font-size: 30px;
+  align-items: flex-start;
+  gap: 16px;
+
+  padding: 18px;
+
+  background: #f8fbff;
+  border: 1px solid #cdddf5;
+  border-radius: 18px;
+
+  color: #081f49;
+
+  box-shadow: 0 8px 20px rgba(20, 61, 126, 0.08);
 }
 
-.partida-head{
+.partida-icono {
+  width: 54px;
+  min-width: 54px;
+  height: 54px;
+
   display: flex;
-  font-size: 20px;
-  gap: 15px;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+  background: #e8f1ff;
+  color: #0b5ed7;
+
+  font-size: 26px;
 }
 
-.partida-info{
-  margin-top:8px;
-  display:flex;
-  gap:10px;
-  font-size: 18px;
+.partida-contenido {
+  flex: 1;
+  min-width: 0;
 }
 
-.partida-actions{
-  margin-top:20px;
-  display:flex;
-  gap:30px;
+.partida-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+
+  margin-bottom: 10px;
 }
 
-.btn-partida{
-  cursor:pointer;
-  border: 2px solid #54708d;
-  border-radius: 12px;
-  background-color: rgba(200, 221, 248, 0.8);
-  color: rgb(50, 83, 146);
-  padding: 5px 20px;
-  font-weight: 500;
+.partida-fecha {
+  color: #081f49;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.25;
 }
 
-.btn-partida:hover{
-  background-color: rgba(178, 204, 231, 0.9);
+.partida-estado {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: capitalize;
+  white-space: nowrap;
 }
 
-.btn-cancelar{
+.estado-pendiente {
+  color: #b45309;
+  background: #fff3dc;
+  border: 1px solid #f8d7a4;
+}
+
+.estado-jugada {
+  color: #15803d;
+  background: #eaf8ee;
+  border: 1px solid #b7e4c7;
+}
+
+.partida-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+
+  margin-top: 0;
+
+  color: #1d4f9a;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.partida-info i {
+  color: #0b5ed7;
+}
+
+.resultado-info {
+  display: block;
+  color: #334155;
+  font-weight: 600;
+}
+
+.separador-info {
+  color: #94a3b8;
+}
+
+.partida-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+
+  margin-top: 18px;
+}
+
+.btn-partida,
+.btn-cancelar,
+.btn-resultado {
   cursor: pointer;
-  border: 2px solid #b33333;
-  border-radius: 12px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  min-height: 38px;
+  padding: 8px 16px;
+
+  border-radius: 11px;
+
+  font-size: 15px;
+  font-weight: 800;
+
+}
+
+.btn-partida {
+  border: 1px solid #0b5ed7;
+  background: #ffffff;
+  color: #0b5ed7;
+}
+
+.btn-partida:hover {
+  background: #0b5ed7;
+  color: #ffffff;
+}
+
+.btn-cancelar {
+  border: 1px solid #ef4444;
+  background: #fff5f5;
   color: #b91c1c;
-  padding: 5px 20px;
-  font-weight: 500;
-  background-color: rgba(254, 226, 226, 0.8);
 }
 
-.btn-cancelar:hover{
-  background-color: rgba(207, 166, 166, 0.8);
+.btn-cancelar:hover {
+  background: #ef4444;
+  color: #ffffff;
 }
 
-.btn-resultado{
-  cursor: pointer;
-  border: 2px solid #2d53b9;
-  border-radius: 12px;
-  color: #1d4ed8;
-  padding: 5px 20px;
-  font-weight: 500;
-  background-color: rgba(219, 234, 254, 0.85);
+.btn-resultado {
+  border: 1px solid #0b5ed7;
+  background: linear-gradient(135deg, #2f6df6, #0b5ed7);
+  color: #ffffff;
 }
 
-.btn-resultado:hover{
-  background-color: rgba(171, 181, 196, 0.85);
+.btn-resultado:hover {
+  box-shadow: 0 10px 20px rgba(11, 94, 215, 0.24);
 }
+
+.partidas-vacio {
+  min-height: 160px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 24px;
+
+  background: #f8fbff;
+  border: 1px dashed #b8cceb;
+  border-radius: 18px;
+
+  color: #64748b;
+  text-align: center;
+  font-weight: 700;
+}
+
+.partidas-vacio i {
+  color: #0b5ed7;
+  font-size: 36px;
+}
+
+.partidas-vacio p {
+  margin: 0;
+}
+
+
+
+
 /*Estilo para editar preferencias de privacidad*/
 .usuario-editar-privacidad{
     display: flex;
@@ -262,12 +706,6 @@ input:checked + .slider:before {
   flex-direction: column;
   gap: 10px;
   padding: 20px;
-}
-
-.titulo-editar{
-  margin-bottom: 40px;
-  display: flex;
-  justify-content: center;
 }
 
 
@@ -358,4 +796,164 @@ input:checked + .slider:before {
     color: #d4a017;
     margin-left: 6px;
     font-size: 18px;
+}
+
+@media (max-width: 1000px) {
+
+  .container-perfil {
+    width: 100%;
+    max-width: 100%;
+    margin: 30px auto 50px;
+    padding: 0 18px;
+    box-sizing: border-box;
+  }
+
+  .opciones-configuracion {
+    width: 100%;
+    max-width: 100%;
+
+    display: flex;
+    flex-direction: column !important;
+    align-items: center;
+    gap: 28px;
+
+    margin: 0 auto;
+  }
+
+  .opciones-configuracion-tabs {
+    width: 100%;
+    max-width: 760px;
+    min-width: 0 !important;
+
+    box-sizing: border-box;
+  }
+
+  .opciones-configuracion-editar {
+    width: 100%;
+    max-width: 760px;
+    min-width: 0 !important;
+
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .panel-edicion {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .container-perfil {
+    padding: 0 12px;
+  }
+
+  .opciones-configuracion {
+    gap: 20px;
+  }
+
+  .opciones-configuracion-tabs {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .link-usuario {
+    padding: 14px 12px;
+  }
+
+  .opciones-configuracion-editar {
+    width: 100%;
+  }
+
+  .panel-edicion {
+    padding: 20px 14px;
+    border-radius: 18px;
+  }
+}
+
+/* =====================================================
+   CORRECCIÓN RESPONSIVE DEL PANEL DE PARTIDAS
+   Hace que contenido2 baje debajo de las opciones
+===================================================== */
+
+@media (max-width: 1100px) {
+
+  #contenido2.panel-partidas {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  #contenido2 .partidas-tabla {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    gap: 32px !important;
+
+    padding: 24px !important;
+    box-sizing: border-box;
+  }
+
+  #contenido2 .columna-partidas {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  #contenido2 .partidas-lista {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+
+  #contenido2 .partidas-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 600px) {
+
+  #contenido2 .partidas-tabla {
+    padding: 16px !important;
+    gap: 28px !important;
+    border-radius: 18px;
+  }
+
+  #contenido2 .partidas-card {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  #contenido2 .partida-contenido {
+    width: 100%;
+  }
+
+  #contenido2 .partida-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  #contenido2 .partida-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  #contenido2 .btn-partida,
+  #contenido2 .btn-cancelar,
+  #contenido2 .btn-resultado {
+    width: 100%;
+  }
 }

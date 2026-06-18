@@ -1,8 +1,11 @@
 package servlets;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.*;
 
 /** 
@@ -13,7 +16,7 @@ import jakarta.servlet.http.*;
  * consultar el historial de partidas, cancelar reservas, anotar resultados
  * y actualizar los datos personales del usuario.
 */
-
+@MultipartConfig
 public class Perfil extends HttpServlet {
 
     /** 
@@ -59,7 +62,6 @@ public class Perfil extends HttpServlet {
                 return;
             }
             String accion = request.getParameter("accion");
-
             if ("cancelarPartida".equals(accion)) {
                 cancelarPartida(request, response, session);
                 return;
@@ -272,11 +274,31 @@ public class Perfil extends HttpServlet {
 
     private void actualizarPerfil(HttpServletRequest request, HttpServletResponse response, HttpSession session)
         throws IOException {
-
         try {
             Integer idUsuario = (Integer) session.getAttribute("usuario");
 
-            String imagen = request.getParameter("imagen_usuario");
+            Part ficheroImagen = request.getPart("imagen_usuario");
+            String imagen = null;
+            if (ficheroImagen != null && ficheroImagen.getSize() > 0) {
+                String nombreArchivo = Paths.get(ficheroImagen.getSubmittedFileName()).getFileName().toString();
+
+                String rutaCarpeta = getServletContext().getRealPath("/web/Imagenes/Perfiles/");
+                File carpeta = new File(rutaCarpeta);
+                if (!carpeta.exists()) {
+                    carpeta.mkdirs();
+                }
+
+                ficheroImagen.write(rutaCarpeta + File.separator + nombreArchivo);
+                imagen = "/web/Imagenes/Perfiles/" + nombreArchivo;
+
+                if (imagen == null || imagen.isBlank()) {
+                    UsuarioBD usuarioActual = (UsuarioBD) session.getAttribute("usuario");
+                    if (usuarioActual != null) {
+                        imagen = usuarioActual.getFoto_perfil();
+                    }
+                }
+            }
+
             String nombreUsuario = request.getParameter("nombre_usuario");
             String email = request.getParameter("email");
             boolean recibirInvitaciones = request.getParameter("recibir_invitaciones") != null;

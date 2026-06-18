@@ -72,10 +72,21 @@
         <div class="container-perfil">
             
             <div class="perfil-principal">
-                <img src="<%= request.getContextPath() %>/<%= usuario.getFoto_perfil() %>" alt=" Foto de perfil del Usuario">
-                <label class="nombre-usuario"><%= usuario.getUsuario() %></label>
-                <label class="email-usuario"><%= usuario.getEmail() %></label>
-                <a class="btn" href="${pageContext.request.contextPath}/LogOut">Cerrar Sesion</a>
+                <div class="tarjeta-perfil-superior">
+                    <div class="avatar-perfil">
+                        <img src="<%= request.getContextPath() %>/<%= usuario.getFoto_perfil() %>" alt=" Foto de perfil del Usuario">
+                    </div>
+
+                    <div class="datos-perfil-superior">
+                        <label class="nombre-usuario"><%= usuario.getUsuario() %></label>
+                        <label class="email-usuario"><%= usuario.getEmail() %></label>
+                    </div>
+
+                    <a class="btn" href="${pageContext.request.contextPath}/LogOut">
+                        <i class="bi bi-box-arrow-right"></i> 
+                        Cerrar Sesion
+                    </a>
+                </div>
             </div>
 
             <hr style=" border-top: 5px solid rgb(50, 83, 146); border-radius: 20px;">
@@ -83,132 +94,212 @@
             <div class="opciones-configuracion">
                 <ul class="opciones-configuracion-tabs" style="list-style-type: none;">
 
-
                     <li>
                         <a class="link-usuario activo" data-target="contenido1" href="#">
-                            <div class="bi bi-person-fill fs-2"></div>
+                            <div class="icono-opcion">
+                                <i class="bi bi-person-fill"> </i>
+                            </div>
 
                             <div class="texto">
                                 <span class="titulo">Edita tu perfil</span>
                                 <span> Edita tu foto de perfil, imagen, usuario, etc. </span>
                             </div>
+                            <i class="bi bi-chervron-right flecha-opcion"></i>
                         </a>
                     </li>
 
                     <li>
                         <a class="link-usuario" data-target="contenido2" href="#">
-                            <div class="bi bi-list-ol fs-2"></div>
+                            <div class="icono-opcion"> 
+                                <i class="bi bi-list-ol"></i>
+                            </div>
 
                             <div class="texto">
                                 <span class="titulo">Revisa tus partidas</span>
                                 <span>Gestiona resultados y partidas de padel </span>
                             </div>
+                            <i class="bi bi-chervron-right flecha-opcion"></i>
                         </a>
                     </li>
 
                      <li>
                         <a class="link-usuario" data-target="contenido3" href="#">
-                            <div class="bi bi-shield-fill-check fs-2"></div>
+                            <div class="icono-opcion"> 
+                                <i class="bi bi-shield-fill-check"></i>
+                            </div>
 
                             <div class="texto">
                                 <span class="titulo">Privacidad</span>
                                 <span> Gestiona tus invitaciones de padel</span>
                             </div>
+                            <i class="bi bi-chervron-right flecha-opcion"></i>
                         </a>
                     </li>
 
                     <li>
                         <a class="link-usuario" data-target="contenido4" href="#">
-                            <div class="bi bi-key-fill fs-2"></div>
+                            <div> 
+                                <i class="bi bi-key-fill icono-opcion"> </i>
+                            </div>
 
                             <div class="texto">
                                 <span class="titulo">Email, contraseña</span>
                                 <span> Gestiona tu email y contraseñas</span>
                             </div>
+
+                            <i class="bi bi-chervron-right flecha-opcion"></i>
                         </a>
                     </li>
                 </ul>
 
                 <div class="opciones-configuracion-editar">
-                    <form action="<%=request.getContextPath()%>/Perfil" method="post">
+                    <form action="<%=request.getContextPath()%>/Perfil" method="post" enctype="multipart/form-data">
 
                         <input type="hidden" name="accion" value="actualizarPerfil">
 
-                        <div class="content-block active" id="contenido1">
+                        <div class="content-block active panel-edicion" id="contenido1">
 
-                            <h2 class="titulo-editar">EDITAR PERFIL</h2>
+                            <div class="cabecera-panel-edicion">
+                                <div class="icono-panel-edicion">
+                                    <i class="bi bi-person"></i>
+                                </div>
+                                
+                                <div >
+                                    <h2 class="titulo-editar">EDITAR PERFIL</h2>
+                                </div>
+                            </div>
+
+                            <div class="linea-panel"></div>
 
                             <div class="form-usuario">
-                                    <input type="file" id="imagen_usuario" name="Imagen-usuario" accept="image/*" style="display:none"/>
-                                    <label for="imagen_usuario" class="label-imagen">Seleccionar imagen</label>
+                                    <input type="file" id="imagen_usuario" name="imagen_usuario" value="Imagenes/Padel.png" accept="image/*" style="display:none"/>
+                                    <label for="imagen_usuario" class="label-imagen">
+                                        <span>
+                                            <i class="bi bi-image"></i>
+                                            Seleccionar Imagen
+                                        </span>
+
+                                        <i class="bi bi-cloud-arrow-up"></i>
+                                    </label>
                             </div>
 
                             <div class="form-usuario">
-                                <input type="text" name="nombre_usuario" value="<%=usuario.getUsuario()%>" required>
+
+                                <label class="label-campo">Usuario</label>
+
+                                <div class="input-con-icono">
+                                    <i class="bi bi-person"></i>
+                                    <input type="text" name="nombre_usuario" value="<%=usuario.getUsuario()%>" required>
+                                </div>
+
                             </div>
 
                             <div class="form-usuario">
-                                <input type="text" placeholder="<%=usuario.getEmail()%> " readonly>
+
+                                <label class="label-campo"> Email </label>
+                                <div class="input-con-icono">
+                                    <i class="bi bi-envelope"></i>
+                                    <input type="text" placeholder="<%=usuario.getEmail()%> " readonly>
+                                </div>
                             </div>
 
                             <div class=" form-usuario">
-                                <input type="submit" value="Cambiar Datos" class="btn">
+                                <button type="submit" class="btn btn-guardar-perfil">
+                                    <i class="bi bi-save"></i>
+                                        Cambiar Datos
+                                </button>
                             </div>
                         </div>
 
-                        <div class="content-block" id="contenido2">
+                        <div class="content-block panel-partidas" id="contenido2">
+
                             <div class="partidas-tabla">
-                                <div class="partidas-lista">
-                                    <h3 class="titulo-partidas"> PENDIENTES</h3>
 
-                                    <% if (pendientes.isEmpty()) { %>
-                                        <p> No hay partidas Pendientes</p>
-                                    <% } else { %>
-                                            <% for (PartidaPerfilBD p : pendientes) { 
-
-                                            String participantesP = "";
-                                            for (int i = 0; i < p.getParticipantes().size(); i++) {
-                                                ParticipantePerfilBD participante = p.getParticipantes().get(i);
-                                                if (i > 0) participantesP += "|";
-                                                participantesP += participante.getId() + "##" + participante.getNombre();
-                                            }
-                                            %>
-
-                                        <div class="partidas-card" id="colpendientes" data-participantes="<%= participantesP %>">
-                                            <div class="partida-head">
-                                                <%
-                                                    java.text.SimpleDateFormat formato =
-                                                        new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
-
-                                                    String fecha = formato.format(p.getFechaHora());
-                                                    %>
-                                                <div class="partida-fecha"><%= fecha %></div>
-                                                <div class="partida-estado"><%= p.getEstado() %></div>
-                                            </div>
-
-                                            <div class="partida-info">
-                                                <div class="partida-lugar"> <%= p.getMunicipio() %></div>
-                                                <div class="partida-pista">Pista: <%= p.getNumeroPista() %></div>
-                                            </div>
-
-                                            <div class="partida-actions">
-                                                <button type="button" class="btn-partida" onclick="abrirParticipantes(this)"> Participantes</button>
-                                                <% if (p.isCreador()) { %>
-                                                        <button type="button" class="btn-cancelar" data-id="<%= p.getId() %>" onclick="cancelarPartida(this.dataset.id)">
-                                                            Cancelar
-                                                        </button>
-                                                <% } %>
-                                            </div>
+                                <section class="columna-partidas">
+                                    <div class="cabecera-partidas">
+                                        <div class="icono-titulo-partidas">
+                                            <i class="bi bi-clock"></i>
                                         </div>
+                                        <h3 class="titulo-partidas"> PENDIENTES</h3>
+                                    </div>
+                                    <div class="partidas-lista">
+                                    <% if (pendientes.isEmpty()) { %>
+                                        <div class="partidas-vacio">
+                                            <i class="bi bi-calendar-x"></i>
+                                            <p>No hay partidas pendientes</p>
+                                        </div>
+
+                                    </div>   
+                                    <% } else { %>
+                                        <% for (PartidaPerfilBD p : pendientes) { 
+
+                                        String participantesP = "";
+                                        for (int i = 0; i < p.getParticipantes().size(); i++) {
+                                            ParticipantePerfilBD participante = p.getParticipantes().get(i);
+                                            if (i > 0) participantesP += "|";
+                                            participantesP += participante.getId() + "##" + participante.getNombre();
+                                        }
+                                        %>
+
+                                            <div class="partidas-card" id="colpendientes" data-participantes="<%= participantesP %>">
+                                                <div class="partida-icono">
+                                                    <i class="bi bi-calendar-event"></i>
+                                                </div>
+
+                                                <div class="partida-contenido">
+                                                    <div class="partida-head">
+                                                        <%
+                                                            java.text.SimpleDateFormat formato =
+                                                                new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm");
+
+                                                            String fecha = formato.format(p.getFechaHora());
+                                                            %>
+                                                        <div class="partida-fecha"><%= fecha %></div>
+                                                        <div class="partida-estado"><%= p.getEstado() %></div>
+                                                    </div>
+
+                                                    <div class="partida-info">
+                                                        <span>
+                                                            <i class="bi bi-geo-alt-fill"></i>
+                                                            <%= p.getMunicipio() %>
+                                                        </span>
+                                                        <span>
+                                                            Pista: <%= p.getNumeroPista() %>
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="partida-actions">
+                                                        <button type="button" class="btn-partida" onclick="abrirParticipantes(this)">
+                                                            <i class="bi bi-people-fill"></i> 
+                                                            Participantes
+                                                        </button>
+                                                        <% if (p.isCreador()) { %>
+                                                                <button type="button" class="btn-cancelar" data-id="<%= p.getId() %>" onclick="cancelarPartida(this.dataset.id)">
+                                                                    <i class="bi bi-x-circle"></i>
+                                                                    Cancelar
+                                                                </button>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         <% } %>
                                     <% } %>
-                                </div>
+                                </section>
 
-                                <div class="partidas-lista">
-                                    <h3 class="titulo-partidas"> HISTORIAL</h3>
-
+                                <section class="columna-partidas">
+                                    <div class="cabecera-partidas">
+                                        <div class="icono-titulo-partidas">
+                                            <i class="bi bi-trophy"></i>
+                                        </div>
+                                        <h3 class="titulo-partidas"> HISTORIAL</h3>
+                                    </div>
+                                    <div class="partidas-lista">
                                     <% if (historial.isEmpty()) { %>
-                                        <p> No has jugado partidas todavia</p>
+                                        <div class="partidas-vacio">
+                                            <i class="bi bi-hourglass-split"></i>
+                                            <p> No has jugado partidas todavia</p>
+                                        </div>
+
                                     <% } else { %>
                                         <% for ( PartidaPerfilBD h : historial) { %>
                                             <%
@@ -224,44 +315,57 @@
                                                     participantesH += participante.getId() + "##" + participante.getNombre();
                                                 }
                                                 %>
-                                            <div class="partidas-card" id="colHistorial" data-fecha="<%=fecha%>"
-                                                                                        data-lugar="<%=h.getMunicipio()%>"
-                                                                                        data-pista="<%=h.getNumeroPista()%>"
-                                                                                        data-participantes="<%= participantesH%>"
-                                                                                        data-resultado="<%= h.getResultado()%>"
-                                                                                        data-ganador1="<%= h.getGanador1_id()%>"
-                                                                                        data-ganador2="<%= h.getGanador2_id()%>"
-                                                                                        >
-                                                <div class="partida-head">
+                                            <div class="partidas-card" 
+                                                id="colHistorial" 
+                                                data-fecha="<%=fecha%>"
+                                                data-lugar="<%=h.getMunicipio()%>"
+                                                data-pista="<%=h.getNumeroPista()%>"
+                                                data-participantes="<%= participantesH%>"
+                                                data-resultado="<%= h.getResultado()%>"
+                                                data-ganador1="<%= h.getGanador1_id()%>"
+                                                data-ganador2="<%= h.getGanador2_id()%>">
 
-                                                    <div class="partida-fecha"><%= fecha %></div>
-                                                    <div class="partida-estado"><%= h.getEstado() %></div>
+                                                <div class="partida-icono">
+                                                    <i class="bi bi-calendar-check"></i>
                                                 </div>
-                                                <div class="partida-info">
-                                                    <%
-                                                        String resultado = h.getResultado();
-                                                        if (resultado == null || resultado.isBlank()) {
-                                                            resultado = "Resultado no disponible todavía";
-                                                        }
-                                                    %>
-                                                    <div class="partida-resultado"> Resultado: <%= resultado %> </div>
-                                                </div>
-                                                <div class="partida-actions">
-                                                    <button type="button" class="btn-partida" onclick="abrirDetalles(this)">Detalles</button>
-                                                    <%
-                                                        boolean puedeAnotar = h.isCreador() && h.getParticipantes() != null && h.getParticipantes().size() == 4;
-                                                    %>
-                                                    <% if (puedeAnotar==true && h.getResultado()==null) { %>
-                                                        <button type="button" class="btn-resultado" data-id="<%= h.getId() %>" data-participantes="<%= participantesH %>"
+
+                                                <div class="partida-contenido">
+                                                    <div class="partida-head">
+
+                                                        <div class="partida-fecha"><%= fecha %></div>
+                                                        <span class="partida-estado"><%= h.getEstado() %></span>
+                                                    </div>
+                                                    <div class="partida-info">
+                                                        <%
+                                                            String resultado = h.getResultado();
+                                                            if (resultado == null || resultado.isBlank()) {
+                                                                resultado = "Resultado no disponible todavía";
+                                                            }
+                                                        %>
+                                                        <div class="partida-resultado"> Resultado: <%= resultado %> </div>
+                                                    </div>
+
+                                                    <div class="partida-actions">
+                                                        <button type="button" class="btn-partida" onclick="abrirDetalles(this)">
+                                                            <i class="bi bi-eye"></i>
+                                                            Detalles
+                                                        </button>
+                                                        <%
+                                                            boolean puedeAnotar = h.isCreador() && h.getParticipantes() != null && h.getParticipantes().size() == 4;
+                                                        %>
+                                                        <% if (puedeAnotar==true && h.getResultado()==null) { %>
+                                                            <button type="button" class="btn-resultado" data-id="<%= h.getId() %>" data-participantes="<%= participantesH %>"
                                                                 onclick="abrirResultado(this)"> 
-                                                            Anotar Resultado
-                                                        </button> 
-                                                    <% } %>
+                                                                <i class="bi bi-pencil-square"></i>
+                                                                Anotar Resultado
+                                                            </button> 
+                                                        <% } %>
+                                                    </div>
                                                 </div>
                                             </div>
                                         <% } %>
                                     <%} %>
-                                </div>
+                                </section>
                             </div>
                         </div>
 
