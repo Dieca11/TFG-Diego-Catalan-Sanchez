@@ -369,56 +369,124 @@
                             </div>
                         </div>
 
-                        <div class="content-block" id="contenido3">
-                            <h2 class="titulo-editar">GESTIONAR LA PRIVACIDAD DE DATOS</h2>
+                        <div class="content-block panel-privacidad" id="contenido3">
 
-                            <label class="privacidad-label">
-                                <span class="switch">
-                                    <input type="checkbox" name="recibir_invitaciones"
-                                        <%= usuario.isRecibir_invitacion() ? "checked=\"checked\"" : "" %>/>
-                                    <span class="slider"></span>
-                                </span>
-                                Recibir invitaciones a partidas de otros usuarios
-                            </label>
+                            <div class="cabecera-panel-privacidad">
 
-                            <label class="privacidad-label">
-                                <span class="switch">
-                                    <input type="checkbox" name="mostrar_partidas"
-                                        <%= usuario.isMostrar_partidas() ? "checked=\"checked\"" : "" %>/>
-                                    <span class="slider"></span>
-                                </span>
-                                Mostrar mis partidas en la clasificación
-                            </label>
+                                <div class="icono-panel-privacidad">
+                                    <i class="bi bi-shield-lock-fill"></i>
+                                </div>
 
-                            <div class="form-usuario">
-                                <input type="submit" value="Cambiar Configuracion" class="btn">
+                                <div>
+                                    <h2>GESTIONAR LA PRIVACIDAD DE DATOS</h2>
+                                </div>
+
                             </div>
 
+                            <div class="usuario-editar-privacidad">
+
+                                <label class="opcion-privacidad">
+                                    <div class="icono-opcion-privacidad">
+                                        <i class="bi bi-envelope-fill"></i>
+                                    </div>
+
+                                    <div class="texto-opcion-privacidad">
+
+                                        <span class="titulo-opcion-privacidad">
+                                            Recibir invitaciones a partidas de otros usuarios
+                                        </span>
+
+                                    </div>
+
+                                    <span class="switch">
+                                        <input type="checkbox" name="recibir_invitaciones"
+                                            <%= usuario.isRecibir_invitacion() ? "checked=\"checked\"" : "" %>/>
+                                        <span class="slider"></span>
+                                    </span>
+
+                                </label>
+
+                                <label class="opcion-privacidad">
+
+                                    <div class="icono-opcion-privacidad">
+
+                                        <i class="bi bi-bar-chart-fill"></i>
+
+                                    </div>
+
+                                    <div class="texto-opcion-privacidad">
+
+                                        <span class="titulo-opcion-privacidad">
+                                        Mostrar mis partidas en la clasificacion
+                                        </span>
+
+                                    </div>
+
+                                    <span class="switch">
+                                        <input type="checkbox" name="mostrar_partidas"
+                                            <%= usuario.isMostrar_partidas() ? "checked=\"checked\"" : "" %>/>
+                                        <span class="slider"></span>
+                                    </span>
+
+                                </label>
+
+                                <button type="submit"  class="btn-guardar-privacidad">
+                                    <i class="bi bi-lock-fill"></i>
+                                        Guardar Configuracion
+                                </button>
+                            </div>
                         </div>
 
                         
 
-                        <div class="content-block" id="contenido4">
+                        <div class="content-block panel-seguridad" id="contenido4">
 
-                            <h2 class="titulo-editar">EDITAR SEGURIDAD</h2>
+                            <div class="cabecera-panel-seguridad">
+                                <div class="icono-panel-seguridad">
+                                    <i class="bi bi-shield-lock-fill"></i>
+                                </div>
 
-                            <div class="form-usuario">
-                                <input type="text" name="email" value="<%=usuario.getEmail()%>" required>
+                                <div>
+                                    <h2>EDITAR SEGURIDAD</h2>
+                                </div>
+
                             </div>
 
-                            <div class="form-usuario">
-                                <input type="password" name="clave1" value="" placeholder="Contraseña nueva" >
-                            </div>
-                            <div class="form-usuario">
-                                <input type="password" name="clave2" value="" placeholder="Confirmar contraseña">
+                            <div class="form-seguridad">
+                                <div class="campo-seguridad">
+                                    <label for="email-seguridad">Email</label>
+                                    <div class="input-seguridad">
+                                        <i class="bi bi-envelope"></i>
+                                        <input type="email" id="email_seguridad" name="email" value="<%=usuario.getEmail()%>" required>
+                                    </div>
+                                </div>
+
                             </div>
 
-                            <div class=" form-usuario">
-                                <input type="submit" value="Cambiar Datos" class="btn">
+                            <div class="campo-seguridad">
+                                <label for="contrasenya_nueva">Contraseña nueva</label>
+                                <div class="input-seguridad">
+                                    <i class="bi bi-lock"></i>
+                                    <input type="password" name="clave1" value="" placeholder="Introduce tu contraseña nueva" >
+                                </div>
                             </div>
+
+                            <div class="campo-seguridad">
+                                <label for="confirmar_contrasenya">Confirmar Contraseña</label>
+
+                                <div class="input-seguridad">
+                                    <i class="bi bi-shield-lock"></i>
+                                    <input type="password" name="clave2" value="" placeholder="Vuelve a introducir tu contraseña nueva" >
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-guardar-seguridad">
+                                <i class="bi bi-save"></i>
+                                Cambiar Datos
+                            </button>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
 
@@ -703,7 +771,7 @@
             });
             });
         </script>
-        
+
         <script>
             window.APP_CTX = "<%= request.getContextPath() %>";
         </script>
